@@ -1,0 +1,70 @@
+{
+  "run": "resume-default-cli-run1",
+  "mode": "default",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.296",
+  "env": "none",
+  "main_tool_sequence": [
+    "Agent",
+    "ToolSearch",
+    "SendMessage"
+  ],
+  "first_spawn": {
+    "input": {
+      "description": "resumable",
+      "subagent_type": "resumable",
+      "prompt": "Start.",
+      "run_in_background": false
+    },
+    "use_s": 2.98,
+    "result_s": 11.56,
+    "is_backgrounded": false,
+    "result_has_FIRST_RUN_DONE": true
+  },
+  "check1_first_spawn_sync": true,
+  "agent_id": "aeccb87614ede395d",
+  "send": {
+    "to": "aeccb87614ede395d",
+    "use_s": 13.15,
+    "result_s": 13.36,
+    "blocked_s": 0.21,
+    "result": "{\"success\":true,\"message\":\"Resuming agent aeccb87\",\"resumedAgentId\":\"aeccb87614ede395d\",\"pin\":{\"id\":\"aeccb87614ede395d\",\"name\":\"aeccb87614ede395d\",\"ref\":\"8c41b8\"}}"
+  },
+  "check2_send_to_same_id": true,
+  "agent_calls_total": 1,
+  "subagent_transcripts": 1,
+  "nonce_first_run": "731538913",
+  "resumed_final": {
+    "at_s": 36.23,
+    "text": "RESUMED_FINAL NONCE=731538913"
+  },
+  "check3_same_instance": true,
+  "resumed_task_started": [
+    {
+      "at_s": 13.254,
+      "is_backgrounded": true
+    }
+  ],
+  "task_notification_turns_in_main": [
+    {
+      "at_s": 36.39,
+      "text": "<task-notification>\n<task-id>aeccb87614ede395d</task-id>\n<tool-use-id>toolu_01DyuWTPUinHNhMgjP4rSQCp</tool-use-id>\n<output-file>C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\c57a5b5c-e28c-4076-a675-ac5b8569856f\\tasks\\aeccb87614ede395d.output</output-file>\n<status>completed</status>\n<summary>Agent \"resumable\" finished</summary>\n<note>A task-notification fires each time this age"
+    }
+  ],
+  "RESUME_FROM_MAIN_POV": "ASYNC",
+  "results": [
+    {
+      "at_s": 37.48,
+      "origin": "prompt",
+      "text": "The subagent has been resumed. I'm waiting for its RESUMED_FINAL reply."
+    },
+    {
+      "at_s": 37.481,
+      "origin": "task-notification",
+      "text": "MAIN_DONE: RESUMED_FINAL NONCE=731538913"
+    }
+  ],
+  "check4_main_final_has_nonce": true,
+  "session_ended_s": 37.781,
+  "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\c57a5b5c-e28c-4076-a675-ac5b8569856f.jsonl"
+}

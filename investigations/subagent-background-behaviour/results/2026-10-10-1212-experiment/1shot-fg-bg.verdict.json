@@ -1,0 +1,53 @@
+{
+  "scenario": "1shot-fg-bg",
+  "direct": false,
+  "outer_requested": "fg",
+  "inner_requested": "bg",
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": true,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=173168137",
+  "launcher_agent_tool_returned_s": 4.004,
+  "launcher_agent_tool_return_text": "{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"af70116c54d6cfa8c\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\App",
+  "launcher_first_stop_s": 5.485,
+  "launcher_last_stop_s": 5.485,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 51.799,
+  "launcher_ended_before_worker": true,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": "I launched the slow-worker in the background, and it is still running. Its result hasn't arrived yet.\n\nLAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "main_saw_token": true,
+  "main_saw_token_via": "task-notification",
+  "main_task_notification_turns": 1,
+  "hook_adjustments": [],
+  "results": 2,
+  "launcher_waited_for_worker": false,
+  "main": {
+    "input_mode": "string",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 5.514,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 6.545,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: NONE"
+      },
+      {
+        "at_s": 52.931,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=173168137"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 51.808,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "task-notification",
+    "token_reached_main_at_s": 52.931,
+    "query_iterator_ended_s": 53.244,
+    "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\23ad2e0b-38b6-4bf4-9d4c-e5080d0ac14f.jsonl"
+  }
+}

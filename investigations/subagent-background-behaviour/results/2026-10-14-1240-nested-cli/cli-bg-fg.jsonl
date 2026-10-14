@@ -1,0 +1,21 @@
+{"t":1936,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":4165,"src":"stream","event":"main tool_use","name":"Agent","input":{"subagent_type":"launcher","description":"launcher","run_in_background":true,"prompt":"Use run_in_background: false when you call the slow-worker."}}
+{"t":4288,"src":"stream","event":"task_started","agent":"launcher","is_backgrounded":true,"spawn_depth":1}
+{"t":5493,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: NONE"}
+{"t":6202,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":false,"spawn_depth":2}
+{"t":55607,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=343777546"}
+{"t":56933,"src":"stream","event":"task_notification","agent":"launcher","status":"completed","summary":"LAUNCHER_FINAL: WORKER_TOKEN=343777546"}
+{"t":56958,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":58057,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=343777546"}
+{"t":58075,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: NONE","cost":0.04915579999999999}
+{"t":58076,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=343777546","cost":0.04915579999999999}
+{"t":58406,"src":"runner","event":"claude -p exited","code":0}
+{"t":4261,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":4390,"src":"hook","event":"SubagentStart","agent":"launcher"}
+{"t":4390,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}
+{"t":6182,"src":"hook","event":"PreToolUse","agent":"launcher","tool":"Agent"}
+{"t":6292,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":54376,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":55561,"src":"hook","event":"SubagentStop","agent":"slow-worker"}
+{"t":55694,"src":"hook","event":"PostToolUse","agent":"launcher","tool":"Agent"}
+{"t":56915,"src":"hook","event":"SubagentStop","agent":"launcher"}

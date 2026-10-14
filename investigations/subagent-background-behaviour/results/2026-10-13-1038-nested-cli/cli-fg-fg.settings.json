@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/cli-fg-fg.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/cli-fg-fg.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/cli-fg-fg.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Agent|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/cli-fg-fg.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

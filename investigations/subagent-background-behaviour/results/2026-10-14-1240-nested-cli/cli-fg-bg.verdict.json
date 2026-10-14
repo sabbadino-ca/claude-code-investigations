@@ -1,0 +1,42 @@
+{
+  "scenario": "cli-fg-bg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.299",
+  "chain": "main →fg launcher →bg worker",
+  "requested_run_in_background": {
+    "main": false,
+    "launcher": true
+  },
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": true,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=257657365",
+  "launcher_end_s": 5.937,
+  "launcher_stop_count": 1,
+  "launcher_final_message": "I launched the slow-worker agent in the background. It is still running, so I don't have its result yet.\n\nLAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "launcher_got_token": false,
+  "launcher_transcript": {
+    "notifications": 0,
+    "has_token": false
+  },
+  "worker_end_s": 52.471,
+  "results": [
+    {
+      "at_s": 53.458,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 53.459,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=257657365"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 53.459,
+  "process_exited_s": 53.825,
+  "exit_code": 0,
+  "main_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\11e45f73-1e52-491d-84ca-35eef1388756.jsonl"
+}

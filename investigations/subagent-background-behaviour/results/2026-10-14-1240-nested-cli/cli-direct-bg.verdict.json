@@ -1,0 +1,38 @@
+{
+  "scenario": "cli-direct-bg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.299",
+  "chain": "main →bg worker",
+  "requested_run_in_background": {
+    "main": true
+  },
+  "launcher_is_backgrounded": null,
+  "worker_is_backgrounded": true,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=332983871",
+  "launcher_end_s": null,
+  "launcher_stop_count": 0,
+  "launcher_final_message": null,
+  "launcher_got_token": null,
+  "launcher_transcript": null,
+  "worker_end_s": 51.547,
+  "results": [
+    {
+      "at_s": 52.476,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 52.477,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=332983871"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 52.477,
+  "process_exited_s": 52.787,
+  "exit_code": 0,
+  "main_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\e61940cd-eb3f-4178-a624-3491eebf91e0.jsonl"
+}

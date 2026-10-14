@@ -1,0 +1,72 @@
+{
+  "claudeMdExcludes": [
+    "D:/repos/github-ca/claude-code-investigations/investigations/CLAUDE.md",
+    "D:/repos/github-ca/claude-code-investigations/investigations/CLAUDE.local.md",
+    "D:/repos/github-ca/claude-code-investigations/investigations/AGENTS.md",
+    "D:/repos/github-ca/claude-code-investigations/investigations/.claude/CLAUDE.md",
+    "D:/repos/github-ca/claude-code-investigations/investigations/.claude/rules/**",
+    "D:/repos/github-ca/claude-code-investigations/CLAUDE.md",
+    "D:/repos/github-ca/claude-code-investigations/CLAUDE.local.md",
+    "D:/repos/github-ca/claude-code-investigations/AGENTS.md",
+    "D:/repos/github-ca/claude-code-investigations/.claude/CLAUDE.md",
+    "D:/repos/github-ca/claude-code-investigations/.claude/rules/**",
+    "D:/repos/github-ca/CLAUDE.md",
+    "D:/repos/github-ca/CLAUDE.local.md",
+    "D:/repos/github-ca/AGENTS.md",
+    "D:/repos/github-ca/.claude/CLAUDE.md",
+    "D:/repos/github-ca/.claude/rules/**",
+    "D:/repos/CLAUDE.md",
+    "D:/repos/CLAUDE.local.md",
+    "D:/repos/AGENTS.md",
+    "D:/repos/.claude/CLAUDE.md",
+    "D:/repos/.claude/rules/**",
+    "D:/CLAUDE.md",
+    "D:/CLAUDE.local.md",
+    "D:/AGENTS.md",
+    "D:/.claude/CLAUDE.md",
+    "D:/.claude/rules/**"
+  ],
+  "cleanupPeriodDays": 36500,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"D:/repos/github-ca/claude-code-investigations/lib/hook-log.mjs\" \"D:/repos/github-ca/claude-code-investigations/investigations/2026-10-10-subagent-background-behaviour/results/2026-10-14-1249-resume/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"D:/repos/github-ca/claude-code-investigations/lib/hook-log.mjs\" \"D:/repos/github-ca/claude-code-investigations/investigations/2026-10-10-subagent-background-behaviour/results/2026-10-14-1249-resume/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"D:/repos/github-ca/claude-code-investigations/lib/hook-log.mjs\" \"D:/repos/github-ca/claude-code-investigations/investigations/2026-10-10-subagent-background-behaviour/results/2026-10-14-1249-resume/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"D:/repos/github-ca/claude-code-investigations/lib/hook-log.mjs\" \"D:/repos/github-ca/claude-code-investigations/investigations/2026-10-10-subagent-background-behaviour/results/2026-10-14-1249-resume/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{"t":500,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":3093,"src":"stream","event":"main tool_use","name":"Agent","input":{"description":"launcher","subagent_type":"launcher","run_in_background":true,"prompt":"Use run_in_background: true when you call the slow-worker."}}
+{"t":3198,"src":"stream","event":"task_started","agent":"launcher","is_backgrounded":true,"spawn_depth":1}
+{"t":4477,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: NONE"}
+{"t":5084,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":true,"spawn_depth":2}
+{"t":6608,"src":"stream","event":"task_notification","agent":"launcher","status":"completed","summary":"LAUNCHER_FINAL: NO_WORKER_RESULT_YET"}
+{"t":6630,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":7707,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: launcher NONE"}
+{"t":54424,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=436373208"}
+{"t":54496,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":55667,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=436373208"}
+{"t":55686,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: NONE","cost":0.05234760000000001}
+{"t":55687,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: launcher NONE","cost":0.05234760000000001}
+{"t":55687,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=436373208","cost":0.05234760000000001}
+{"t":55989,"src":"runner","event":"claude -p exited","code":0}
+{"t":3167,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":3295,"src":"hook","event":"SubagentStart","agent":"launcher"}
+{"t":3295,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}
+{"t":5071,"src":"hook","event":"PreToolUse","agent":"launcher","tool":"Agent"}
+{"t":5171,"src":"hook","event":"PostToolUse","agent":"launcher","tool":"Agent"}
+{"t":5178,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":6578,"src":"hook","event":"SubagentStop","agent":"launcher"}
+{"t":52318,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":54414,"src":"hook","event":"SubagentStop","agent":"slow-worker"}

@@ -1,0 +1,42 @@
+{
+  "scenario": "cli-bg-fg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.299",
+  "chain": "main →bg launcher →fg worker",
+  "requested_run_in_background": {
+    "main": true,
+    "launcher": false
+  },
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": false,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=343777546",
+  "launcher_end_s": 56.915,
+  "launcher_stop_count": 1,
+  "launcher_final_message": "LAUNCHER_FINAL: WORKER_TOKEN=343777546",
+  "launcher_got_token": true,
+  "launcher_transcript": {
+    "notifications": 0,
+    "has_token": true
+  },
+  "worker_end_s": 55.561,
+  "results": [
+    {
+      "at_s": 58.075,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 58.076,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=343777546"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 58.076,
+  "process_exited_s": 58.406,
+  "exit_code": 0,
+  "main_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\a8596208-8ce1-4588-bd91-0908d57fb0d9.jsonl"
+}

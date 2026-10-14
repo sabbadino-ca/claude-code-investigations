@@ -1,0 +1,42 @@
+{
+  "scenario": "cli-bg-fg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.296",
+  "chain": "main →bg launcher →fg worker",
+  "requested_run_in_background": {
+    "main": true,
+    "launcher": false
+  },
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": false,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=7333120",
+  "launcher_end_s": 56.07,
+  "launcher_stop_count": 1,
+  "launcher_final_message": "LAUNCHER_FINAL: WORKER_TOKEN=7333120",
+  "launcher_got_token": true,
+  "launcher_transcript": {
+    "notifications": 0,
+    "has_token": true
+  },
+  "worker_end_s": 54.731,
+  "results": [
+    {
+      "at_s": 57.327,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 57.327,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=7333120"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 57.327,
+  "process_exited_s": 57.693,
+  "exit_code": 0,
+  "main_log": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\584e0235-1b9e-455e-8d64-5d5f4da52428.jsonl"
+}

@@ -1,0 +1,38 @@
+{
+  "scenario": "cli-direct-bg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.296",
+  "chain": "main →bg worker",
+  "requested_run_in_background": {
+    "main": true
+  },
+  "launcher_is_backgrounded": null,
+  "worker_is_backgrounded": true,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=626713650",
+  "launcher_end_s": null,
+  "launcher_stop_count": 0,
+  "launcher_final_message": null,
+  "launcher_got_token": null,
+  "launcher_transcript": null,
+  "worker_end_s": 50.538,
+  "results": [
+    {
+      "at_s": 51.577,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 51.579,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=626713650"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 51.579,
+  "process_exited_s": 51.896,
+  "exit_code": 0,
+  "main_log": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\cd2cc3c9-f2c0-40ad-823f-7e879d53d9f1.jsonl"
+}

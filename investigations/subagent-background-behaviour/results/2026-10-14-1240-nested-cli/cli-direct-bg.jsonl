@@ -1,0 +1,15 @@
+{"t":1432,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":2890,"src":"stream","event":"main tool_use","name":"Agent","input":{"subagent_type":"slow-worker","description":"slow worker","run_in_background":true,"prompt":"Run your task."}}
+{"t":2998,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":true,"spawn_depth":1}
+{"t":3992,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: NONE"}
+{"t":51583,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=332983871"}
+{"t":51595,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":52459,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=332983871"}
+{"t":52476,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: NONE","cost":0.0421091}
+{"t":52477,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=332983871","cost":0.0421091}
+{"t":52787,"src":"runner","event":"claude -p exited","code":0}
+{"t":2962,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":3080,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":3082,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}
+{"t":50283,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":51547,"src":"hook","event":"SubagentStop","agent":"slow-worker"}

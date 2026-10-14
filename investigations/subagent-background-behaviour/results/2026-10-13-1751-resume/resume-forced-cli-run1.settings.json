@@ -1,0 +1,44 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/resume-forced-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

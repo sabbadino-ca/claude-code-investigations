@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does a launching subagent wait for its nested background subagent?</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Does a launching subagent wait for its nested background subagent?</h1>
+<p>Claim under test, from <a href="https://code.claude.com/docs/en/sub-agents#let-subagents-spawn-their-own-subagents">https://code.claude.com/docs/en/sub-agents#let-subagents-spawn-their-own-subagents</a>:</p>
+<blockquote>
+<p>In an interactive session ... a subagent that launches background subagents waits for their results before it finishes.
+In non-interactive mode and the Agent SDK, the launching subagent doesn&#39;t wait, so a nested background subagent that
+finishes after its launcher has ended reports to your main conversation instead.</p>
+</blockquote>
+<p>Two follow-ups use the same harness: whether N foreground subagents run in parallel when main spawns them in one message, and whether resuming a completed subagent with <code>SendMessage</code> is sync or async for main.</p>
+<h2>Setup</h2>
+<pre><code>main (SDK query or claude -p)  --Agent--&gt;  launcher  --Agent--&gt;  slow-worker
+</code></pre>
+<p>Fixture (this folder):</p>
+<ul>
+<li><a href=".claude/agents/launcher.md">.claude/agents/launcher.md</a>: its only tool is <code>Agent</code>. It spawns one <code>slow-worker</code>, then ends its turn right away with <code>LAUNCHER_FINAL: &lt;token or NO_WORKER_RESULT_YET&gt;</code>. With no other tools it cannot wait on its own, so any waiting you see comes from the harness, not from the model.</li>
+<li><a href=".claude/agents/slow-worker.md">.claude/agents/slow-worker.md</a>: its only tool is <code>Bash</code>. It runs a 40 s Node timer that prints a random <code>WORKER_TOKEN=&lt;n&gt;</code>. Only the worker knows the token, so if the token shows up somewhere, the worker&#39;s result got there.</li>
+<li><a href=".claude/agents/resumable.md">.claude/agents/resumable.md</a>: draws a hidden <code>NONCE</code> on its first run and ends with <code>FIRST_RUN_DONE</code>; when resumed with <code>CONTINUE</code> it waits 20 s and returns <code>RESUMED_FINAL NONCE=&lt;n&gt;</code>.</li>
+<li><a href="prompts/">prompts/</a>: the main prompts, rendered by the drivers. <code>nested-main.md</code> (experiment.ts, nested-cli.ts), <code>parallel-main.md</code> (parallel.ts, parallel-cli.ts), <code>resume-main.md</code> (resume.ts). <a href="prompts/parallel-fanout.md">prompts/parallel-fanout.md</a> is the reusable fan-out instruction distilled from the parallel results; no driver reads it.</li>
+</ul>
+<p>Drivers (this folder; the shared harness is <a href="../../lib/claude-home.mjs">lib/claude-home.mjs</a>):</p>
+<ul>
+<li><a href="experiment.ts">experiment.ts</a> runs main through the TypeScript Agent SDK:<ul>
+<li>A <code>PreToolUse</code> hook on <code>Agent</code> sets <code>run_in_background</code> for each scenario. It also records whether the model had already chosen that value; in every run it had.</li>
+<li><code>SubagentStart</code>, <code>SubagentStop</code>, and <code>PostToolUse</code> hooks, plus the <code>task_started</code>, <code>task_notification</code>, <code>task_updated</code>, and <code>background_tasks_changed</code> stream events, give the timestamps.</li>
+<li>The prompt is streaming input that stays open until all background work has finished (<code>open</code>), is closed after the first result (<code>close</code>), or is a plain string (<code>string</code>, the <code>1shot-*</code> scenarios).</li>
+</ul>
+</li>
+<li><a href="nested-cli.ts">nested-cli.ts</a>: the same one-shot matrix through the installed <code>claude -p</code>, with command hooks logging to <code>&lt;run&gt;.hooks.jsonl</code>. Sync/async comes from the prompt alone; no hook changes any input.</li>
+<li><a href="parallel.ts">parallel.ts</a> / <a href="parallel-cli.ts">parallel-cli.ts</a>: main is asked to emit N <code>slow-worker</code> Agent calls in one message. Foreground is forced by <code>CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1</code> and <code>CLAUDE_CODE_FORK_SUBAGENT=0</code>.</li>
+<li><a href="resume.ts">resume.ts</a>: main spawns <code>resumable</code> with <code>run_in_background: false</code>, then resumes the same instance with <code>SendMessage</code> to its <code>agentId</code>. <code>forced</code> sets the two variables above; <code>default</code> sets none.</li>
+</ul>
+<p>Scenarios are named <code>outer-inner</code>. <code>outer</code> is how main spawns the launcher and <code>inner</code> is how the launcher spawns the worker; <code>fg</code> means foreground and <code>bg</code> means background. <code>direct-*</code> has main spawn the worker itself.</p>
+<h2>Run</h2>
+<pre><code class="language-bash">npm install                                                                  # repo root
+node lib/claude-home.mjs investigations/subagent-background-behaviour --check
+npx tsx investigations/subagent-background-behaviour/experiment.ts           # all 15 scenarios (~15 min)
+npx tsx investigations/subagent-background-behaviour/nested-cli.ts           # 6 chains, compares with the latest experiment run
+npx tsx investigations/subagent-background-behaviour/parallel.ts 2 5         # runs, workers
+npx tsx investigations/subagent-background-behaviour/parallel-cli.ts 2 5
+npx tsx investigations/subagent-background-behaviour/resume.ts both both 1   # forced|default, sdk|cli, runs
+</code></pre>
+<p>Each run writes <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-&lt;driver&gt;/</code>: per-scenario <code>&lt;name&gt;.jsonl</code> timelines and <code>&lt;name&gt;.verdict.json</code>, a summary <code>.md</code> with a header naming the Claude Code versions that ran, and <code>run.json</code>. Session logs go to <code>.claude-home/projects/sessions/</code>.</p>
+<h2>Runs</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>run folder</th>
+<th>driver</th>
+<th>Claude Code</th>
+<th>outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="results/2026-10-10-1212-experiment/summary.md">2026-10-10-1212-experiment</a></td>
+<td>experiment.ts</td>
+<td>2.1.296 via SDK 0.3.296</td>
+<td>original</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-13-1024-parallel/parallel-5-summary.md">2026-10-13-1024-parallel</a></td>
+<td>parallel.ts</td>
+<td>2.1.296 via SDK 0.3.296</td>
+<td>original</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-13-1030-parallel-cli/parallel-cli-5-summary.md">2026-10-13-1030-parallel-cli</a></td>
+<td>parallel-cli.ts</td>
+<td>2.1.296 via <code>claude -p</code></td>
+<td>original</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-13-1038-nested-cli/nested-cli-summary.md">2026-10-13-1038-nested-cli</a></td>
+<td>nested-cli.ts</td>
+<td>2.1.296 via <code>claude -p</code></td>
+<td>original</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-13-1751-resume/resume-summary.md">2026-10-13-1751-resume</a></td>
+<td>resume.ts</td>
+<td>2.1.296 via SDK and <code>claude -p</code></td>
+<td>original</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1225-experiment/summary.md">2026-10-14-1225-experiment</a></td>
+<td>experiment.ts</td>
+<td>2.1.296 via SDK 0.3.296</td>
+<td>rerun: confirmed</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1240-nested-cli/nested-cli-summary.md">2026-10-14-1240-nested-cli</a></td>
+<td>nested-cli.ts</td>
+<td>2.1.299 via <code>claude -p</code></td>
+<td>rerun: confirmed</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1246-parallel/parallel-5-summary.md">2026-10-14-1246-parallel</a></td>
+<td>parallel.ts</td>
+<td>2.1.296 via SDK 0.3.296</td>
+<td>rerun: confirmed</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1247-parallel-cli/parallel-cli-5-summary.md">2026-10-14-1247-parallel-cli</a></td>
+<td>parallel-cli.ts</td>
+<td>2.1.299 via <code>claude -p</code></td>
+<td>rerun: confirmed</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1249-resume/resume-summary.md">2026-10-14-1249-resume</a></td>
+<td>resume.ts</td>
+<td>2.1.296 via SDK, 2.1.299 via <code>claude -p</code></td>
+<td>rerun: confirmed</td>
+</tr>
+</tbody></table></div>
+<p>The original runs were made in <code>C:\temp\test-subagents</code> with the user&#39;s own <code>~/.claude</code> config; their session logs are in <code>~/.claude/projects/c--temp-test-subagents/</code>, and their <code>run.json</code> was written afterwards from their files. The 2026-10-14 reruns are isolated (own config dir, no ancestor CLAUDE.md, only this folder&#39;s agents) and made with the same prompts, verified identical to the originals. Every check gave the same verdict as the original run; timings moved by 1–3 s. The SDK bundles Claude Code, so SDK runs were 2.1.296 both times, while the installed CLI had updated to 2.1.299 for the <code>claude -p</code> reruns.</p>
+<h2>Result</h2>
+<p>The claim is <strong>true</strong> for the Agent SDK and for <code>claude -p</code>.</p>
+<ul>
+<li><strong>Inner background (fg-bg, bg-bg):</strong> the launcher ended at about 5–6 s with <code>NO_WORKER_RESULT_YET</code>. Its <code>SubagentStop</code> reported 1 background task still in flight, and the harness never woke it again (one stop only). The worker finished at about 52 s. Its <code>task_notification</code> was delivered to the <strong>main conversation</strong> as an injected turn (<code>result.origin.kind = &quot;task-notification&quot;</code>), and main reported the token.</li>
+<li><strong>Inner foreground (fg-fg, bg-fg):</strong> the launcher&#39;s <code>Agent</code> call blocked until the worker finished, and the launcher&#39;s final message contains the token. This is the expected foreground behavior and acts as the control.</li>
+<li>How main spawns the launcher (fg or bg) made no difference to whether the launcher waited.</li>
+</ul>
+<h3>Main conversation</h3>
+<p><code>results/&lt;run&gt;/&lt;scenario&gt;.main-transcript.txt</code> holds what the main model was actually fed, taken from the session transcript.</p>
+<ul>
+<li><strong>Launcher in the foreground:</strong> main&#39;s <code>Agent</code> call blocks until the launcher ends, then main ends its turn. Main waits for the launcher only, never for the background worker.</li>
+<li><strong>Launcher in the background:</strong> main&#39;s <code>Agent</code> call returns <code>Async agent launched</code> immediately. Main ends its turn while the launcher is still running.</li>
+<li><strong>Notification turns:</strong> every background subagent that finishes later, including the nested worker, is injected into main as a new user turn. The turn holds a <code>&lt;task-notification&gt;</code> block with <code>&lt;result&gt;...&lt;/result&gt;</code> and has <code>origin.kind = &quot;task-notification&quot;</code>, and it produces its own <code>result</code> message.</li>
+<li><strong>main-busy:</strong> the worker finished while main was still inside its own 70 s command. The notification was queued (a <code>queued_command</code> attachment) and folded into main&#39;s current turn after the command returned. There was no separate turn: one result answered both the prompt and the notification. (In the rerun main&#39;s answer carried only the <code>MAIN_GOT_NOTIFICATION</code> line, not also <code>MAIN_TURN_DONE</code>; the delivery was the same.)</li>
+<li><strong>main-close / main-string:</strong> closing the input after the first result, or using a plain string prompt, did not kill the worker. The CLI stayed alive until the worker finished, ran the notification turn, emitted a second result, and only then ended the <code>query()</code> iterator, at about 54 s.</li>
+</ul>
+<h3>Does the WORKER_TOKEN reach main before the session ends? (<code>1shot-*</code> scenarios)</h3>
+<p>These scenarios use a plain string prompt, so nothing in the script holds the session open. Every chain was tested: direct, and through the launcher, with each sync/async combination. In all of them the CLI stayed alive until the worker finished, main received the token, and only then did the session end, about 0.3 s after main&#39;s last answer.</p>
+<ul>
+<li><strong>Sync all the way</strong> (<code>main →fg worker</code>, <code>main →fg launcher →fg worker</code>): the token comes back in the prompt&#39;s own turn, as the return value of the Agent call. There is a single result.</li>
+<li><strong>Any async link in the chain:</strong> main&#39;s prompt turn ends with <code>NONE</code>. The token arrives later in a task-notification turn, with a separate result per notification:<ul>
+<li>When the launcher is async and the worker is sync, the token comes inside the launcher&#39;s notification.</li>
+<li>When the worker is async, the token comes in the worker&#39;s own notification, delivered straight to main and bypassing the launcher, which has already ended.</li>
+</ul>
+</li>
+</ul>
+<h3>Headless <code>claude -p</code> vs the SDK (<code>nested-cli.ts</code>, <code>parallel-cli.ts</code>)</h3>
+<p><strong>Behaviour is identical:</strong></p>
+<ul>
+<li>With an async worker, the launcher doesn&#39;t wait.</li>
+<li>The worker&#39;s callback goes to main, never to the launcher.</li>
+<li>The process stays alive until every callback has been handled.</li>
+<li>Each chain delivered the token the same way (sync or callback).</li>
+</ul>
+<p><strong>One stream difference:</strong> in <code>-p</code> mode every <code>result</code> line is held back until all background work has finished, then all of them are written together just before exit. Main&#39;s answer text still streams live when it is written. The SDK emits each <code>result</code> as soon as its turn ends.</p>
+<h3>Parallel foreground fan-out (<code>parallel.ts</code>, <code>parallel-cli.ts</code>)</h3>
+<p>With 5 workers, in both runs of both drivers: main emitted all 5 Agent calls in one message, all ran in the foreground, the workers started within about 1.5 s of each other and finished in about 48–50 s of wall time (against about 240 s of summed worker time), and main had all 5 tokens before it answered.</p>
+<h3>Resuming a completed sync subagent: sync or async for main? (<code>resume.ts</code>)</h3>
+<div class="table"><table>
+<thead>
+<tr>
+<th>env</th>
+<th>what <code>SendMessage</code> returns</th>
+<th>how main gets the resumed run&#39;s reply</th>
+<th>verdict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forced</code> (<code>CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1</code>, <code>CLAUDE_CODE_FORK_SUBAGENT=0</code>)</td>
+<td>blocks ~22–23 s, then <code>Resumed agent. Its final report follows…</code> + the report</td>
+<td>inline, as the tool result; a single result</td>
+<td><strong>SYNC</strong></td>
+</tr>
+<tr>
+<td><code>default</code> (no env vars)</td>
+<td>returns in under 0.25 s with <code>Resuming agent &lt;id&gt;</code>, <code>resumedAgentId</code></td>
+<td>main ends its turn (&quot;waiting…&quot;); the report arrives later as a <code>&lt;task-notification&gt;</code> turn and gets a second result</td>
+<td><strong>ASYNC</strong></td>
+</tr>
+</tbody></table></div>
+<p>The same pattern held for the SDK and for <code>claude -p</code>. In every run the resumed subagent was the same instance: one transcript, and the nonce matched. A <code>SendMessage</code> resume ignores how the subagent was first spawned. It runs in the background, as the docs say, unless background tasks are disabled. The <code>task_started</code> event for the resume reports <code>is_backgrounded: true</code> in both modes. <code>SendMessage</code> is a deferred tool, so main first loads it with <code>ToolSearch</code>.</p>
+<h2>Conclusion</h2>
+<p>In the Agent SDK and in <code>claude -p</code>, a subagent that launches a background subagent does not wait for it: the launcher ends, and the nested subagent&#39;s result is delivered to the main conversation as a task-notification turn. The session stays alive until that delivery has happened, even with a one-shot prompt. Foreground subagents spawned in one message run in parallel, and a <code>SendMessage</code> resume is async unless background tasks are disabled. Confirmed on Claude Code 2.1.296 (SDK and <code>-p</code>) and 2.1.299 (<code>-p</code>).</p>
+<h2>Not tested</h2>
+<p>The interactive-mode half of the claim, where the launcher does wait. That needs an interactive terminal session (<code>node lib/claude-home.mjs investigations/subagent-background-behaviour</code>).</p>
+</body>
+</html>

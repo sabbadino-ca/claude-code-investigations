@@ -1,0 +1,88 @@
+{
+  "run": "parallel-cli-5-run2",
+  "driver": "claude -p (no SDK)",
+  "cli": "C:\\Users\\esabbadin\\.local\\bin\\claude.exe",
+  "cli_version": "2.1.299",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011Cg1zsMUB1TtgF6MTRzA8i",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=149096393",
+    "WORKER_TOKEN=708646232",
+    "WORKER_TOKEN=700933902",
+    "WORKER_TOKEN=101181514",
+    "WORKER_TOKEN=232674502"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=149096393",
+    "WORKER_TOKEN=708646232",
+    "WORKER_TOKEN=700933902",
+    "WORKER_TOKEN=101181514",
+    "WORKER_TOKEN=232674502"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "tool_result_messages": [
+    {
+      "at_s": 52.398,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.472,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.48,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.492,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.509,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 53.738,
+  "last_worker_end_s": 52.475,
+  "results": [
+    {
+      "at_s": 53.738,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.536,
+  "all_overlap": true,
+  "worker_durations_s": [
+    49.238,
+    48.945,
+    48.393,
+    48.106,
+    47.72
+  ],
+  "wall_clock_all_workers_s": 49.256,
+  "sum_of_worker_durations_s": 242.402,
+  "check4_parallel": true,
+  "process_exit_code": 0,
+  "process_exited_s": 54.134,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\78c4dcaf-b11f-44f2-8298-18d116fb7691.jsonl"
+}

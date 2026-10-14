@@ -1,0 +1,21 @@
+{"t":498,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":2418,"src":"stream","event":"main tool_use","name":"Agent","input":{"description":"launcher","subagent_type":"launcher","run_in_background":false,"prompt":"Use run_in_background: true when you call the slow-worker."}}
+{"t":2523,"src":"stream","event":"task_started","agent":"launcher","is_backgrounded":false,"spawn_depth":1}
+{"t":4339,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":true,"spawn_depth":2}
+{"t":5870,"src":"stream","event":"task_notification","agent":"launcher","status":"completed","summary":"LAUNCHER_FINAL: NO_WORKER_RESULT_YET"}
+{"t":7270,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: NONE"}
+{"t":52699,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=244637589"}
+{"t":52773,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":54053,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=244637589"}
+{"t":54068,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: NONE","cost":0.048559}
+{"t":54068,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=244637589","cost":0.048559}
+{"t":54415,"src":"runner","event":"claude -p exited","code":0}
+{"t":2514,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":2601,"src":"hook","event":"SubagentStart","agent":"launcher"}
+{"t":4314,"src":"hook","event":"PreToolUse","agent":"launcher","tool":"Agent"}
+{"t":4423,"src":"hook","event":"PostToolUse","agent":"launcher","tool":"Agent"}
+{"t":4423,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":5843,"src":"hook","event":"SubagentStop","agent":"launcher"}
+{"t":5956,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}
+{"t":51506,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":52680,"src":"hook","event":"SubagentStop","agent":"slow-worker"}

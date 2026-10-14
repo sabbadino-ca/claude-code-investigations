@@ -1,0 +1,15 @@
+{
+  "driver": "resume.ts",
+  "args": null,
+  "investigation": "investigations/subagent-background-behaviour",
+  "started": "2026-10-13T15:51:39.017Z",
+  "reconstructed": "written afterwards from the run's files: args, node version, git commit and file hashes were not recorded; started = oldest file time",
+  "versions": {
+    "claude_code": {
+      "cli": "2.1.296",
+      "sdk": "2.1.296"
+    },
+    "agent_sdk": "0.3.296"
+  },
+  "git": null
+}

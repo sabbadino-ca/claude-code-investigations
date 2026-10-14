@@ -1,0 +1,47 @@
+{
+  "scenario": "cli-bg-bg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.299",
+  "chain": "main →bg launcher →bg worker",
+  "requested_run_in_background": {
+    "main": true,
+    "launcher": true
+  },
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": true,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=671559964",
+  "launcher_end_s": 6.739,
+  "launcher_stop_count": 1,
+  "launcher_final_message": "LAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "launcher_got_token": false,
+  "launcher_transcript": {
+    "notifications": 0,
+    "has_token": false
+  },
+  "worker_end_s": 54.671,
+  "results": [
+    {
+      "at_s": 56.013,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 56.014,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: launcher NONE"
+    },
+    {
+      "at_s": 56.014,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=671559964"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 56.014,
+  "process_exited_s": 56.36,
+  "exit_code": 0,
+  "main_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\1dc84e4c-180e-47f6-91ef-59fe343accdc.jsonl"
+}

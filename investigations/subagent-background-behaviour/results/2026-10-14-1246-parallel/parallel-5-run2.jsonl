@@ -1,0 +1,48 @@
+{"t":861,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":2329,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zjMdsV11juzWZxtxsi","name":"Agent","input":{"description":"slow worker 1","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":2335,"src":"hook","event":"PreToolUse(Agent)","caller":"main","input":{"description":"slow worker 1","prompt":"Run your task.","subagent_type":"slow-worker"}}
+{"t":2346,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"ac09d7ac74b18f9e7","is_backgrounded":false,"spawn_depth":1}
+{"t":2349,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"ac09d7ac74b18f9e7"}
+{"t":2650,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zjMdsV11juzWZxtxsi","name":"Agent","input":{"description":"slow worker 2","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":2653,"src":"hook","event":"PreToolUse(Agent)","caller":"main","input":{"description":"slow worker 2","prompt":"Run your task.","subagent_type":"slow-worker"}}
+{"t":2658,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a5fd3491c44fcb060","is_backgrounded":false,"spawn_depth":1}
+{"t":2660,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a5fd3491c44fcb060"}
+{"t":3013,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zjMdsV11juzWZxtxsi","name":"Agent","input":{"description":"slow worker 3","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3016,"src":"hook","event":"PreToolUse(Agent)","caller":"main","input":{"description":"slow worker 3","prompt":"Run your task.","subagent_type":"slow-worker"}}
+{"t":3024,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"af42592c9b5ebdd4a","is_backgrounded":false,"spawn_depth":1}
+{"t":3026,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"af42592c9b5ebdd4a"}
+{"t":3447,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zjMdsV11juzWZxtxsi","name":"Agent","input":{"description":"slow worker 4","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3450,"src":"hook","event":"PreToolUse(Agent)","caller":"main","input":{"description":"slow worker 4","prompt":"Run your task.","subagent_type":"slow-worker"}}
+{"t":3455,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a08e1acb4609b1b6b","is_backgrounded":false,"spawn_depth":1}
+{"t":3457,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a08e1acb4609b1b6b"}
+{"t":3815,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zjMdsV11juzWZxtxsi","name":"Agent","input":{"description":"slow worker 5","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3817,"src":"hook","event":"PreToolUse(Agent)","caller":"main","input":{"description":"slow worker 5","prompt":"Run your task.","subagent_type":"slow-worker"}}
+{"t":3824,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"ac9efefef6e5199c0","is_backgrounded":false,"spawn_depth":1}
+{"t":3825,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"ac9efefef6e5199c0"}
+{"t":49709,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","agent_id":"a08e1acb4609b1b6b","token":"WORKER_TOKEN=530198037"}
+{"t":49732,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","agent_id":"a5fd3491c44fcb060","token":"WORKER_TOKEN=658523945"}
+{"t":49735,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","agent_id":"ac09d7ac74b18f9e7","token":"WORKER_TOKEN=101422116"}
+{"t":49739,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","agent_id":"ac9efefef6e5199c0","token":"WORKER_TOKEN=768497371"}
+{"t":49743,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","agent_id":"af42592c9b5ebdd4a","token":"WORKER_TOKEN=932499594"}
+{"t":50684,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a08e1acb4609b1b6b","last":"WORKER_TOKEN=530198037"}
+{"t":50708,"src":"stream","event":"task_notification","task_id":"a08e1acb4609b1b6b","status":"completed","summary":"WORKER_TOKEN=530198037"}
+{"t":50710,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"WORKER_TOKEN=530198037"}
+{"t":50715,"src":"stream","event":"main user","tool_results":1}
+{"t":50729,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a5fd3491c44fcb060","last":"WORKER_TOKEN=658523945"}
+{"t":50737,"src":"stream","event":"task_notification","task_id":"a5fd3491c44fcb060","status":"completed","summary":"WORKER_TOKEN=658523945"}
+{"t":50741,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"WORKER_TOKEN=658523945"}
+{"t":50746,"src":"stream","event":"main user","tool_results":1}
+{"t":50755,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"ac9efefef6e5199c0","last":"WORKER_TOKEN=768497371"}
+{"t":50760,"src":"stream","event":"task_notification","task_id":"ac9efefef6e5199c0","status":"completed","summary":"WORKER_TOKEN=768497371"}
+{"t":50762,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"WORKER_TOKEN=768497371"}
+{"t":50765,"src":"stream","event":"main user","tool_results":1}
+{"t":50778,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"af42592c9b5ebdd4a","last":"WORKER_TOKEN=932499594"}
+{"t":50785,"src":"stream","event":"task_notification","task_id":"af42592c9b5ebdd4a","status":"completed","summary":"WORKER_TOKEN=932499594"}
+{"t":50787,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"WORKER_TOKEN=932499594"}
+{"t":50791,"src":"stream","event":"main user","tool_results":1}
+{"t":50810,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"ac09d7ac74b18f9e7","last":"WORKER_TOKEN=101422116"}
+{"t":50814,"src":"stream","event":"task_notification","task_id":"ac09d7ac74b18f9e7","status":"completed","summary":"WORKER_TOKEN=101422116"}
+{"t":50816,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"WORKER_TOKEN=101422116"}
+{"t":50820,"src":"stream","event":"main user","tool_results":1}
+{"t":52036,"src":"stream","event":"main text","message_id":"msg_011Cg1zo2zaTk3MJr4HRFBEE","text":"MAIN_TURN_DONE: WORKER_TOKEN=101422116 WORKER_TOKEN=658523945 WORKER_TOKEN=932499594 WORKER_TOKEN=530198037 WORKER_TOKEN=768497371"}
+{"t":52054,"src":"stream","event":"RESULT","origin":"prompt","num_turns":6,"result":"MAIN_TURN_DONE: WORKER_TOKEN=101422116 WORKER_TOKEN=658523945 WORKER_TOKEN=932499594 WORKER_TOKEN=530198037 WORKER_TOKEN=768497371","cost":0.045577}

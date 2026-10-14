@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/fake-user.mjs\" \"C:/temp/test-subagents/results/askuser-cli-run1.hooks.jsonl\" \"French\""
+          }
+        ]
+      },
+      {
+        "matcher": "Agent|SendMessage|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/askuser-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/askuser-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/askuser-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/askuser-cli-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

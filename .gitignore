@@ -147,3 +147,8 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Investigation config dirs (CLAUDE_CONFIG_DIR=<folder>/.claude-home): keep only the session logs in projects/.
+# Everything else is the login, account/machine state (.claude.json and its backups) or local caches.
+**/.claude-home/*
+!**/.claude-home/projects/

@@ -1,0 +1,57 @@
+{
+  "scenario": "bg-bg",
+  "outer_requested": "bg",
+  "inner_requested": "bg",
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": true,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=909898313",
+  "launcher_agent_tool_returned_s": 3.979,
+  "launcher_agent_tool_return_text": "{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"a04542326ca2f9db8\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\App",
+  "launcher_first_stop_s": 5.139,
+  "launcher_last_stop_s": 5.139,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.868,
+  "launcher_ended_before_worker": true,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": "LAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "main_saw_token": true,
+  "main_saw_token_via": "task-notification",
+  "main_task_notification_turns": 2,
+  "hook_adjustments": [],
+  "results": 3,
+  "launcher_waited_for_worker": false,
+  "main": {
+    "input_mode": "open",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 2.407,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 3.464,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: NONE"
+      },
+      {
+        "at_s": 6.264,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: launcher NONE"
+      },
+      {
+        "at_s": 54.065,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=909898313"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.874,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "task-notification",
+    "query_iterator_ended_s": 64.634,
+    "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\ce8d3ac1-5dbc-4d78-8252-31794968035d.jsonl"
+  }
+}

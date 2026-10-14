@@ -1,0 +1,33 @@
+--- 10:14:15.536 queue-operation operation="enqueue"
+{"content":"This is an automated timing experiment. Do exactly the following.\n1. Call the Agent tool exactly once with subagent_type \"launcher\", description \"launcher\", run_in_background: true, and prompt: \"Use run_in_background: false when you call the slow-worker.\"\n2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.\n3. Do not call any other tool, do not spawn anything else, do not wait or sleep.\n4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.","operation":"enqueue"}
+--- 10:14:15.538 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:14:15.561 user 
+This is an automated timing experiment. Do exactly the following.
+1. Call the Agent tool exactly once with subagent_type "launcher", description "launcher", run_in_background: true, and prompt: "Use run_in_background: false when you call the slow-worker."
+2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.
+3. Do not call any other tool, do not spawn anything else, do not wait or sleep.
+4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.
+--- 10:14:17.355 assistant 
+tool_use: {"subagent_type":"launcher","description":"launcher","run_in_background":true,"prompt":"Use run_in_background: false when you call the slow-worker."}
+--- 10:14:17.391 user 
+tool_result: [{"type":"text","text":"Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.)\nagentId: ae1192a820c15f563 (internal ID - do not mention to user. Use SendMessage with to: 'ae1192a820c15f563', summary: '<5-10 word recap>' to continue this agent.)\nThe agent is working in the background. You will be notified automatically when it completes. You know nothing about its results until that notification arrives — do not report, assume, or predict them; continue other work or respond to the user in the meantime.\nDo not duplicate this agent's work — avoid working with the same files or topics it is using.\noutput_file: C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\e7e4bc04-f4a0-46d9-b8e7-cc5cc3be45ca\\tasks\\ae1192a820c15f563.output\nDo NOT Read or tail this file via the shell tool — it is the full subagent JSONL transcript and reading it will overflow your context. If the user asks for progress, say the agent is still running; you'll get a completion notification."}]
+--- 10:14:18.447 assistant 
+text: MAIN_TURN_DONE: NONE
+--- 10:15:08.582 queue-operation operation="enqueue"
+{"content":"<task-notification>\n<task-id>ae1192a820c15f563</task-id>\n<tool-use-id>toolu_01Hyi4CfP2hZqDYea4brBH3H</tool-use-id>\n<output-file>C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\e7e4bc04-f4a0-46d9-b8e7-cc5cc3be45ca\\tasks\\ae1192a820c15f563.output</output-file>\n<status>completed</status>\n<summary>Agent \"launcher\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>LAUNCHER_FINAL: WORKER_TOKEN=71256498</result>\n<usage><subagent_tokens>5261</subagent_tokens><tool_uses>1</tool_uses><duration_ms>51212</duration_ms></usage>\n</task-notification>","operation":"enqueue"}
+--- 10:15:08.585 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:15:08.587 user origin={"kind":"task-notification","producer":"session-task","runId":"0mv28lzbx-832fbfcf"}
+<task-notification>
+<task-id>ae1192a820c15f563</task-id>
+<tool-use-id>toolu_01Hyi4CfP2hZqDYea4brBH3H</tool-use-id>
+<output-file>C:\Users\ESABBA~1\AppData\Local\Temp\claude\C--temp-test-subagents\e7e4bc04-f4a0-46d9-b8e7-cc5cc3be45ca\tasks\ae1192a820c15f563.output</output-file>
+<status>completed</status>
+<summary>Agent "launcher" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>LAUNCHER_FINAL: WORKER_TOKEN=71256498</result>
+<usage><subagent_tokens>5261</subagent_tokens><tool_uses>1</tool_uses><duration_ms>51212</duration_ms></usage>
+</task-notification>
+--- 10:15:09.644 assistant 
+text: MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=71256498

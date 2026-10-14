@@ -1,0 +1,21 @@
+{"t":811,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":2253,"src":"stream","event":"main tool_use","name":"Agent","input":{"subagent_type":"launcher","description":"launcher","run_in_background":false,"prompt":"Use run_in_background: true when you call the slow-worker."}}
+{"t":2359,"src":"stream","event":"task_started","agent":"launcher","is_backgrounded":false,"spawn_depth":1}
+{"t":4209,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":true,"spawn_depth":2}
+{"t":5972,"src":"stream","event":"task_notification","agent":"launcher","status":"completed","summary":"I launched the slow-worker agent in the background. It is still running, so I don't have its result yet.\n\nLAUNCHER_FINAL: NO_WORKER_RESULT_YET"}
+{"t":6922,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: NONE"}
+{"t":52494,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=257657365"}
+{"t":52540,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5"}
+{"t":53442,"src":"stream","event":"main text","text":"MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=257657365"}
+{"t":53458,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: NONE","cost":0.0486131}
+{"t":53459,"src":"stream","event":"RESULT","origin":"task-notification","result":"MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=257657365","cost":0.0486131}
+{"t":53825,"src":"runner","event":"claude -p exited","code":0}
+{"t":2339,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":2433,"src":"hook","event":"SubagentStart","agent":"launcher"}
+{"t":4190,"src":"hook","event":"PreToolUse","agent":"launcher","tool":"Agent"}
+{"t":4295,"src":"hook","event":"PostToolUse","agent":"launcher","tool":"Agent"}
+{"t":4295,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":5937,"src":"hook","event":"SubagentStop","agent":"launcher"}
+{"t":6057,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}
+{"t":51351,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":52471,"src":"hook","event":"SubagentStop","agent":"slow-worker"}

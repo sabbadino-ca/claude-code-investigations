@@ -1,0 +1,88 @@
+{
+  "run": "parallel-cli-5-run1",
+  "driver": "claude -p (no SDK)",
+  "cli": "C:\\Users\\esabbadin\\.local\\bin\\claude.exe",
+  "cli_version": "2.1.299",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011Cg1zoMBTfF3wweuZf2hNJ",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=614005874",
+    "WORKER_TOKEN=170763739",
+    "WORKER_TOKEN=678469953",
+    "WORKER_TOKEN=81540291",
+    "WORKER_TOKEN=918676639"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=614005874",
+    "WORKER_TOKEN=170763739",
+    "WORKER_TOKEN=678469953",
+    "WORKER_TOKEN=81540291",
+    "WORKER_TOKEN=918676639"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "tool_result_messages": [
+    {
+      "at_s": 52.332,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.404,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.454,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.465,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.513,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 53.752,
+  "last_worker_end_s": 52.491,
+  "results": [
+    {
+      "at_s": 53.752,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.374,
+  "all_overlap": true,
+  "worker_durations_s": [
+    48.854,
+    48.791,
+    48.212,
+    47.954,
+    47.537
+  ],
+  "wall_clock_all_workers_s": 48.964,
+  "sum_of_worker_durations_s": 241.348,
+  "check4_parallel": true,
+  "process_exit_code": 0,
+  "process_exited_s": 54.16,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\091dfd5d-6bc7-49ac-a3f3-d96c4227e860.jsonl"
+}

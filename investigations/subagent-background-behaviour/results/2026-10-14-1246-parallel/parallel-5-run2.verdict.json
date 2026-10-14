@@ -1,0 +1,91 @@
+{
+  "run": "parallel-5-run2",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011Cg1zjMdsV11juzWZxtxsi",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=101422116",
+    "WORKER_TOKEN=658523945",
+    "WORKER_TOKEN=932499594",
+    "WORKER_TOKEN=530198037",
+    "WORKER_TOKEN=768497371"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=101422116",
+    "WORKER_TOKEN=658523945",
+    "WORKER_TOKEN=932499594",
+    "WORKER_TOKEN=530198037",
+    "WORKER_TOKEN=768497371"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "main_agent_calls_returned_s": [
+    50.71,
+    50.741,
+    50.762,
+    50.787,
+    50.816
+  ],
+  "tool_result_messages": [
+    {
+      "at_s": 50.715,
+      "tool_results": 1
+    },
+    {
+      "at_s": 50.746,
+      "tool_results": 1
+    },
+    {
+      "at_s": 50.765,
+      "tool_results": 1
+    },
+    {
+      "at_s": 50.791,
+      "tool_results": 1
+    },
+    {
+      "at_s": 50.82,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 52.054,
+  "last_worker_end_s": 50.81,
+  "results": [
+    {
+      "at_s": 52.054,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.476,
+  "all_overlap": true,
+  "worker_durations_s": [
+    48.461,
+    48.069,
+    47.752,
+    47.227,
+    46.93
+  ],
+  "wall_clock_all_workers_s": 48.461,
+  "sum_of_worker_durations_s": 238.439,
+  "check4_parallel": true,
+  "session_ended_s": 52.427,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\509b09c8-6232-4957-8813-17ab89afe30e.jsonl"
+}

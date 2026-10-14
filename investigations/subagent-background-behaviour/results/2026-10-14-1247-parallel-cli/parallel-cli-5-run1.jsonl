@@ -1,0 +1,40 @@
+{"t":0,"src":"runner","event":"spawn","cli":"C:\\Users\\esabbadin\\.local\\bin\\claude.exe","args":"-p --output-format stream-json --verbose --model sonnet --setting-sources project --settings D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\results\\2026-10-14-1247-parallel-cli\\parallel-cli-5-run1.settings.json --allowedTools Agent Bash --permission-mode dontAsk"}
+{"t":1514,"src":"stream","event":"system:init","cli":"2.1.299","model":"claude-sonnet-5-5","session":"091dfd5d-6bc7-49ac-a3f3-d96c4227e860"}
+{"t":3225,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zoMBTfF3wweuZf2hNJ","name":"Agent","input":{"description":"slow worker 1","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3236,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a7dc9b77a30c8876e","is_backgrounded":false,"spawn_depth":1}
+{"t":3567,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zoMBTfF3wweuZf2hNJ","name":"Agent","input":{"description":"slow worker 2","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3573,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a9ba4e6b2c471646d","is_backgrounded":false,"spawn_depth":1}
+{"t":3982,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zoMBTfF3wweuZf2hNJ","name":"Agent","input":{"description":"slow worker 3","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":3986,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"afdda29cbfb3fc037","is_backgrounded":false,"spawn_depth":1}
+{"t":4449,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zoMBTfF3wweuZf2hNJ","name":"Agent","input":{"description":"slow worker 4","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":4455,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a85d19897028e189f","is_backgrounded":false,"spawn_depth":1}
+{"t":4809,"src":"stream","event":"main tool_use","message_id":"msg_011Cg1zoMBTfF3wweuZf2hNJ","name":"Agent","input":{"description":"slow worker 5","subagent_type":"slow-worker","prompt":"Run your task."}}
+{"t":4815,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"a9e3e6f4dceee2378","is_backgrounded":false,"spawn_depth":1}
+{"t":52327,"src":"stream","event":"task_notification","task_id":"afdda29cbfb3fc037","status":"completed","summary":"WORKER_TOKEN=678469953"}
+{"t":52332,"src":"stream","event":"main user","tool_results":1}
+{"t":52400,"src":"stream","event":"task_notification","task_id":"a7dc9b77a30c8876e","status":"completed","summary":"WORKER_TOKEN=614005874"}
+{"t":52404,"src":"stream","event":"main user","tool_results":1}
+{"t":52449,"src":"stream","event":"task_notification","task_id":"a9e3e6f4dceee2378","status":"completed","summary":"WORKER_TOKEN=918676639"}
+{"t":52454,"src":"stream","event":"main user","tool_results":1}
+{"t":52461,"src":"stream","event":"task_notification","task_id":"a9ba4e6b2c471646d","status":"completed","summary":"WORKER_TOKEN=170763739"}
+{"t":52465,"src":"stream","event":"main user","tool_results":1}
+{"t":52501,"src":"stream","event":"task_notification","task_id":"a85d19897028e189f","status":"completed","summary":"WORKER_TOKEN=81540291"}
+{"t":52513,"src":"stream","event":"main user","tool_results":1}
+{"t":53731,"src":"stream","event":"main text","message_id":"msg_011Cg1zs75Fdt8tTkQaoPk4Y","text":"MAIN_TURN_DONE: WORKER_TOKEN=614005874 WORKER_TOKEN=170763739 WORKER_TOKEN=678469953 WORKER_TOKEN=81540291 WORKER_TOKEN=918676639"}
+{"t":53752,"src":"stream","event":"RESULT","origin":"prompt","num_turns":6,"result":"MAIN_TURN_DONE: WORKER_TOKEN=614005874 WORKER_TOKEN=170763739 WORKER_TOKEN=678469953 WORKER_TOKEN=81540291 WORKER_TOKEN=918676639","cost":0.12142590000000002}
+{"t":54160,"src":"runner","event":"claude -p exited","code":0}
+{"t":3527,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a7dc9b77a30c8876e"}
+{"t":3659,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a9ba4e6b2c471646d"}
+{"t":4073,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"afdda29cbfb3fc037"}
+{"t":4537,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a85d19897028e189f"}
+{"t":4901,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"a9e3e6f4dceee2378"}
+{"t":51116,"src":"hook","event":"PostToolUse","agent":"slow-worker","agent_id":"afdda29cbfb3fc037"}
+{"t":51138,"src":"hook","event":"PostToolUse","agent":"slow-worker","agent_id":"a7dc9b77a30c8876e"}
+{"t":51138,"src":"hook","event":"PostToolUse","agent":"slow-worker","agent_id":"a9ba4e6b2c471646d"}
+{"t":51142,"src":"hook","event":"PostToolUse","agent":"slow-worker","agent_id":"a9e3e6f4dceee2378"}
+{"t":51155,"src":"hook","event":"PostToolUse","agent":"slow-worker","agent_id":"a85d19897028e189f"}
+{"t":52285,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"afdda29cbfb3fc037"}
+{"t":52381,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a7dc9b77a30c8876e"}
+{"t":52438,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a9e3e6f4dceee2378"}
+{"t":52450,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a9ba4e6b2c471646d"}
+{"t":52491,"src":"hook","event":"SubagentStop","agent":"slow-worker","agent_id":"a85d19897028e189f"}

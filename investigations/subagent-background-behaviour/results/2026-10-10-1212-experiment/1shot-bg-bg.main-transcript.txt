@@ -1,0 +1,49 @@
+--- 10:41:44.928 queue-operation operation="enqueue"
+{"operation":"enqueue"}
+--- 10:41:44.929 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:41:44.964 user 
+text: This is an automated timing experiment. Do exactly the following.
+1. Call the Agent tool exactly once with subagent_type "launcher", description "launcher", run_in_background: true, and prompt: "Use run_in_background: true when you call the slow-worker."
+2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.
+3. Do not call any other tool, do not spawn anything else, do not wait or sleep.
+4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.
+--- 10:41:46.912 assistant 
+tool_use: {"description":"launcher","subagent_type":"launcher","run_in_background":true,"prompt":"Use run_in_background: true when you call the slow-worker."}
+--- 10:41:46.945 user 
+tool_result: [{"type":"text","text":"Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.)\nagentId: a52ed3a22b7bdb22c (internal ID - do not mention to user. Use SendMessage with to: 'a52ed3a22b7bdb22c', summary: '<5-10 word recap>' to continue this agent.)\nThe agent is working in the background. You will be notified automatically when it completes. You know nothing about its results until that notification arrives — do not report, assume, or predict them; continue other work or respond to the user in the meantime.\nDo not duplicate this agent's work — avoid working with the same files or topics it is using.\noutput_file: C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\b34fa001-3792-4d07-860e-db3f94cc0459\\tasks\\a52ed3a22b7bdb22c.output\nDo NOT Read or tail this file via the shell tool — it is the full subagent JSONL transcript and reading it will overflow your context. If the user asks for progress, say the agent is still running; you'll get a completion notification."}]
+--- 10:41:47.983 assistant 
+text: MAIN_TURN_DONE: NONE
+--- 10:41:49.710 queue-operation operation="enqueue"
+{"content":"<task-notification>\n<task-id>a52ed3a22b7bdb22c</task-id>\n<tool-use-id>toolu_015gVa5awr59PizFMxgZhJzq</tool-use-id>\n<output-file>C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\b34fa001-3792-4d07-860e-db3f94cc0459\\tasks\\a52ed3a22b7bdb22c.output</output-file>\n<status>completed</status>\n<summary>Agent \"launcher\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>LAUNCHER_FINAL: NO_WORKER_RESULT_YET</result>\n<usage><subagent_tokens>5254</subagent_tokens><tool_uses>1</tool_uses><duration_ms>2781</duration_ms></usage>\n</task-notification>","operation":"enqueue"}
+--- 10:41:49.736 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:41:49.739 user origin={"kind":"task-notification","producer":"session-task","runId":"0mv29lc4y-cffa0be7"}
+<task-notification>
+<task-id>a52ed3a22b7bdb22c</task-id>
+<tool-use-id>toolu_015gVa5awr59PizFMxgZhJzq</tool-use-id>
+<output-file>C:\Users\ESABBA~1\AppData\Local\Temp\claude\C--temp-test-subagents\b34fa001-3792-4d07-860e-db3f94cc0459\tasks\a52ed3a22b7bdb22c.output</output-file>
+<status>completed</status>
+<summary>Agent "launcher" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>LAUNCHER_FINAL: NO_WORKER_RESULT_YET</result>
+<usage><subagent_tokens>5254</subagent_tokens><tool_uses>1</tool_uses><duration_ms>2781</duration_ms></usage>
+</task-notification>
+--- 10:41:50.762 assistant 
+text: MAIN_GOT_NOTIFICATION: launcher NONE
+--- 10:42:37.078 queue-operation operation="enqueue"
+{"content":"<task-notification>\n<task-id>a231b08fefc394158</task-id>\n<tool-use-id>toolu_01XfUudvo2D2sGKqLLfLB7gf</tool-use-id>\n<status>completed</status>\n<summary>Agent \"slow worker\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>WORKER_TOKEN=182283652</result>\n<usage><subagent_tokens>4166</subagent_tokens><tool_uses>1</tool_uses><duration_ms>48589</duration_ms></usage>\n</task-notification>","operation":"enqueue"}
+--- 10:42:37.101 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:42:37.103 user origin={"kind":"task-notification","producer":"session-task","runId":"0mv29ldcb-19dd21de"}
+<task-notification>
+<task-id>a231b08fefc394158</task-id>
+<tool-use-id>toolu_01XfUudvo2D2sGKqLLfLB7gf</tool-use-id>
+<status>completed</status>
+<summary>Agent "slow worker" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>WORKER_TOKEN=182283652</result>
+<usage><subagent_tokens>4166</subagent_tokens><tool_uses>1</tool_uses><duration_ms>48589</duration_ms></usage>
+</task-notification>
+--- 10:42:38.212 assistant 
+text: MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=182283652

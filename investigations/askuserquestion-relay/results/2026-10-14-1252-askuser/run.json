@@ -1,0 +1,35 @@
+{
+  "driver": "askuser.ts",
+  "args": [
+    "both",
+    "2"
+  ],
+  "investigation": "investigations/2026-10-13-askuserquestion-relay",
+  "started": "2026-10-14T10:52:19.834Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "cli": "2.1.299",
+      "sdk": "2.1.296"
+    },
+    "agent_sdk": "0.3.296"
+  },
+  "git": {
+    "commit": "3004f73f909a12fde5e25176eeed5905a8e14a60",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/askuser.ts": "5c118c31dc475c0f",
+    "lib/claude-home.mjs": "eca8c0c3d93f1d3d",
+    "lib/experiment.ts": "151c1688c22a621c",
+    "lib/fake-user-mcp.mjs": "61ff39bf468af001",
+    "lib/fake-user.mjs": "b00f2d09c30296b7",
+    "lib/hook-log.mjs": "c67f43c1bf7248c6",
+    "lib/nested-cli.ts": "4a5d9052bd80fe85",
+    "lib/parallel-cli.ts": "7eecf6103ea34c0c",
+    "lib/parallel.ts": "8efbf834b57b5806",
+    "lib/resume.ts": "0489969145a8ae82",
+    "investigations/2026-10-13-askuserquestion-relay/.claude/agents/clarifier.md": "aa04a1cd612325ce",
+    "investigations/2026-10-13-askuserquestion-relay/prompts/askuser-main.md": "8abc57a15b52709a"
+  }
+}

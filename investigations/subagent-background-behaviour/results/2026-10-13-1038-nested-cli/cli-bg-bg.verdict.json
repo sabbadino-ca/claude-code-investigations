@@ -1,0 +1,47 @@
+{
+  "scenario": "cli-bg-bg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.296",
+  "chain": "main →bg launcher →bg worker",
+  "requested_run_in_background": {
+    "main": true,
+    "launcher": true
+  },
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": true,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=436373208",
+  "launcher_end_s": 6.578,
+  "launcher_stop_count": 1,
+  "launcher_final_message": "LAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "launcher_got_token": false,
+  "launcher_transcript": {
+    "notifications": 0,
+    "has_token": false
+  },
+  "worker_end_s": 54.414,
+  "results": [
+    {
+      "at_s": 55.686,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: NONE"
+    },
+    {
+      "at_s": 55.687,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: launcher NONE"
+    },
+    {
+      "at_s": 55.687,
+      "origin": "task-notification",
+      "text": "MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=436373208"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "callback",
+  "token_in_main_log_via": "task-notification turn",
+  "token_reached_main_at_s": 55.687,
+  "process_exited_s": 55.989,
+  "exit_code": 0,
+  "main_log": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\4002fa4f-e568-45b7-8a6f-a0d9e23e2a29.jsonl"
+}

@@ -1,0 +1,91 @@
+{
+  "run": "parallel-5-run1",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011Cfyuxd6LFF4cqwxesKrAD",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=487918115",
+    "WORKER_TOKEN=425762384",
+    "WORKER_TOKEN=254216549",
+    "WORKER_TOKEN=303600580",
+    "WORKER_TOKEN=451041935"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=487918115",
+    "WORKER_TOKEN=425762384",
+    "WORKER_TOKEN=254216549",
+    "WORKER_TOKEN=303600580",
+    "WORKER_TOKEN=451041935"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "main_agent_calls_returned_s": [
+    53.621,
+    53.684,
+    53.794,
+    53.863,
+    53.973
+  ],
+  "tool_result_messages": [
+    {
+      "at_s": 53.624,
+      "tool_results": 1
+    },
+    {
+      "at_s": 53.687,
+      "tool_results": 1
+    },
+    {
+      "at_s": 53.798,
+      "tool_results": 1
+    },
+    {
+      "at_s": 53.866,
+      "tool_results": 1
+    },
+    {
+      "at_s": 53.976,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 55.547,
+  "last_worker_end_s": 53.965,
+  "results": [
+    {
+      "at_s": 55.547,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.449,
+  "all_overlap": true,
+  "worker_durations_s": [
+    48.73,
+    48.509,
+    48.315,
+    47.846,
+    47.198
+  ],
+  "wall_clock_all_workers_s": 49.019,
+  "sum_of_worker_durations_s": 240.598,
+  "check4_parallel": true,
+  "session_ended_s": 55.994,
+  "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\d632d3fd-924a-453d-99c4-7ddfbf025ba8.jsonl"
+}

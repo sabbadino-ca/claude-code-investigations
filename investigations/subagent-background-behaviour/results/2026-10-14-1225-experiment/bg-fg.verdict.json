@@ -1,0 +1,53 @@
+{
+  "scenario": "bg-fg",
+  "direct": false,
+  "outer_requested": "bg",
+  "inner_requested": "fg",
+  "launcher_is_backgrounded": true,
+  "worker_is_backgrounded": false,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=647514112",
+  "launcher_agent_tool_returned_s": 52.18,
+  "launcher_agent_tool_return_text": "WORKER_TOKEN=647514112",
+  "launcher_first_stop_s": 53.316,
+  "launcher_last_stop_s": 53.316,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.153,
+  "launcher_ended_before_worker": false,
+  "launcher_final_message_has_token": true,
+  "launcher_final_message": "LAUNCHER_FINAL: WORKER_TOKEN=647514112",
+  "main_saw_token": true,
+  "main_saw_token_via": "task-notification",
+  "main_task_notification_turns": 1,
+  "hook_adjustments": [],
+  "results": 2,
+  "launcher_waited_for_worker": true,
+  "main": {
+    "input_mode": "open",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 2.729,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 3.852,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: NONE"
+      },
+      {
+        "at_s": 54.685,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: launcher WORKER_TOKEN=647514112"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.177,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "task-notification",
+    "token_reached_main_at_s": 54.685,
+    "query_iterator_ended_s": 65.653,
+    "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\1e4ded04-3a05-4812-a319-6cbf359a5fd5.jsonl"
+  }
+}

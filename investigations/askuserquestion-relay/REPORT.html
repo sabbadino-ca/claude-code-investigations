@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can main relay a subagent's question with AskUserQuestion, then resume the same subagent?</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Can main relay a subagent&#39;s question with AskUserQuestion, then resume the same subagent?</h1>
+<p>A subagent cannot talk to the user. The pattern under test: the subagent returns a question, main asks the user with <code>AskUserQuestion</code>, then continues the <strong>same</strong> subagent instance with <code>SendMessage</code> to its <code>agentId</code>, passing the answer. Does the resume reach the original instance (with its context), and is it sync or async for main?</p>
+<h2>Setup</h2>
+<pre><code>main  --Agent--&gt;  clarifier  (returns QUESTION_FOR_USER)
+main  --AskUserQuestion--&gt;  fake user (&quot;French&quot;)
+main  --SendMessage(to: agentId)--&gt;  same clarifier  (returns CLARIFIER_FINAL ... NONCE=&lt;n&gt;)
+</code></pre>
+<p>Fixture (this folder):</p>
+<ul>
+<li><a href=".claude/agents/clarifier.md">.claude/agents/clarifier.md</a>: on its first run it draws a secret <code>NONCE</code> with Bash, keeps it hidden, and replies <code>QUESTION_FOR_USER: ...</code> with an <code>OPTIONS:</code> line. When it receives <code>USER_ANSWER: ...</code>, it waits 15 s and replies <code>CLARIFIER_FINAL: &lt;greeting&gt; NONCE=&lt;n&gt;</code>. Only the original instance knows the nonce, so a matching nonce proves the resume reached it.</li>
+<li><a href="prompts/askuser-main.md">prompts/askuser-main.md</a>: tells main to relay the question with <code>AskUserQuestion</code>, then continue the same instance with <code>SendMessage</code> to the <code>agentId</code>.</li>
+<li>The fake user always answers &quot;French&quot;:<ul>
+<li><strong>SDK:</strong> a <code>canUseTool</code> callback in <a href="askuser.ts">askuser.ts</a>.</li>
+<li><strong><code>claude -p</code>:</strong> a <code>PreToolUse</code> hook, <a href="fake-user.mjs">fake-user.mjs</a>. <code>-p</code> offers <code>AskUserQuestion</code> only when the run has a permission host, so the run also passes <a href="fake-user-mcp.mjs">fake-user-mcp.mjs</a> as <code>--permission-prompt-tool</code>. That tool was never called; the hook answered every time.</li>
+</ul>
+</li>
+</ul>
+<p>Driver: <a href="askuser.ts">askuser.ts</a> (shared harness: <a href="../../lib/claude-home.mjs">lib/claude-home.mjs</a>). Foreground is forced only by <code>CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1</code> and <code>CLAUDE_CODE_FORK_SUBAGENT=0</code>. Allowed tools are <code>Agent</code>, <code>Bash</code> and <code>SendMessage</code>; <code>AskUserQuestion</code> goes through the fake user.</p>
+<h2>Run</h2>
+<pre><code class="language-bash">npm install                                                         # repo root
+node lib/claude-home.mjs investigations/askuserquestion-relay --check
+npx tsx investigations/askuserquestion-relay/askuser.ts both 2      # sdk|cli|both, runs
+</code></pre>
+<p>Each run writes <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-askuser/</code>: per-run <code>&lt;name&gt;.jsonl</code> timelines, <code>&lt;name&gt;.verdict.json</code>, the CLI runs&#39; <code>&lt;name&gt;.settings.json</code> / <code>.mcp.json</code> / <code>.hooks.jsonl</code>, <code>askuser-summary.md</code> (headed with the Claude Code versions that ran) and <code>run.json</code>. Session logs go to <code>.claude-home/projects/sessions/</code>.</p>
+<h2>Runs</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>run folder</th>
+<th>Claude Code</th>
+<th>outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="results/2026-10-13-1201-askuser/askuser-summary.md">2026-10-13-1201-askuser</a></td>
+<td>2.1.296 via SDK 0.3.296 and via <code>claude -p</code></td>
+<td>original: all checks passed</td>
+</tr>
+<tr>
+<td><a href="results/2026-10-14-1252-askuser/askuser-summary.md">2026-10-14-1252-askuser</a></td>
+<td>2.1.296 via SDK 0.3.296, 2.1.299 via <code>claude -p</code></td>
+<td>rerun: confirmed, all checks passed</td>
+</tr>
+</tbody></table></div>
+<p>The original runs were part of the subagent investigation, made in <code>C:\temp\test-subagents</code> with the user&#39;s own <code>~/.claude</code> config; their session logs are in <code>~/.claude/projects/c--temp-test-subagents/</code>, and their <code>run.json</code> was written afterwards from their files. The rerun is isolated (own config dir, no ancestor CLAUDE.md, only the <code>clarifier</code> agent) and uses the same prompt, verified identical to the original. The SDK bundles Claude Code, so SDK runs were 2.1.296 both times; the installed CLI had updated to 2.1.299 for the <code>claude -p</code> rerun.</p>
+<h2>Result</h2>
+<p>The pattern works, for the SDK and for <code>claude -p</code> (2 runs each, both times):</p>
+<ul>
+<li>The <code>SendMessage</code> target equals the first spawn&#39;s <code>agentId</code>. There is one subagent transcript, holding both prompts, and the resumed reply carries the nonce from the first run: it is the same instance, with its context.</li>
+<li>With background tasks disabled, <code>SendMessage</code> blocked main until the resumed run ended (17.5–18.9 s in the rerun, 18.3–22.0 s originally), then returned the report inline (<code>Resumed agent. Its final report follows</code>). Main got no task-notification turn and gave one result.</li>
+<li>The resumed run&#39;s <code>task_started</code> event reports <code>is_backgrounded: true</code> even so.</li>
+<li><code>SendMessage</code> is a deferred tool, so main first loads it with <code>ToolSearch</code>. In the original SDK runs main loaded it before calling <code>AskUserQuestion</code>, in the rerun after; the order doesn&#39;t change the outcome.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>Yes. Main can relay a subagent&#39;s question with <code>AskUserQuestion</code> and pass the answer back to the same instance with <code>SendMessage</code> to its <code>agentId</code>; the resumed subagent keeps its context. With background tasks disabled the resume is synchronous for main. Confirmed on Claude Code 2.1.296 (SDK and <code>-p</code>) and 2.1.299 (<code>-p</code>).</p>
+<h2>Not tested</h2>
+<ul>
+<li>The relay with background tasks enabled. Then a <code>SendMessage</code> resume runs in the background and the reply arrives as a later task-notification turn, as the <code>resume.ts</code> results in <a href="../subagent-background-behaviour/REPORT.html">subagent-background-behaviour</a> show for a plain resume.</li>
+<li>Interactive mode, with a real user answering.</li>
+</ul>
+</body>
+</html>

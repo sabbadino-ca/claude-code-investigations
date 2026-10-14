@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/parallel-cli-5-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/parallel-cli-5-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/temp/test-subagents/hook-log.mjs\" \"C:/temp/test-subagents/results/parallel-cli-5-run1.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

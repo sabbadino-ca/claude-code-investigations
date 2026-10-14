@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "fakeuser": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "D:/repos/github-ca/claude-code-investigations/lib/fake-user-mcp.mjs",
+        "D:/repos/github-ca/claude-code-investigations/investigations/2026-10-13-askuserquestion-relay/results/2026-10-14-1252-askuser/askuser-cli-run2.hooks.jsonl",
+        "French"
+      ]
+    }
+  }
+}

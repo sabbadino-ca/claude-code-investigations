@@ -1,0 +1,33 @@
+--- 10:34:14.682 queue-operation operation="enqueue"
+{"content":"This is an automated timing experiment. Do exactly the following.\n1. Call the Agent tool exactly once with subagent_type \"slow-worker\", description \"slow worker\", run_in_background: true, and prompt: \"Run your task.\"\n2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.\n3. Do not call any other tool, do not spawn anything else, do not wait or sleep.\n4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.","operation":"enqueue"}
+--- 10:34:14.684 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:34:14.705 user 
+This is an automated timing experiment. Do exactly the following.
+1. Call the Agent tool exactly once with subagent_type "slow-worker", description "slow worker", run_in_background: true, and prompt: "Run your task."
+2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.
+3. Do not call any other tool, do not spawn anything else, do not wait or sleep.
+4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.
+--- 10:34:16.378 assistant 
+tool_use: {"subagent_type":"slow-worker","description":"slow worker","run_in_background":true,"prompt":"Run your task."}
+--- 10:34:16.416 user 
+tool_result: [{"type":"text","text":"Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.)\nagentId: ad504d674f52f598f (internal ID - do not mention to user. Use SendMessage with to: 'ad504d674f52f598f', summary: '<5-10 word recap>' to continue this agent.)\nThe agent is working in the background. You will be notified automatically when it completes. You know nothing about its results until that notification arrives — do not report, assume, or predict them; continue other work or respond to the user in the meantime.\nDo not duplicate this agent's work — avoid working with the same files or topics it is using.\noutput_file: C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\D--repos-github-ca-claude-code-investigations-investigations-2026-10-10-subagent-background-behaviour\\faa5fe24-febf-4913-ac7c-265f26ae1f30\\tasks\\ad504d674f52f598f.output\nDo NOT Read or tail this file via the shell tool — it is the full subagent JSONL transcript and reading it will overflow your context. If the user asks for progress, say the agent is still running; you'll get a completion notification."}]
+--- 10:34:17.508 assistant 
+text: MAIN_TURN_DONE: NONE
+--- 10:35:04.267 queue-operation operation="enqueue"
+{"content":"<task-notification>\n<task-id>ad504d674f52f598f</task-id>\n<tool-use-id>toolu_01JYf5D8W3f8Kj8xxyN9gXYA</tool-use-id>\n<output-file>C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\D--repos-github-ca-claude-code-investigations-investigations-2026-10-10-subagent-background-behaviour\\faa5fe24-febf-4913-ac7c-265f26ae1f30\\tasks\\ad504d674f52f598f.output</output-file>\n<status>completed</status>\n<summary>Agent \"slow worker\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>WORKER_TOKEN=503692086</result>\n<usage><subagent_tokens>4219</subagent_tokens><tool_uses>1</tool_uses><duration_ms>47870</duration_ms></usage>\n</task-notification>","operation":"enqueue"}
+--- 10:35:04.296 queue-operation operation="dequeue"
+{"operation":"dequeue"}
+--- 10:35:04.298 user origin={"kind":"task-notification","producer":"session-task","runId":"0mv7z3366-bcfa3226"}
+<task-notification>
+<task-id>ad504d674f52f598f</task-id>
+<tool-use-id>toolu_01JYf5D8W3f8Kj8xxyN9gXYA</tool-use-id>
+<output-file>C:\Users\ESABBA~1\AppData\Local\Temp\claude\D--repos-github-ca-claude-code-investigations-investigations-2026-10-10-subagent-background-behaviour\faa5fe24-febf-4913-ac7c-265f26ae1f30\tasks\ad504d674f52f598f.output</output-file>
+<status>completed</status>
+<summary>Agent "slow worker" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>WORKER_TOKEN=503692086</result>
+<usage><subagent_tokens>4219</subagent_tokens><tool_uses>1</tool_uses><duration_ms>47870</duration_ms></usage>
+</task-notification>
+--- 10:35:05.222 assistant 
+text: MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=503692086

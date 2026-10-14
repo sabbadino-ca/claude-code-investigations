@@ -1,0 +1,53 @@
+{
+  "scenario": "main-close",
+  "direct": false,
+  "outer_requested": "fg",
+  "inner_requested": "bg",
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": true,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=443932990",
+  "launcher_agent_tool_returned_s": 4.253,
+  "launcher_agent_tool_return_text": "{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"a870529e18581f0fd\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\App",
+  "launcher_first_stop_s": 5.538,
+  "launcher_last_stop_s": 5.538,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.31,
+  "launcher_ended_before_worker": true,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": "LAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "main_saw_token": true,
+  "main_saw_token_via": "task-notification",
+  "main_task_notification_turns": 1,
+  "hook_adjustments": [],
+  "results": 2,
+  "launcher_waited_for_worker": false,
+  "main": {
+    "input_mode": "close",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 5.583,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 6.725,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: NONE"
+      },
+      {
+        "at_s": 53.541,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=443932990"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.316,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "task-notification",
+    "token_reached_main_at_s": 53.541,
+    "query_iterator_ended_s": 53.882,
+    "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\5690b165-4f60-4a98-bcc2-9bcfceb7fac5.jsonl"
+  }
+}

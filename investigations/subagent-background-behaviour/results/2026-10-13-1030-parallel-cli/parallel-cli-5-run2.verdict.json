@@ -1,0 +1,88 @@
+{
+  "run": "parallel-cli-5-run2",
+  "driver": "claude -p (no SDK)",
+  "cli": "C:\\Users\\esabbadin\\.local\\bin\\claude.exe",
+  "cli_version": "2.1.296",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011CfyvawKhixG3kk4kYYLEu",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=663705175",
+    "WORKER_TOKEN=286367177",
+    "WORKER_TOKEN=882434397",
+    "WORKER_TOKEN=778019139",
+    "WORKER_TOKEN=2039923"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=663705175",
+    "WORKER_TOKEN=286367177",
+    "WORKER_TOKEN=882434397",
+    "WORKER_TOKEN=778019139",
+    "WORKER_TOKEN=2039923"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "tool_result_messages": [
+    {
+      "at_s": 52.07,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.26,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.333,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.59,
+      "tool_results": 1
+    },
+    {
+      "at_s": 52.94,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 55.096,
+  "last_worker_end_s": 52.93,
+  "results": [
+    {
+      "at_s": 55.096,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.437,
+  "all_overlap": true,
+  "worker_durations_s": [
+    49.602,
+    49.17,
+    48.587,
+    49.133,
+    48.427
+  ],
+  "wall_clock_all_workers_s": 50.218,
+  "sum_of_worker_durations_s": 244.919,
+  "check4_parallel": true,
+  "process_exit_code": 0,
+  "process_exited_s": 55.502,
+  "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\91f42edc-f8fd-4c50-a38f-cd685a3c2134.jsonl"
+}

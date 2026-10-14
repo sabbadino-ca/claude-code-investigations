@@ -1,0 +1,51 @@
+{
+  "scenario": "main-string",
+  "outer_requested": "fg",
+  "inner_requested": "bg",
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": true,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=85112628",
+  "launcher_agent_tool_returned_s": 4.023,
+  "launcher_agent_tool_return_text": "{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"a6ff2e3625a1aba18\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\App",
+  "launcher_first_stop_s": 5.414,
+  "launcher_last_stop_s": 5.414,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.593,
+  "launcher_ended_before_worker": true,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": "I launched the slow-worker in the background. It's still running, so I don't have its token yet.\n\nLAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "main_saw_token": true,
+  "main_saw_token_via": "task-notification",
+  "main_task_notification_turns": 1,
+  "hook_adjustments": [],
+  "results": 2,
+  "launcher_waited_for_worker": false,
+  "main": {
+    "input_mode": "string",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 5.455,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 6.507,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: NONE"
+      },
+      {
+        "at_s": 53.77,
+        "origin": "task-notification",
+        "num_turns": 1,
+        "text": "MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=85112628"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.601,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "task-notification",
+    "query_iterator_ended_s": 54.081,
+    "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\3a7ebe01-ddc4-4a72-acaa-6059ad82cd6f.jsonl"
+  }
+}

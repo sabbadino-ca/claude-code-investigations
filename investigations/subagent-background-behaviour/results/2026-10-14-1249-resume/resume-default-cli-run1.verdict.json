@@ -1,0 +1,70 @@
+{
+  "run": "resume-default-cli-run1",
+  "mode": "default",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.299",
+  "env": "none",
+  "main_tool_sequence": [
+    "Agent",
+    "ToolSearch",
+    "SendMessage"
+  ],
+  "first_spawn": {
+    "input": {
+      "subagent_type": "resumable",
+      "description": "resumable",
+      "prompt": "Start.",
+      "run_in_background": false
+    },
+    "use_s": 2.81,
+    "result_s": 11.67,
+    "is_backgrounded": false,
+    "result_has_FIRST_RUN_DONE": true
+  },
+  "check1_first_spawn_sync": true,
+  "agent_id": "acc5fc95c97837268",
+  "send": {
+    "to": "acc5fc95c97837268",
+    "use_s": 13.46,
+    "result_s": 13.68,
+    "blocked_s": 0.22,
+    "result": "{\"success\":true,\"message\":\"Resuming agent acc5fc9\",\"resumedAgentId\":\"acc5fc95c97837268\",\"pin\":{\"id\":\"acc5fc95c97837268\",\"name\":\"acc5fc95c97837268\",\"ref\":\"73b533\"}}"
+  },
+  "check2_send_to_same_id": true,
+  "agent_calls_total": 1,
+  "subagent_transcripts": 1,
+  "nonce_first_run": "252205405",
+  "resumed_final": {
+    "at_s": 36.16,
+    "text": "RESUMED_FINAL NONCE=252205405"
+  },
+  "check3_same_instance": true,
+  "resumed_task_started": [
+    {
+      "at_s": 13.585,
+      "is_backgrounded": true
+    }
+  ],
+  "task_notification_turns_in_main": [
+    {
+      "at_s": 36.35,
+      "text": "<task-notification>\n<task-id>acc5fc95c97837268</task-id>\n<tool-use-id>toolu_01Q1udMJM7Dspk5pzbYGmX6m</tool-use-id>\n<output-file>C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\D--repos-github-ca-claude-code-investigations-investigations-2026-10-10-subagent-background-behaviour\\4405544e-6b4a-456b-a7ff-1e85d5126f3f\\tasks\\acc5fc95c97837268.output</output-file>\n<status>completed</status>\n<summary>Agent \"r"
+    }
+  ],
+  "RESUME_FROM_MAIN_POV": "ASYNC",
+  "results": [
+    {
+      "at_s": 37.445,
+      "origin": "prompt",
+      "text": "The subagent has been resumed and is running; I'm waiting for its RESUMED_FINAL reply."
+    },
+    {
+      "at_s": 37.445,
+      "origin": "task-notification",
+      "text": "MAIN_DONE: RESUMED_FINAL NONCE=252205405"
+    }
+  ],
+  "check4_main_final_has_nonce": true,
+  "session_ended_s": 37.797,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\4405544e-6b4a-456b-a7ff-1e85d5126f3f.jsonl"
+}

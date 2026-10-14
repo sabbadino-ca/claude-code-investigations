@@ -1,0 +1,36 @@
+{
+  "driver": "experiment.ts",
+  "args": [],
+  "investigation": "investigations/2026-10-10-subagent-background-behaviour",
+  "started": "2026-10-14T10:25:28.213Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "sdk": "2.1.296"
+    },
+    "agent_sdk": "0.3.296"
+  },
+  "git": {
+    "commit": "3004f73f909a12fde5e25176eeed5905a8e14a60",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/askuser.ts": "5c118c31dc475c0f",
+    "lib/claude-home.mjs": "eca8c0c3d93f1d3d",
+    "lib/experiment.ts": "151c1688c22a621c",
+    "lib/fake-user-mcp.mjs": "61ff39bf468af001",
+    "lib/fake-user.mjs": "b00f2d09c30296b7",
+    "lib/hook-log.mjs": "c67f43c1bf7248c6",
+    "lib/nested-cli.ts": "4a5d9052bd80fe85",
+    "lib/parallel-cli.ts": "7eecf6103ea34c0c",
+    "lib/parallel.ts": "8efbf834b57b5806",
+    "lib/resume.ts": "0489969145a8ae82",
+    "investigations/2026-10-10-subagent-background-behaviour/.claude/agents/launcher.md": "e6913c2bcbc077c7",
+    "investigations/2026-10-10-subagent-background-behaviour/.claude/agents/resumable.md": "e953824f3a2b81d1",
+    "investigations/2026-10-10-subagent-background-behaviour/.claude/agents/slow-worker.md": "0c16763335efca55",
+    "investigations/2026-10-10-subagent-background-behaviour/prompts/nested-main.md": "0a7e131034aa3b38",
+    "investigations/2026-10-10-subagent-background-behaviour/prompts/parallel-fanout.md": "9db44363a3ee7cc2",
+    "investigations/2026-10-10-subagent-background-behaviour/prompts/parallel-main.md": "2cb75802f5278adc",
+    "investigations/2026-10-10-subagent-background-behaviour/prompts/resume-main.md": "01e54c1c1a26899e"
+  }
+}

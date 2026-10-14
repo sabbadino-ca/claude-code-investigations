@@ -1,0 +1,33 @@
+{
+  "scenario": "cli-direct-fg",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.296",
+  "chain": "main →fg worker",
+  "requested_run_in_background": {
+    "main": false
+  },
+  "launcher_is_backgrounded": null,
+  "worker_is_backgrounded": false,
+  "modes_as_intended": true,
+  "worker_token": "WORKER_TOKEN=888776500",
+  "launcher_end_s": null,
+  "launcher_stop_count": 0,
+  "launcher_final_message": null,
+  "launcher_got_token": null,
+  "launcher_transcript": null,
+  "worker_end_s": 54.715,
+  "results": [
+    {
+      "at_s": 55.798,
+      "origin": "prompt",
+      "text": "MAIN_TURN_DONE: WORKER_TOKEN=888776500"
+    }
+  ],
+  "token_reached_main": true,
+  "token_reached_main_how": "sync",
+  "token_in_main_log_via": "Agent tool result",
+  "token_reached_main_at_s": 55.798,
+  "process_exited_s": 56.152,
+  "exit_code": 0,
+  "main_log": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\9741a58d-7534-4cfe-b5ba-700ee66c4404.jsonl"
+}

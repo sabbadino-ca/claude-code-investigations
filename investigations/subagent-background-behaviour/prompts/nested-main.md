@@ -1,0 +1,6 @@
+This is an automated timing experiment. Do exactly the following.
+{{#direct}}1. Call the Agent tool exactly once with subagent_type "slow-worker", description "slow worker", run_in_background: {{outer_bg}}, and prompt: "Run your task."{{/direct}}{{^direct}}1. Call the Agent tool exactly once with subagent_type "launcher", description "launcher", run_in_background: {{outer_bg}}, and prompt: "Use run_in_background: {{inner_bg}} when you call the slow-worker."{{/direct}}
+{{#busy_main}}2. When that call returns, run this Bash command exactly once, in the foreground (it deliberately takes 70 seconds): node -e "setTimeout(() => console.log('MAIN_WORK_DONE'), 70000)"
+   When it returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.{{/busy_main}}{{^busy_main}}2. When that call returns, end your turn with one line: MAIN_TURN_DONE: <copy any WORKER_TOKEN=... line you can see, otherwise NONE>.{{/busy_main}}
+3. Do not call any other tool{{#busy_main}} besides that one Bash command{{/busy_main}}, do not spawn anything else, do not wait or sleep.
+4. If you later receive a task notification, reply with one line: MAIN_GOT_NOTIFICATION: <which agent it is from> <any WORKER_TOKEN=... line in it, otherwise NONE>.

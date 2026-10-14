@@ -1,0 +1,47 @@
+{
+  "scenario": "1shot-direct-fg",
+  "direct": true,
+  "outer_requested": "fg",
+  "inner_requested": "fg",
+  "launcher_is_backgrounded": null,
+  "worker_is_backgrounded": false,
+  "worker_spawn_depth": 1,
+  "worker_token": "WORKER_TOKEN=633619737",
+  "launcher_agent_tool_returned_s": null,
+  "launcher_agent_tool_return_text": null,
+  "launcher_first_stop_s": null,
+  "launcher_last_stop_s": null,
+  "launcher_stop_count": 0,
+  "worker_stop_s": 52.551,
+  "launcher_ended_before_worker": null,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": null,
+  "main_saw_token": true,
+  "main_saw_token_via": "prompt",
+  "main_task_notification_turns": 0,
+  "hook_adjustments": [],
+  "results": 1,
+  "launcher_waited_for_worker": null,
+  "main": {
+    "input_mode": "string",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 52.579,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 53.44,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: WORKER_TOKEN=633619737"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.575,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "prompt",
+    "token_reached_main_at_s": 53.44,
+    "query_iterator_ended_s": 53.801,
+    "transcript": "C:\\Users\\esabbadin\\.claude\\projects\\C--temp-test-subagents\\3c701776-c922-4d58-aa8b-10b370f6e9b0.jsonl"
+  }
+}

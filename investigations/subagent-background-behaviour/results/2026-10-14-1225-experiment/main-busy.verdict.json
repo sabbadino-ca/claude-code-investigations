@@ -1,0 +1,47 @@
+{
+  "scenario": "main-busy",
+  "direct": false,
+  "outer_requested": "fg",
+  "inner_requested": "bg",
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": true,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=269097694",
+  "launcher_agent_tool_returned_s": 4.351,
+  "launcher_agent_tool_return_text": "{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"a92c67b7e6ec4e2a5\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\App",
+  "launcher_first_stop_s": 5.666,
+  "launcher_last_stop_s": 5.666,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.308,
+  "launcher_ended_before_worker": true,
+  "launcher_final_message_has_token": false,
+  "launcher_final_message": "LAUNCHER_FINAL: NO_WORKER_RESULT_YET",
+  "main_saw_token": true,
+  "main_saw_token_via": "prompt",
+  "main_task_notification_turns": 0,
+  "hook_adjustments": [],
+  "results": 1,
+  "launcher_waited_for_worker": false,
+  "main": {
+    "input_mode": "open",
+    "busy_main": true,
+    "blocked_on_launcher_until_s": 5.696,
+    "own_work_returned_s": 81.163,
+    "results": [
+      {
+        "at_s": 82.54,
+        "origin": "prompt",
+        "num_turns": 3,
+        "text": "MAIN_GOT_NOTIFICATION: slow worker WORKER_TOKEN=269097694"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.313,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "prompt",
+    "token_reached_main_at_s": 82.54,
+    "query_iterator_ended_s": 93.838,
+    "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\25c71df1-5542-4410-b293-b775e67e8b5c.jsonl"
+  }
+}

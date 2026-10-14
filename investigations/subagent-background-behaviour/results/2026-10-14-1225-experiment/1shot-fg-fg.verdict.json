@@ -1,0 +1,47 @@
+{
+  "scenario": "1shot-fg-fg",
+  "direct": false,
+  "outer_requested": "fg",
+  "inner_requested": "fg",
+  "launcher_is_backgrounded": false,
+  "worker_is_backgrounded": false,
+  "worker_spawn_depth": 2,
+  "worker_token": "WORKER_TOKEN=826444495",
+  "launcher_agent_tool_returned_s": 52.183,
+  "launcher_agent_tool_return_text": "WORKER_TOKEN=826444495",
+  "launcher_first_stop_s": 53.413,
+  "launcher_last_stop_s": 53.413,
+  "launcher_stop_count": 1,
+  "worker_stop_s": 52.157,
+  "launcher_ended_before_worker": false,
+  "launcher_final_message_has_token": true,
+  "launcher_final_message": "LAUNCHER_FINAL: WORKER_TOKEN=826444495",
+  "main_saw_token": true,
+  "main_saw_token_via": "prompt",
+  "main_task_notification_turns": 0,
+  "hook_adjustments": [],
+  "results": 1,
+  "launcher_waited_for_worker": true,
+  "main": {
+    "input_mode": "string",
+    "busy_main": false,
+    "blocked_on_launcher_until_s": 53.421,
+    "own_work_returned_s": null,
+    "results": [
+      {
+        "at_s": 54.373,
+        "origin": "prompt",
+        "num_turns": 2,
+        "text": "MAIN_TURN_DONE: WORKER_TOKEN=826444495"
+      }
+    ],
+    "injected_user_messages_on_stream": [],
+    "worker_end_status": "completed",
+    "worker_end_s": 52.18,
+    "token_reached_main": true,
+    "token_reached_main_in_turn": "prompt",
+    "token_reached_main_at_s": 54.373,
+    "query_iterator_ended_s": 54.727,
+    "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\5ba84735-d928-4e6a-a9a9-ee3518ab9b73.jsonl"
+  }
+}

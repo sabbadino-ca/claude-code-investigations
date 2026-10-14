@@ -1,0 +1,18 @@
+{"t":517,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5"}
+{"t":2096,"src":"stream","event":"main tool_use","name":"Agent","input":{"description":"launcher","subagent_type":"launcher","run_in_background":false,"prompt":"Use run_in_background: false when you call the slow-worker."}}
+{"t":2202,"src":"stream","event":"task_started","agent":"launcher","is_backgrounded":false,"spawn_depth":1}
+{"t":4137,"src":"stream","event":"task_started","agent":"slow-worker","is_backgrounded":false,"spawn_depth":2}
+{"t":52290,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=160541532"}
+{"t":53607,"src":"stream","event":"task_notification","agent":"launcher","status":"completed","summary":"LAUNCHER_FINAL: WORKER_TOKEN=160541532"}
+{"t":55018,"src":"stream","event":"main text","text":"MAIN_TURN_DONE: WORKER_TOKEN=160541532"}
+{"t":55034,"src":"stream","event":"RESULT","origin":"prompt","result":"MAIN_TURN_DONE: WORKER_TOKEN=160541532","cost":0.04968}
+{"t":55417,"src":"runner","event":"claude -p exited","code":0}
+{"t":2193,"src":"hook","event":"PreToolUse","agent":"main","tool":"Agent"}
+{"t":2292,"src":"hook","event":"SubagentStart","agent":"launcher"}
+{"t":4133,"src":"hook","event":"PreToolUse","agent":"launcher","tool":"Agent"}
+{"t":4220,"src":"hook","event":"SubagentStart","agent":"slow-worker"}
+{"t":51171,"src":"hook","event":"PostToolUse","agent":"slow-worker","tool":"Bash"}
+{"t":52271,"src":"hook","event":"SubagentStop","agent":"slow-worker"}
+{"t":52387,"src":"hook","event":"PostToolUse","agent":"launcher","tool":"Agent"}
+{"t":53606,"src":"hook","event":"SubagentStop","agent":"launcher"}
+{"t":53688,"src":"hook","event":"PostToolUse","agent":"main","tool":"Agent"}

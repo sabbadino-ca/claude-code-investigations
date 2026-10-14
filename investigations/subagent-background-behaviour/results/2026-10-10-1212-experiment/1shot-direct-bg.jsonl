@@ -1,0 +1,21 @@
+{"t":492,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5","agents":["claude","claude-code-guide","Explore","general-purpose","launcher","Plan","slow-worker","statusline-setup"]}
+{"t":2029,"src":"stream","event":"main tool_use","name":"Agent","input":{"description":"slow worker","subagent_type":"slow-worker","run_in_background":true,"prompt":"Run your task."}}
+{"t":2034,"src":"hook","event":"PreToolUse(Agent)","caller":"main","subagent_type":"slow-worker","model_asked_bg":true,"enforced_bg":true}
+{"t":2049,"src":"stream","event":"background_tasks_changed","live":["slow-worker"]}
+{"t":2051,"src":"stream","event":"task_started","agent":"slow-worker","task_id":"aba3625221cff0ff5","is_backgrounded":true,"spawn_depth":1,"parent_task":"main"}
+{"t":2053,"src":"hook","event":"SubagentStart","agent":"slow-worker","agent_id":"aba3625221cff0ff5"}
+{"t":2053,"src":"hook","event":"PostToolUse(Agent)","caller":"main","returned":"{\"isAsync\":true,\"status\":\"async_launched\",\"agentId\":\"aba3625221cff0ff5\",\"description\":\"slow worker\",\"resolvedModel\":\"claude-sonnet-5-5\",\"prompt\":\"Run your task.\",\"outputFile\":\"C:\\\\Users\\\\ESABBA~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--temp-test-subagents\\\\94beb36a-733b-4394-8e96-459dc09fab8e\\\\tasks\\\\aba3625221cff0ff5.output\",\"canReadOutputFile\":true,\"canContinueAgent\":true}"}
+{"t":2068,"src":"stream","event":"main user tool_result","text":"Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.)\nagentId: aba3625221cff0ff5 (internal ID - do not mention to user. Use SendMessage with to: 'aba3625221cff0ff5', summary: '<5-10 word recap>' to continue this agent.)\nThe agent is working in the background. You will be notified automatically when it completes. You know nothing about its results until that notification arrives — do not report, assume, or predict them; continue other work or respond to the user in the meantime.\nDo not duplicate this agent's work — avoid working with the same files or topics it is using.\noutput_file: C:\\Users\\ESABBA~1\\AppData\\Local\\Temp\\claude\\C--temp-test-subagents\\94beb36a-733b-4394-8e96-459dc09fab8e\\tasks\\aba3625221cff0ff5.output\nDo NOT Read or tail this file via the shell tool — it is the full subagent JSONL transcript and reading it will overflow your context. If the user asks for progress, say the agent is still running; you'll get a completion notification."}
+{"t":2787,"src":"stream","event":"main assistant text","text":"MAIN_TURN_DONE: NONE"}
+{"t":2805,"src":"stream","event":"RESULT","n":1,"subtype":"success","origin":"prompt","num_turns":2,"result":"MAIN_TURN_DONE: NONE","cost":0.0353136}
+{"t":11498,"src":"stream","event":"task_started","task_id":"by2mqqzpv","is_backgrounded":false,"parent_task":"slow-worker"}
+{"t":48645,"src":"stream","event":"task_notification","status":"completed","summary":"node -e \"setTimeout(() => console.log('WORKER_TOKEN=' + Math.floor(Math.random() * 1e9)), 40000)\""}
+{"t":48655,"src":"hook","event":"PostToolUse(Bash)","caller":"slow-worker","token":"WORKER_TOKEN=789954310"}
+{"t":49771,"src":"hook","event":"SubagentStop","agent":"slow-worker","last_message":"WORKER_TOKEN=789954310","in_flight_bg_tasks":1}
+{"t":49796,"src":"stream","event":"task_updated","agent":"slow-worker","patch":{"status":"completed","end_time":1791628740352}}
+{"t":49797,"src":"stream","event":"task_notification","agent":"slow-worker","status":"completed","summary":"WORKER_TOKEN=789954310"}
+{"t":49797,"src":"stream","event":"background_tasks_changed","live":[]}
+{"t":49807,"src":"stream","event":"system:init","cli":"2.1.296","model":"claude-sonnet-5-5","agents":["claude","claude-code-guide","Explore","general-purpose","launcher","Plan","slow-worker","statusline-setup"]}
+{"t":50657,"src":"stream","event":"main assistant text","text":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=789954310"}
+{"t":50688,"src":"stream","event":"RESULT","n":2,"subtype":"success","origin":"task-notification","num_turns":1,"result":"MAIN_GOT_NOTIFICATION: slow-worker WORKER_TOKEN=789954310","cost":0.046319}
+{"t":51021,"src":"runner","event":"query iterator ended"}

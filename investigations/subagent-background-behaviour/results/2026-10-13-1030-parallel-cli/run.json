@@ -1,0 +1,13 @@
+{
+  "driver": "parallel-cli.ts",
+  "args": null,
+  "investigation": "investigations/subagent-background-behaviour",
+  "started": "2026-10-13T08:30:37.345Z",
+  "reconstructed": "written afterwards from the run's files: args, node version, git commit and file hashes were not recorded; started = oldest file time",
+  "versions": {
+    "claude_code": {
+      "cli": "2.1.296"
+    }
+  },
+  "git": null
+}

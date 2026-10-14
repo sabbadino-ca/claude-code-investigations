@@ -1,0 +1,91 @@
+{
+  "run": "parallel-5-run1",
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "hooks_modify_input": false,
+  "agent_calls_per_main_message": [
+    {
+      "message_id": "msg_011Cg1zfRWgkxtsSdCik5YNy",
+      "agent_calls": 5
+    }
+  ],
+  "check1_all_calls_in_one_message": true,
+  "workers_started": 5,
+  "workers_is_backgrounded": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "check2_all_foreground": true,
+  "worker_tokens": [
+    "WORKER_TOKEN=854198880",
+    "WORKER_TOKEN=326976808",
+    "WORKER_TOKEN=949829869",
+    "WORKER_TOKEN=845837017",
+    "WORKER_TOKEN=432995594"
+  ],
+  "main_tokens_in_first_result": [
+    "WORKER_TOKEN=854198880",
+    "WORKER_TOKEN=326976808",
+    "WORKER_TOKEN=949829869",
+    "WORKER_TOKEN=845837017",
+    "WORKER_TOKEN=432995594"
+  ],
+  "check3_main_has_all_tokens_in_first_result": true,
+  "main_agent_calls_returned_s": [
+    50.96,
+    50.983,
+    51.012,
+    51.013,
+    51.283
+  ],
+  "tool_result_messages": [
+    {
+      "at_s": 50.984,
+      "tool_results": 1
+    },
+    {
+      "at_s": 51.013,
+      "tool_results": 1
+    },
+    {
+      "at_s": 51.018,
+      "tool_results": 1
+    },
+    {
+      "at_s": 51.019,
+      "tool_results": 1
+    },
+    {
+      "at_s": 51.286,
+      "tool_results": 1
+    }
+  ],
+  "first_result_s": 53.056,
+  "last_worker_end_s": 51.277,
+  "results": [
+    {
+      "at_s": 53.056,
+      "origin": "prompt",
+      "num_turns": 6
+    }
+  ],
+  "worker_start_spread_s": 1.476,
+  "all_overlap": true,
+  "worker_durations_s": [
+    48.225,
+    47.864,
+    47.875,
+    47.133,
+    46.765
+  ],
+  "wall_clock_all_workers_s": 48.528,
+  "sum_of_worker_durations_s": 237.862,
+  "check4_parallel": true,
+  "session_ended_s": 53.45,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\2026-10-10-subagent-background-behaviour\\.claude-home\\projects\\sessions\\b0206798-96bc-4583-a7a2-df469f881c67.jsonl"
+}
