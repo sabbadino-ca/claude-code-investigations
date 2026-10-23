@@ -1,0 +1,66 @@
+{
+  "scenario": "rel-two",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.309",
+  "agent": "architect",
+  "note": "two topics needed, third not",
+  "question": "Which naming convention applies to services, and which layering rule applies between controllers and services?",
+  "subagent_tool_calls": [
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\references\\\\naming.md\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\references\\\\layering.md\"}",
+    "Glob {\"pattern\":\"**/references/*.md\",\"path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\.claude\\\\agents\\\\architect\\\\references\\\\naming.md\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\.claude\\\\agents\\\\architect\\\\references\\\\layering.md\"}",
+    "Bash {\"command\":\"find /c/Users/spesce/claude-code-investigations -path '*references/*.md' -not -path '*/node_modules/*'\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\agents\\\\architect\\\\references\\\\naming.md\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\agents\\\\architect\\\\references\\\\layering.md\"}"
+  ],
+  "first_tool_call": "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\references\\\\naming.md\"}",
+  "per_topic": {
+    "naming": {
+      "expected": true,
+      "read_ok": true,
+      "read_attempts": 3,
+      "failed_reads_before_success": 2,
+      "scans_before_first_ok_read": [
+        "Glob: {\"pattern\":\"**/references/*.md\",\"path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\"}",
+        "Bash: {\"command\":\"find /c/Users/spesce/claude-code-investigations -path '*references/*.md' -not -path '*/node_modules/*'\"}"
+      ],
+      "nonce_in_read_result": true,
+      "nonce_in_final_answer": true
+    },
+    "layering": {
+      "expected": true,
+      "read_ok": true,
+      "read_attempts": 3,
+      "failed_reads_before_success": 2,
+      "scans_before_first_ok_read": [
+        "Glob: {\"pattern\":\"**/references/*.md\",\"path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\"}",
+        "Bash: {\"command\":\"find /c/Users/spesce/claude-code-investigations -path '*references/*.md' -not -path '*/node_modules/*'\"}"
+      ],
+      "nonce_in_read_result": true,
+      "nonce_in_final_answer": true
+    },
+    "security": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    }
+  },
+  "scan_calls_total": [
+    "Glob: {\"pattern\":\"**/references/*.md\",\"path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\"}",
+    "Bash: {\"command\":\"find /c/Users/spesce/claude-code-investigations -path '*references/*.md' -not -path '*/node_modules/*'\"}"
+  ],
+  "direct_read_without_scan": false,
+  "expected_files_read": true,
+  "unexpected_files_read": [],
+  "nonces_preloaded_before_first_tool_call": [],
+  "final_answer": "Services are named `<Domain>Service` in PascalCase, for example `BillingService`. Controllers call services, and services call repositories. Calls never go the other way, so a service must not call a controller.\n\nNONCE=48213907\nNONCE=73920415",
+  "cost_usd": 0.05968190000000001,
+  "exit_code": 0,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude-home\\projects\\sessions\\6e582be2-c2e6-4529-b76c-1008630c5689.jsonl"
+}

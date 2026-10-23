@@ -1,0 +1,48 @@
+{
+  "scenario": "rel-none",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.309",
+  "agent": "architect",
+  "note": "question needs no reference file",
+  "question": "What is 2+2? Answer with the number only.",
+  "subagent_tool_calls": [],
+  "first_tool_call": null,
+  "per_topic": {
+    "naming": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    },
+    "layering": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    },
+    "security": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    }
+  },
+  "scan_calls_total": [],
+  "direct_read_without_scan": null,
+  "expected_files_read": true,
+  "unexpected_files_read": [],
+  "nonces_preloaded_before_first_tool_call": [],
+  "final_answer": "4\n\nNONCE=NONE",
+  "cost_usd": 0.0410803,
+  "exit_code": 0,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude-home\\projects\\sessions\\46b40e3c-2d27-4e9a-8cab-845d5014c813.jsonl"
+}

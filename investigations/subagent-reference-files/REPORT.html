@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference files of a subagent</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Does a subagent read, on demand and by direct path, the reference files named in its body?</h1>
+
+<h2>Question</h2>
+<p>Claim under test (no doc sentence; it comes from the user's design idea): a subagent defined as <code>.claude/agents/architect/architect.md</code> can name files in its body, such as <code>.claude/agents/architect/references/xxx.md</code>, with "read xxx.md for more information". The subagent then reads them only when needed, by going straight to the path, without scanning the directory. Their content is not preloaded into its context, unlike an Agent Skill, whose description is always loaded.</p>
+<p><strong>Confirmed</strong> if the subagent's first tool call for a needed file is a <code>Read</code> that succeeds (no <code>Glob</code>, <code>Grep</code> or <code>ls</code>/<code>find</code> before it), if the file's NONCE is not in the subagent transcript before its first tool call, and if unneeded files are never read. <strong>Refuted</strong> if it has to scan, or if the content is already there without a <code>Read</code>. Run mode: <code>claude -p</code> only (no Agent SDK, no interactive).</p>
+
+<h2>Setup</h2>
+<pre><code>claude -p (cwd = this folder) --Agent--&gt; architect (tools: Read, Glob, Grep, Bash) --Read--&gt; references/&lt;topic&gt;.md</code></pre>
+<ul>
+  <li><a href=".claude/agents/architect/architect.md">.claude/agents/architect/architect.md</a>: the body names <code>references/naming.md</code>, <code>layering.md</code>, <code>security.md</code> with paths <strong>relative to the agent file</strong>. Scanning tools are allowed on purpose, so a scan would show up.</li>
+  <li><a href=".claude/agents/architect-rooted/architect-rooted.md">.claude/agents/architect-rooted/architect-rooted.md</a>: control. Same shape, but the body writes the paths <strong>from the project root</strong> (<code>.claude/agents/architect-rooted/references/…</code>).</li>
+  <li><code>references/*.md</code> in each agent folder: one line of content plus an unguessable <code>NONCE=&lt;n&gt;</code> each, different between the two agents.</li>
+  <li><a href="prompts/main.md">prompts/main.md</a>: the main prompt, a strict script: call the Agent once, repeat its answer.</li>
+  <li><a href="reference-files-cli.ts">reference-files-cli.ts</a>: spawns the installed <code>claude -p</code> with stream-json, collects the subagent's tool calls (events with <code>parent_tool_use_id</code>), judges them and checks the first lines of the subagent transcript for preloaded NONCEs.</li>
+  <li>Scenarios: <code>rel-naming</code> (1 file needed, relative path), <code>rooted-naming</code> (control), <code>rel-two</code> (2 of 3 files needed), <code>rel-none</code> (no file needed). Model: sonnet. Env: <code>ISOLATION_ENV</code> from <code>lib/claude-home.mjs</code>.</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>node lib/claude-home.mjs investigations/subagent-reference-files --check
+npx tsx investigations/subagent-reference-files/reference-files-cli.ts [rel-naming rooted-naming rel-two rel-none]</code></pre>
+<p>Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>, subagent transcripts under <code>&lt;session-id&gt;/subagents/</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-10-23-1707-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1707-reference-files-cli</a></td><td>reference-files-cli.ts</td><td>2.1.309 via <code>claude -p</code></td><td>On-demand read confirmed. Direct read without scan confirmed only when the path is written from the project root.</td></tr><tr><td><a href="results/2026-10-23-1712-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1712-reference-files-cli</a></td><td>reference-files-cli.ts anchor-dir-naming anchor-nodir-naming</td><td>2.1.309 via <code>claude -p</code></td><td>Anchor in the body: one <code>Glob</code> then <code>Read</code>, no failed read.</td></tr>
+</tbody>
+</table></div>
+
+<h2>Result</h2>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>subagent tool calls</th><th>direct read, no scan</th><th>right files read</th><th>unneeded file read</th><th>NONCE preloaded</th></tr></thead>
+<tbody>
+<tr><td>rel-naming</td><td>5: Read (fails), Glob, Read (fails), find, Read (ok)</td><td><strong>no</strong></td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>rooted-naming</td><td>1: Read (ok)</td><td>yes</td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>rel-two</td><td>8: 2 Read (fail), Glob, 2 Read (fail), find, 2 Read (ok)</td><td><strong>no</strong></td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>rel-none</td><td>0</td><td>n/a</td><td>yes (NONCE=NONE)</td><td>none</td><td>no</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>Not preloaded.</strong> In all four runs no NONCE appears in the subagent transcript before its first tool call. With <code>rel-none</code> the subagent made no tool call and answered <code>NONCE=NONE</code>. With <code>rel-two</code> the unneeded <code>security.md</code> was never touched.</li>
+  <li><strong>Relative to the agent file does not resolve.</strong> The subagent runs with the session cwd (the investigation folder). It tried <code>&lt;cwd&gt;/references/naming.md</code>, which does not exist, then guessed the repo root, and only then scanned (<code>Glob</code>, <code>find</code>) to find the real path. It got there, but with 4 extra calls (<code>rel-naming</code>) and 6 (<code>rel-two</code>), and cost about 0.07 vs 0.05 USD.</li>
+  <li><strong>Root-relative path works directly.</strong> <code>rooted-naming</code> was a single <code>Read</code> with the full path built from the cwd and the path in the body.</li>
+  <li><strong>Anchor in the body (second run).</strong> Two extra agents keep <code>references/x.md</code> in the body and add one sentence. <code>architect-anchor-dir</code>: "relative to the folder <code>.claude/agents/architect-anchor-dir/</code>". <code>architect-anchor-nodir</code>: "relative to the folder that contains this agent file", nothing else. Both did <code>Glob</code> (<code>**/architect-anchor-dir/references/naming.md</code>, <code>**/references/naming.md</code>) and then one successful <code>Read</code>: 2 calls, no failed read, NONCE not preloaded. So neither is a direct read, but both avoid the wrong-path attempts. The agent cannot compute its own file location (it does not know it), so with no folder named it searches by file name; that worked here only because the name was unique in the tree.</li>
+<li><strong>Side effect, not under test.</strong> In three runs the main session emitted a first <code>result</code> such as "the agent is still running" and then a second one with the real answer.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Partly confirmed. Files named in the agent body are not loaded in advance and are read only when the question needs them, so this is a progressive-disclosure mechanism with no cost for files that are not used. But the path must be written <strong>from the project root</strong> (<code>.claude/agents/architect/references/xxx.md</code>) for the subagent to read it with one <code>Read</code>. A path relative to the agent file (<code>references/xxx.md</code>) is read against the working directory, fails, and the subagent falls back to scanning. One run per scenario, so the exact failure sequence may vary.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Agent SDK and interactive modes.</li>
+  <li>Other models, other Claude Code versions (only 2.1.309), repeated runs for variance.</li>
+  <li>A different cwd than the project root, and agents defined at user level (<code>~/.claude/agents</code>).</li>
+  <li>The no-folder anchor when the file name is not unique in the project (several <code>references/naming.md</code>): the search could pick the wrong one. Anchor variants were run once each.</li>
+  <li>Comparison with an Agent Skill in the same setup.</li>
+</ul>
+</body>
+</html>

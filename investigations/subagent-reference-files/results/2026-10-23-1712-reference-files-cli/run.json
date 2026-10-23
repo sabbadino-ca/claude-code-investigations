@@ -1,0 +1,41 @@
+{
+  "driver": "reference-files-cli.ts",
+  "args": [
+    "anchor-dir-naming",
+    "anchor-nodir-naming"
+  ],
+  "investigation": "investigations/subagent-reference-files",
+  "started": "2026-10-23T15:12:50.728Z",
+  "versions": {
+    "node": "v22.21.1",
+    "claude_code": {
+      "cli": "2.1.309"
+    }
+  },
+  "git": {
+    "commit": "b35cc40eb4ee86a191ea21a1db60341a791f2c60",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "2b36d3f1bf8c5459",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/subagent-reference-files/.claude/agents/architect/architect.md": "b32c03c0bc7740b7",
+    "investigations/subagent-reference-files/.claude/agents/architect/references/layering.md": "c3f5c631683911c3",
+    "investigations/subagent-reference-files/.claude/agents/architect/references/naming.md": "0ddca7b281de13ea",
+    "investigations/subagent-reference-files/.claude/agents/architect/references/security.md": "4cfcf3d56c82a040",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-dir/architect-anchor-dir.md": "9b17fd73dc76d832",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-dir/references/layering.md": "30967cc70916e5bc",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-dir/references/naming.md": "92dea5f8bef13ef3",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-dir/references/security.md": "9ba96ba470852e70",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-nodir/architect-anchor-nodir.md": "67cbc5942d1e1e95",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-nodir/references/layering.md": "3de4dc0f023ad78a",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-nodir/references/naming.md": "a6e8fcea6278fe24",
+    "investigations/subagent-reference-files/.claude/agents/architect-anchor-nodir/references/security.md": "c1481a4bc0384dae",
+    "investigations/subagent-reference-files/.claude/agents/architect-rooted/architect-rooted.md": "d98f92e0bb3e6251",
+    "investigations/subagent-reference-files/.claude/agents/architect-rooted/references/layering.md": "2d45b2678e6e505f",
+    "investigations/subagent-reference-files/.claude/agents/architect-rooted/references/naming.md": "f5d56a092fce2652",
+    "investigations/subagent-reference-files/.claude/agents/architect-rooted/references/security.md": "534bf90352c2d4e9",
+    "investigations/subagent-reference-files/prompts/main.md": "5bb1dc95ea09e145",
+    "investigations/subagent-reference-files/reference-files-cli.ts": "7d52b1f3974db70a"
+  }
+}

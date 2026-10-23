@@ -1,0 +1,55 @@
+{
+  "scenario": "anchor-dir-naming",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.309",
+  "agent": "architect-anchor-dir",
+  "note": "relative paths plus a one-time anchor folder in the body",
+  "question": "Which naming convention applies to services?",
+  "subagent_tool_calls": [
+    "Glob {\"pattern\":\"**/architect-anchor-dir/references/naming.md\"}",
+    "Read {\"file_path\":\"C:\\\\Users\\\\spesce\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\agents\\\\architect-anchor-dir\\\\references\\\\naming.md\"}"
+  ],
+  "first_tool_call": "Glob {\"pattern\":\"**/architect-anchor-dir/references/naming.md\"}",
+  "per_topic": {
+    "naming": {
+      "expected": true,
+      "read_ok": true,
+      "read_attempts": 1,
+      "failed_reads_before_success": 0,
+      "scans_before_first_ok_read": [
+        "Glob: {\"pattern\":\"**/architect-anchor-dir/references/naming.md\"}"
+      ],
+      "nonce_in_read_result": true,
+      "nonce_in_final_answer": true
+    },
+    "layering": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    },
+    "security": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    }
+  },
+  "scan_calls_total": [
+    "Glob: {\"pattern\":\"**/architect-anchor-dir/references/naming.md\"}"
+  ],
+  "direct_read_without_scan": false,
+  "expected_files_read": true,
+  "unexpected_files_read": [],
+  "nonces_preloaded_before_first_tool_call": [],
+  "final_answer": "Services are named `<Domain>Service` in PascalCase, for example `BillingService`.\n\nNONCE=81726354",
+  "cost_usd": 0.0436474,
+  "exit_code": 0,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude-home\\projects\\sessions\\d05eef27-cfad-4af6-8669-bd6b90a2fd77.jsonl"
+}
