@@ -31,10 +31,18 @@ const ALL: Scenario[] = [
   { name: "main-list", agent: null, question: Q_LIST, note: "baseline: the main conversation lists what it knows" },
   { name: "inherit-list", agent: "probe-inherit", question: Q_LIST, note: "subagent, no tools field, no skills field" },
   { name: "restricted-list", agent: "probe-restricted", question: Q_LIST, note: "subagent, tools: Read, no skills field" },
+  { name: "skilltool-list", agent: "probe-skilltool", question: Q_LIST, note: "subagent, tools: Read, Skill, no skills field" },
   { name: "preload-list", agent: "probe-preload", question: Q_LIST, note: "subagent, tools: Read, skills: [skill-alpha]" },
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
+  { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },
 ];
+
+function cleanEnv(): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {};
+  for (const [k, v] of Object.entries(process.env)) if (!/^CLAUDE/.test(k)) env[k] = v;
+  return { ...env, ...ISOLATION_ENV };
+}
 
 const textOf = (c: any): string => (typeof c === "string" ? c : Array.isArray(c) ? c.map((x) => (typeof x === "string" ? x : x?.text ?? "")).join("\n") : JSON.stringify(c ?? ""));
 const marksIn = (table: Record<string, string>, text: string) => Object.keys(table).filter((k) => text.includes(table[k]));
@@ -86,7 +94,7 @@ async function runScenario(s: Scenario) {
       settings: ISOLATION_SETTINGS,
       allowedTools: ["Agent", "Skill", "Read"],
       permissionMode: "dontAsk",
-      env: { ...process.env, ...ISOLATION_ENV },
+      env: cleanEnv(),
     },
   });
   for await (const a of q as AsyncIterable<any>) {

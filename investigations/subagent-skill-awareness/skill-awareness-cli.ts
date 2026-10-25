@@ -34,8 +34,10 @@ const ALL: Scenario[] = [
   { name: "main-list", agent: null, question: Q_LIST, note: "baseline: the main conversation lists what it knows" },
   { name: "inherit-list", agent: "probe-inherit", question: Q_LIST, note: "subagent, no tools field, no skills field" },
   { name: "restricted-list", agent: "probe-restricted", question: Q_LIST, note: "subagent, tools: Read, no skills field" },
+  { name: "skilltool-list", agent: "probe-skilltool", question: Q_LIST, note: "subagent, tools: Read, Skill, no skills field" },
   { name: "preload-list", agent: "probe-preload", question: Q_LIST, note: "subagent, tools: Read, skills: [skill-alpha]" },
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
+  { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },
 ];
 

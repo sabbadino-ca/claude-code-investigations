@@ -1,0 +1,71 @@
+{
+  "scenario": "restricted-invoke",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.310",
+  "claude_bin": "/root/claude-cli-2.1.310/node_modules/@anthropic-ai/claude-code-linux-x64/claude",
+  "agent": "probe-restricted",
+  "note": "subagent with tools: Read is asked to invoke skill-beta",
+  "question": "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. If you have no Skill tool, call nothing and reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "anywhere_body": []
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a8d62d9e6e3334dc0.jsonl",
+      "context_desc": [],
+      "context_body": [],
+      "carriers": [],
+      "anywhere_desc": [],
+      "anywhere_body": []
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [],
+  "answer_tools_line": "TOOLS=Read",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "SKILL_TOOL_UNAVAILABLE\nTOOLS=Read",
+  "cost_usd": 0.0326571,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/7eb43302-c03f-40ed-8746-ca683afb3471.jsonl"
+}

@@ -1,0 +1,6 @@
+{"t":725,"src":"stream","event":"system:init","cli":"2.1.310","model":"claude-sonnet-5-5","skills":["skill-alpha","skill-beta","skill-gamma","skill-hidden","deep-research","design","design-sync","dataviz","update-config","verify","debug","code-review","simplify","batch","fewer-permission-prompts","doctor","loop","schedule","claude-api","workflow-authoring","run","run-skill-generator","plugin-authoring"]}
+{"t":4153,"src":"agent","event":"tool_use","name":"Skill","input":{"skill":"skill-beta"}}
+{"t":4181,"src":"agent","event":"tool_result","is_error":false,"text":"Launching skill: skill-beta"}
+{"t":4270,"src":"stream","event":"RESULT","result":"The probe agent is still running, so I don't have its result yet. I'll pass along its final message once it finishes.","cost":0.0256997}
+{"t":5415,"src":"stream","event":"system:init","cli":"2.1.310","model":"claude-sonnet-5-5","skills":["skill-alpha","skill-beta","skill-gamma","skill-hidden","deep-research","design","design-sync","dataviz","update-config","verify","debug","code-review","simplify","batch","fewer-permission-prompts","doctor","loop","schedule","claude-api","workflow-authoring","run","run-skill-generator","plugin-authoring"]}
+{"t":6691,"src":"stream","event":"RESULT","result":"BODY_MARK=30478261\nTOOLS=Read, Skill","cost":0.030578}

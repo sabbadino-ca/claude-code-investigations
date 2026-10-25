@@ -1,0 +1,96 @@
+{
+  "scenario": "inherit-invoke",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.310",
+  "claude_bin": "/root/claude-cli-2.1.310/node_modules/@anthropic-ai/claude-code-linux-x64/claude",
+  "agent": "probe-inherit",
+  "note": "subagent without skills field is asked to invoke skill-beta",
+  "question": "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. If you have no Skill tool, call nothing and reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "anywhere_body": [
+      "skill-beta"
+    ]
+  },
+  "subagent_context": [
+    {
+      "file": "agent-aa80c95dbc1b03a9b.jsonl",
+      "context_desc": [
+        "skill-alpha",
+        "skill-beta",
+        "skill-gamma"
+      ],
+      "context_body": [],
+      "carriers": [
+        "attachment:skill_listing",
+        "api-request-blob"
+      ],
+      "anywhere_desc": [
+        "skill-alpha",
+        "skill-beta",
+        "skill-gamma"
+      ],
+      "anywhere_body": [
+        "skill-beta"
+      ]
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-beta"
+  ],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ShareOnboardingGuide, Skill, ToolSearch, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch",
+  "subagent_tool_calls": [
+    "Skill {\"skill\":\"skill-beta\"}"
+  ],
+  "subagent_skill_tool_results": [
+    {
+      "is_error": false,
+      "body_marks": [],
+      "text": "Launching skill: skill-beta"
+    }
+  ],
+  "final_answer": "BODY_MARK=30478261\n\nTOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ShareOnboardingGuide, Skill, ToolSearch, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch",
+  "cost_usd": 0.0618962,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/ae620daa-06f4-4507-b12c-57e95d5108a1.jsonl"
+}
