@@ -1,7 +1,8 @@
 /**
  * Does filtering the main session's skills hide them from main but not from subagents, in headless streaming-input
  * mode: `claude -p --input-format stream-json`, with an `initialize` control request carrying `skills: [...]` (the
- * message the Agent SDK sends for its `skills` option; there is no command-line flag). This is not `claude -p "prompt"`:
+ * message the Agent SDK sends for its `skills` option; there is no command-line flag). That protocol is undocumented
+ * (taken from the SDK source) and may change. This is not `claude -p "prompt"`:
  * stdin stays open until the result arrives, then is closed. skill-awareness-cli.ts runs the one-shot mode and
  * skill-awareness-sdk.ts the SDK.
  *
