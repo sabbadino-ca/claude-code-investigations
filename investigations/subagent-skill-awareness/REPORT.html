@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investigation report</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<!-- Investigation report. Keep this structure and the <style> above; fill every section, replace each <em>…</em> placeholder. -->
+<h1><em>Question under test</em></h1>
+
+<h2>Question</h2>
+<p>Claim under test, from <a href="https://code.claude.com/docs/en/..."><em>doc URL</em></a>:</p>
+<blockquote><p><em>quoted sentence</em></p></blockquote>
+<p><em>What outcome confirms it, what refutes it, and which run modes are tested (Agent SDK, <code>claude -p</code>, interactive).</em></p>
+
+<h2>Setup</h2>
+<pre><code><em>topology, e.g. main --Agent--&gt; subagent</em></code></pre>
+<ul>
+  <li><a href=".claude/agents/example.md">.claude/agents/<em>example</em>.md</a>: <em>what this fixture file does and what it proves</em></li>
+  <li><a href="prompts/example-main.md">prompts/<em>example</em>-main.md</a>: <em>the main prompt</em></li>
+  <li><a href="example.ts"><em>driver</em>.ts</a>: <em>what the driver runs and records</em></li>
+  <li><em>Env vars</em></li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                # repo root
+node lib/claude-home.mjs investigations/&lt;slug&gt; --check     # isolation smoke test
+npx tsx investigations/&lt;slug&gt;/&lt;driver&gt;.ts [args]</code></pre>
+<p>Results: <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-&lt;driver&gt;/</code> (summary headed with the Claude Code versions that ran, plus <code>run.json</code>). Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/YYYY-MM-DD-HHMM-driver/summary.md"><em>YYYY-MM-DD-HHMM-driver</em></a></td><td><em>driver</em>.ts</td><td><em>2.1.x via Agent SDK 0.x / via <code>claude -p</code></em></td><td><em>outcome</em></td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<p><em>Per scenario, with key timings and anything surprising.</em></p>
+
+<h2>Conclusion</h2>
+<p><em>The answer to the question.</em></p>
+
+<h2>Not tested</h2>
+<p><em>What these runs don't cover.</em></p>
+</body>
+</html>
