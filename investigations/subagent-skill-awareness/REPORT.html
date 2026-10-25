@@ -46,7 +46,7 @@
 
 <blockquote>
 <p><strong>Key finding: a subagent gets the skill names and descriptions only if it has the Skill tool.</strong> With no <code>tools:</code> field it inherits the tool and gets the same <code>skill_listing</code> as the main conversation, with no <code>skills:</code> needed. With a <code>tools:</code> list, <code>Skill</code> must be in it; with <code>tools: Read</code> alone the subagent's context held no skill content. The <code>skills:</code> field does not change this: it injects bodies only and gives no listing. Same result in <code>claude -p</code> and the Agent SDK, Claude Code 2.1.310.</p>
-<p><strong>Hiding a skill from main but not from a subagent works only through the Agent SDK <code>skills</code> option</strong> (tested with <code>skills: ['skill-beta']</code>): main then lists only that skill, while subagents still got the full listing and could preload filtered-out skills through their own <code>skills:</code>. No frontmatter flag did this: <code>disable-model-invocation: true</code> hid a skill from both, and <code>user-invocable: false</code> from neither.</p>
+<p><strong>Hiding a skill from main but not from a subagent works only through the <code>skills</code> filter</strong> (tested with <code>skills: ['skill-beta']</code>), which is the Agent SDK <code>skills</code> option or, in headless streaming-input mode (<code>claude -p --input-format stream-json</code>), an <code>initialize</code> control request carrying <code>skills</code>. There is no command-line flag for it, and plain <code>claude -p "prompt"</code> has no way to set it: main then lists only that skill, while subagents still got the full listing and could preload filtered-out skills through their own <code>skills:</code>. No frontmatter flag did this: <code>disable-model-invocation: true</code> hid a skill from both, and <code>user-invocable: false</code> from neither.</p>
 </blockquote>
 
 <h2>Question</h2>
@@ -75,6 +75,7 @@ main (baseline: answers itself, no subagent)</code></pre>
   <li><a href="prompts/main.md">prompts/main.md</a>: the strict main script. Either call the Agent tool once and return its answer verbatim, or (baseline) answer directly.</li>
   <li>Two questions, in both drivers: <em>list</em> asks the agent to list every skill it knows (name | description, verbatim), its tools, and any BODY_MARK it can see, using no tool. <em>invoke</em> asks it to call the Skill tool for skill-beta and report the BODY_MARK, or say SKILL_TOOL_UNAVAILABLE.</li>
   <li><a href="skill-awareness-cli.ts">skill-awareness-cli.ts</a>: spawns the binary at <code>CLAUDE_BIN</code> (default <code>~/.local/bin/claude.exe</code>) with <code>-p --output-format stream-json --verbose --model sonnet --setting-sources project --allowedTools Agent Skill Read --permission-mode dontAsk</code>.</li>
+  <li><a href="skill-awareness-cli-stream.ts">skill-awareness-cli-stream.ts</a>: <code>claude -p --input-format stream-json</code>, stdin kept open until the result; sends the <code>initialize</code> control request with <code>skills</code> where a scenario has a filter. Same tools, model and permission mode as the one-shot driver.</li>
   <li><a href="skill-awareness-sdk.ts">skill-awareness-sdk.ts</a>: <code>query()</code> with the same model, tools and permission mode, <code>settingSources: ["project"]</code>, and <code>skills</code> left at its default.</li>
   <li>Env: both drivers strip inherited <code>CLAUDE*</code> variables and add <code>ISOLATION_ENV</code>. <code>CLAUDE_BIN</code> is read by the CLI driver in the parent before stripping.</li>
 </ul>
@@ -84,7 +85,8 @@ main (baseline: answers itself, no subagent)</code></pre>
 <pre><code>npm install                                                # repo root
 node lib/claude-home.mjs investigations/subagent-skill-awareness --check
 CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill-awareness-cli.ts [scenario ...]
-npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario ...]</code></pre>
+npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario ...]
+CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill-awareness-cli-stream.ts [scenario ...]</code></pre>
 <p>Scenarios: <code>main-list inherit-list restricted-list skilltool-list preload-list inherit-invoke skilltool-invoke restricted-invoke</code>. The CLI binary was installed with <code>npm install @anthropic-ai/claude-code@2.1.310</code> into its own directory and pointed to through <code>CLAUDE_BIN</code>.</p>
 
 <h2>Runs</h2>
@@ -98,6 +100,7 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
 <tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-25-1600-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">2026-10-25-1600-skill-awareness-cli-stream</a></td><td>skill-awareness-cli-stream.ts</td><td>2.1.310 via <code>claude -p --input-format stream-json</code></td><td>final plus the filter scenarios; 7 scenarios</td><td>same rows as the SDK filter run</td></tr>
 <tr><td><a href="results/2026-10-25-1548-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1548-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>final plus the <code>sdkSkills</code> field; 6 filter-* scenarios</td><td>see "Agent SDK skills option" below</td></tr>
 <tr><td><a href="results/2026-10-25-1539-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1539-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 7 scenarios</td><td>same as the CLI run</td></tr>
 </tbody></table></div>
@@ -157,8 +160,8 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
   <li>Among the skill frontmatter flags tried, none hid a skill from main while making it available to a subagent. <code>disable-model-invocation: true</code> hid it from both. <code>user-invocable: false</code> hid it from neither. The SDK <code>skills</code> option, below, did.</li>
 </ul>
 
-<h3>Agent SDK <code>skills: ['skill-beta']</code> option (SDK only)</h3>
-<p>These scenarios exist only in the SDK driver (<code>sdkSkills</code> field), since <code>claude -p</code> was not given an equivalent. Everything else is as in the earlier tables.</p>
+<h3><code>skills: ['skill-beta']</code> filter: Agent SDK and headless streaming input</h3>
+<p>Run by the SDK driver (<code>sdkSkills</code> field) and by <a href="skill-awareness-cli-stream.ts">skill-awareness-cli-stream.ts</a>, which spawns <code>claude -p --input-format stream-json</code> and writes an <code>initialize</code> control request with <code>skills</code> to stdin before the user message, then closes stdin when the result arrives. That is the message the SDK sends for its option; it is not a one-shot <code>claude -p "prompt"</code> run. Both drivers gave the same rows (the streaming driver also ran an unfiltered main baseline, which listed alpha, beta, gamma and nouser). Everything else is as in the earlier tables.</p>
 <div class="table"><table>
 <thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>body in its context</th></tr></thead>
 <tbody>
@@ -182,7 +185,8 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <ul>
   <li>Interactive terminal mode.</li>
   <li><code>user-invocable: false</code> together with <code>disable-model-invocation: true</code>.</li>
-  <li>An equivalent of the SDK <code>skills</code> filter in <code>claude -p</code>, if one exists.</li>
+  <li>A command-line flag for the filter: none was found in <code>--help</code> or the SDK source, but this was not searched exhaustively.</li>
+  <li>Several turns in one streaming-input process; each scenario sent one user message.</li>
   <li><code>disallowedTools: [Skill]</code> in place of a <code>tools:</code> allowlist.</li>
   <li><code>skills:</code> listing both a hidden and a normal skill (whether the normal one still loads), and the debug-log warning for a skipped skill.</li>
   <li>User-level and plugin skills as seen by subagents; only project skills carried marks.</li>
