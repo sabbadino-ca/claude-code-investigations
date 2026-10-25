@@ -26,7 +26,7 @@ const Q_INVOKE =
   "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. " +
   "If you have no Skill tool, call nothing and reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.";
 
-type Scenario = { name: string; agent: string | null; question: string; note: string };
+type Scenario = { name: string; agent: string | null; question: string; note: string; sdkSkills?: string[] };
 const ALL: Scenario[] = [
   { name: "main-list", agent: null, question: Q_LIST, note: "baseline: the main conversation lists what it knows" },
   { name: "inherit-list", agent: "probe-inherit", question: Q_LIST, note: "subagent, no tools field, no skills field" },
@@ -39,6 +39,13 @@ const ALL: Scenario[] = [
   { name: "inherit-nouser-list", agent: "probe-inherit-nouser", question: Q_LIST, note: "no tools field, skills: [skill-nouser] (user-invocable: false)" },
   { name: "skilltool-nouser-list", agent: "probe-skilltool-nouser", question: Q_LIST, note: "tools: Read, Skill, skills: [skill-nouser]" },
   { name: "restricted-nouser-list", agent: "probe-restricted-nouser", question: Q_LIST, note: "tools: Read, skills: [skill-nouser]" },
+  // SDK `skills` option: filters the main session's listing to the named skills (the type comment says subagents use their own definition)
+  { name: "filter-main-list", agent: null, question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; main lists what it knows" },
+  { name: "filter-inherit-list", agent: "probe-inherit", question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; no tools field, no skills field" },
+  { name: "filter-skilltool-list", agent: "probe-skilltool", question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; tools: Read, Skill" },
+  { name: "filter-restricted-list", agent: "probe-restricted", question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; tools: Read" },
+  { name: "filter-preload-list", agent: "probe-preload", question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; tools: Read, skills: [skill-alpha] (alpha filtered out of main)" },
+  { name: "filter-hidden-preload-list", agent: "probe-restricted-nouser", question: Q_LIST, sdkSkills: ["skill-beta"], note: "SDK skills: [skill-beta]; tools: Read, skills: [skill-nouser] (nouser filtered out of main)" },
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
   { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },
@@ -100,6 +107,7 @@ async function runScenario(s: Scenario) {
       settings: ISOLATION_SETTINGS,
       allowedTools: ["Agent", "Skill", "Read"],
       permissionMode: "dontAsk",
+      ...(s.sdkSkills ? { skills: s.sdkSkills } : {}),
       env: cleanEnv(),
     },
   });

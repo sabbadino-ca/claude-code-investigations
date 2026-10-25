@@ -46,6 +46,7 @@
 
 <blockquote>
 <p><strong>Key finding: a subagent gets the skill names and descriptions only if it has the Skill tool.</strong> With no <code>tools:</code> field it inherits the tool and gets the same <code>skill_listing</code> as the main conversation, with no <code>skills:</code> needed. With a <code>tools:</code> list, <code>Skill</code> must be in it; with <code>tools: Read</code> alone the subagent's context held no skill content. The <code>skills:</code> field does not change this: it injects bodies only and gives no listing. Same result in <code>claude -p</code> and the Agent SDK, Claude Code 2.1.310.</p>
+<p><strong>Hiding a skill from main but not from a subagent works only through the Agent SDK <code>skills</code> option</strong> (tested with <code>skills: ['skill-beta']</code>): main then lists only that skill, while subagents still got the full listing and could preload filtered-out skills through their own <code>skills:</code>. No frontmatter flag did this: <code>disable-model-invocation: true</code> hid a skill from both, and <code>user-invocable: false</code> from neither.</p>
 </blockquote>
 
 <h2>Question</h2>
@@ -97,6 +98,7 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
 <tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-25-1548-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1548-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>final plus the <code>sdkSkills</code> field; 6 filter-* scenarios</td><td>see "Agent SDK skills option" below</td></tr>
 <tr><td><a href="results/2026-10-25-1539-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1539-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 7 scenarios</td><td>same as the CLI run</td></tr>
 </tbody></table></div>
 <p>An SDK run made before the 15:10 one was discarded: the driver passed the whole environment through, and the outer session's <code>CLAUDE_CODE_SESSION_ID</code> made every scenario log under one session id, mixing subagent transcripts. The SDK driver now strips <code>CLAUDE*</code> variables, as the CLI driver does. The shared harness was also changed for these runs: with no login file and <code>ANTHROPIC_BASE_URL</code> set (host-managed auth in the cloud container), <code>lib/claude-home.mjs</code> warns and skips the credential sync instead of throwing. The SDK pin in the root <code>package.json</code> was bumped from 0.3.296 to 0.3.310.</p>
@@ -152,7 +154,25 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <ul>
   <li>A <code>user-invocable: false</code> skill is <strong>in the main conversation's listing</strong>, so the flag does not hide it from main. It hides it from the user's slash menu, not from the model.</li>
   <li>Naming it in <code>skills:</code> did preload its body in all three tool variants, including <code>tools: Read</code>, whose subagent had no listing. Unlike <code>disable-model-invocation: true</code>, this flag does not block preloading.</li>
-  <li>Across the skills tried here, no combination hid a skill from main while making it available to a subagent. <code>disable-model-invocation: true</code> hid it from both. <code>user-invocable: false</code> hid it from neither.</li>
+  <li>Among the skill frontmatter flags tried, none hid a skill from main while making it available to a subagent. <code>disable-model-invocation: true</code> hid it from both. <code>user-invocable: false</code> hid it from neither. The SDK <code>skills</code> option, below, did.</li>
+</ul>
+
+<h3>Agent SDK <code>skills: ['skill-beta']</code> option (SDK only)</h3>
+<p>These scenarios exist only in the SDK driver (<code>sdkSkills</code> field), since <code>claude -p</code> was not given an equivalent. Everything else is as in the earlier tables.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>body in its context</th></tr></thead>
+<tbody>
+<tr><td>main</td><td>n/a</td><td><strong>beta only</strong></td><td>none</td></tr>
+<tr><td>probe-inherit</td><td>no <code>tools:</code>, no <code>skills:</code></td><td><strong>alpha, beta, gamma, nouser</strong></td><td>none</td></tr>
+<tr><td>probe-skilltool</td><td><code>tools: Read, Skill</code></td><td>alpha, beta, gamma, nouser</td><td>none</td></tr>
+<tr><td>probe-restricted</td><td><code>tools: Read</code></td><td>none</td><td>none</td></tr>
+<tr><td>probe-preload</td><td><code>tools: Read</code>, <code>skills: [skill-alpha]</code></td><td>none</td><td><strong>alpha</strong></td></tr>
+<tr><td>probe-restricted-nouser</td><td><code>tools: Read</code>, <code>skills: [skill-nouser]</code></td><td>none</td><td><strong>nouser</strong></td></tr>
+</tbody></table></div>
+<ul>
+  <li>The option filtered main's listing to the named skill. It did not filter the subagents' listing: they saw the same four skills as without the option, so skills hidden from main stayed visible to subagents that have the Skill tool.</li>
+  <li>A skill filtered out of main (alpha, nouser) was still preloaded into a subagent that named it in <code>skills:</code>.</li>
+  <li>Not run here: whether main's Skill tool rejects a filtered-out skill (the SDK type comment says it does), and whether the main model's own conversation shows any trace of the filtered skills elsewhere.</li>
 </ul>
 
 <h2>Conclusion</h2>
@@ -161,11 +181,12 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <h2>Not tested</h2>
 <ul>
   <li>Interactive terminal mode.</li>
-  <li><code>user-invocable: false</code> together with <code>disable-model-invocation: true</code>, and the SDK <code>skills</code> option as a way to hide a skill from main only.</li>
+  <li><code>user-invocable: false</code> together with <code>disable-model-invocation: true</code>.</li>
+  <li>An equivalent of the SDK <code>skills</code> filter in <code>claude -p</code>, if one exists.</li>
   <li><code>disallowedTools: [Skill]</code> in place of a <code>tools:</code> allowlist.</li>
   <li><code>skills:</code> listing both a hidden and a normal skill (whether the normal one still loads), and the debug-log warning for a skipped skill.</li>
   <li>User-level and plugin skills as seen by subagents; only project skills carried marks.</li>
-  <li>The SDK <code>skills</code> option (<code>'all'</code> or a list), and whether a main-session filter reaches subagents.</li>
+  <li>The SDK <code>skills</code> option as <code>'all'</code>, with a list of several names, or with plugin-qualified names.</li>
   <li>Background subagents, nested subagents, and built-in agent types.</li>
   <li>The 32-name cap on <code>skills:</code>, and the effect of many skills on the listing's size.</li>
   <li>Other Claude Code versions; only 2.1.310 ran.</li>
