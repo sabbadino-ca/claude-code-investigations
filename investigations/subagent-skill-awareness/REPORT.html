@@ -69,6 +69,8 @@ main (baseline: answers itself, no subagent)</code></pre>
   <li><a href=".claude/agents/probe-restricted.md">probe-restricted</a>: <code>tools: Read</code>, no <code>skills:</code>.</li>
   <li><a href=".claude/agents/probe-preload.md">probe-preload</a>: <code>tools: Read</code>, <code>skills: [skill-alpha]</code>.</li>
   <li><a href=".claude/agents/probe-inherit-hidden.md">probe-inherit-hidden</a>, <a href=".claude/agents/probe-skilltool-hidden.md">probe-skilltool-hidden</a>, <a href=".claude/agents/probe-restricted-hidden.md">probe-restricted-hidden</a>: the same three tool variants (none, <code>Read, Skill</code>, <code>Read</code>), each with <code>skills: [skill-hidden]</code>.</li>
+  <li><a href=".claude/skills/skill-nouser/SKILL.md">skill-nouser</a>: marks as above, with <code>user-invocable: false</code>. Added after the first runs; the earlier runs' listings do not include it.</li>
+  <li><a href=".claude/agents/probe-inherit-nouser.md">probe-inherit-nouser</a>, <a href=".claude/agents/probe-skilltool-nouser.md">probe-skilltool-nouser</a>, <a href=".claude/agents/probe-restricted-nouser.md">probe-restricted-nouser</a>: the three tool variants, each with <code>skills: [skill-nouser]</code>.</li>
   <li><a href="prompts/main.md">prompts/main.md</a>: the strict main script. Either call the Agent tool once and return its answer verbatim, or (baseline) answer directly.</li>
   <li>Two questions, in both drivers: <em>list</em> asks the agent to list every skill it knows (name | description, verbatim), its tools, and any BODY_MARK it can see, using no tool. <em>invoke</em> asks it to call the Skill tool for skill-beta and report the BODY_MARK, or say SKILL_TOOL_UNAVAILABLE.</li>
   <li><a href="skill-awareness-cli.ts">skill-awareness-cli.ts</a>: spawns the binary at <code>CLAUDE_BIN</code> (default <code>~/.local/bin/claude.exe</code>) with <code>-p --output-format stream-json --verbose --model sonnet --setting-sources project --allowedTools Agent Skill Read --permission-mode dontAsk</code>.</li>
@@ -94,6 +96,8 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
 <tr><td><a href="results/2026-10-25-1510-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1510-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>earlier, 6 scenarios (no probe-skilltool)</td><td>same as the final run for the six scenarios it has</td></tr>
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
+<tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-25-1539-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1539-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 7 scenarios</td><td>same as the CLI run</td></tr>
 </tbody></table></div>
 <p>An SDK run made before the 15:10 one was discarded: the driver passed the whole environment through, and the outer session's <code>CLAUDE_CODE_SESSION_ID</code> made every scenario log under one session id, mixing subagent transcripts. The SDK driver now strips <code>CLAUDE*</code> variables, as the CLI driver does. The shared harness was also changed for these runs: with no login file and <code>ANTHROPIC_BASE_URL</code> set (host-managed auth in the cloud container), <code>lib/claude-home.mjs</code> warns and skips the credential sync instead of throwing. The SDK pin in the root <code>package.json</code> was bumped from 0.3.296 to 0.3.310.</p>
 
@@ -132,12 +136,32 @@ npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario
   <li>The agents ran without an error. The docs say a skill with <code>disable-model-invocation: true</code> cannot be preloaded and that a missing or disabled skill is skipped with a warning in the debug log. The debug log was not read in these runs.</li>
 </ul>
 
+<h3><code>user-invocable: false</code> skill, and <code>skills: [skill-nouser]</code></h3>
+<p>CLI and SDK gave the same result. The first four rows re-ran the baseline and the plain probes with the new skill in the fixture.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>skill-nouser body in its context</th></tr></thead>
+<tbody>
+<tr><td>main (baseline)</td><td>n/a</td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-inherit</td><td>no <code>tools:</code>, no <code>skills:</code></td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-skilltool</td><td><code>tools: Read, Skill</code></td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-restricted</td><td><code>tools: Read</code></td><td>none</td><td>none</td></tr>
+<tr><td>probe-inherit-nouser</td><td>no <code>tools:</code>, <code>skills: [skill-nouser]</code></td><td>alpha, beta, gamma, nouser</td><td>yes</td></tr>
+<tr><td>probe-skilltool-nouser</td><td><code>tools: Read, Skill</code>, <code>skills: [skill-nouser]</code></td><td>alpha, beta, gamma, nouser</td><td>yes</td></tr>
+<tr><td>probe-restricted-nouser</td><td><code>tools: Read</code>, <code>skills: [skill-nouser]</code></td><td>none</td><td>yes</td></tr>
+</tbody></table></div>
+<ul>
+  <li>A <code>user-invocable: false</code> skill is <strong>in the main conversation's listing</strong>, so the flag does not hide it from main. It hides it from the user's slash menu, not from the model.</li>
+  <li>Naming it in <code>skills:</code> did preload its body in all three tool variants, including <code>tools: Read</code>, whose subagent had no listing. Unlike <code>disable-model-invocation: true</code>, this flag does not block preloading.</li>
+  <li>Across the skills tried here, no combination hid a skill from main while making it available to a subagent. <code>disable-model-invocation: true</code> hid it from both. <code>user-invocable: false</code> hid it from neither.</li>
+</ul>
+
 <h2>Conclusion</h2>
 <p>In Claude Code 2.1.310, in both <code>claude -p</code> and the Agent SDK, a subagent whose frontmatter has no <code>tools:</code> field receives the same skill listing (names and descriptions of model-invocable skills) as the main conversation, and can load a skill with the Skill tool, without naming any skill in <code>skills:</code>. When <code>tools:</code> is set, the listing is present only if <code>Skill</code> is in it; in the run with <code>tools: Read</code> alone, the subagent's context held no skill content. The <code>skills:</code> field does something else: it injects the full body of the named skills at startup and gave no name-and-description entry for them. The docs cover the Skill-tool discovery and the effect of omitting <code>Skill</code> from <code>tools</code>; they do not say the listing itself is what is withheld, which the transcripts show.</p>
 
 <h2>Not tested</h2>
 <ul>
   <li>Interactive terminal mode.</li>
+  <li><code>user-invocable: false</code> together with <code>disable-model-invocation: true</code>, and the SDK <code>skills</code> option as a way to hide a skill from main only.</li>
   <li><code>disallowedTools: [Skill]</code> in place of a <code>tools:</code> allowlist.</li>
   <li><code>skills:</code> listing both a hidden and a normal skill (whether the normal one still loads), and the debug-log warning for a skipped skill.</li>
   <li>User-level and plugin skills as seen by subagents; only project skills carried marks.</li>

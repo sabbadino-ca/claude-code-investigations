@@ -16,8 +16,8 @@ import { mkdirSync, writeFileSync, appendFileSync, readFileSync, readdirSync, ex
 import { join } from "node:path";
 import { ISOLATION_ENV, ISOLATION_SETTINGS, SESSIONS_DIR, RESULTS_DIR, loadPrompt, beginRun, recordClaudeVersion, writeSummary } from "../../lib/claude-home.mjs";
 
-const DESC: Record<string, string> = { "skill-alpha": "41730582", "skill-beta": "62915047", "skill-gamma": "17384926", "skill-hidden": "58204713" };
-const BODY: Record<string, string> = { "skill-alpha": "85206314", "skill-beta": "30478261", "skill-gamma": "96150738", "skill-hidden": "24690571" };
+const DESC: Record<string, string> = { "skill-alpha": "41730582", "skill-beta": "62915047", "skill-gamma": "17384926", "skill-hidden": "58204713", "skill-nouser": "73051846" };
+const BODY: Record<string, string> = { "skill-alpha": "85206314", "skill-beta": "30478261", "skill-gamma": "96150738", "skill-hidden": "24690571", "skill-nouser": "19467203" };
 
 const Q_LIST =
   "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. " +
@@ -36,6 +36,9 @@ const ALL: Scenario[] = [
   { name: "inherit-hidden-list", agent: "probe-inherit-hidden", question: Q_LIST, note: "no tools field, skills: [skill-hidden]" },
   { name: "skilltool-hidden-list", agent: "probe-skilltool-hidden", question: Q_LIST, note: "tools: Read, Skill, skills: [skill-hidden]" },
   { name: "restricted-hidden-list", agent: "probe-restricted-hidden", question: Q_LIST, note: "tools: Read, skills: [skill-hidden]" },
+  { name: "inherit-nouser-list", agent: "probe-inherit-nouser", question: Q_LIST, note: "no tools field, skills: [skill-nouser] (user-invocable: false)" },
+  { name: "skilltool-nouser-list", agent: "probe-skilltool-nouser", question: Q_LIST, note: "tools: Read, Skill, skills: [skill-nouser]" },
+  { name: "restricted-nouser-list", agent: "probe-restricted-nouser", question: Q_LIST, note: "tools: Read, skills: [skill-nouser]" },
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
   { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },

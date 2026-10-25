@@ -1,0 +1,46 @@
+{
+  "driver": "skill-awareness-cli.ts",
+  "args": [
+    "main-list",
+    "inherit-list",
+    "skilltool-list",
+    "restricted-list",
+    "inherit-nouser-list",
+    "skilltool-nouser-list",
+    "restricted-nouser-list"
+  ],
+  "investigation": "investigations/subagent-skill-awareness",
+  "started": "2026-10-25T15:37:05.627Z",
+  "versions": {
+    "node": "v22.22.0",
+    "claude_code": {
+      "cli": "2.1.310"
+    }
+  },
+  "git": {
+    "commit": "9a3d71f081acbcfee173e89a0defe88d366b4a83",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "884aad4209695804",
+    "lib/hook-log.mjs": "c67f43c1bf7248c6",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit-hidden.md": "7dd5b6bf9b0a75f1",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit-nouser.md": "ce5e1d593e287dd7",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit.md": "79aadd9c8147eba4",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-preload.md": "ae862e17414bca10",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted-hidden.md": "9b40cc87f084e16b",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted-nouser.md": "90564953d6ed2ab2",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted.md": "5765fbd88c156b1a",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool-hidden.md": "e444355192c7ca47",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool-nouser.md": "4832a13b5b09771b",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool.md": "fd6203e824af48b0",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-alpha/SKILL.md": "0e6c37bd0d6c8336",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-beta/SKILL.md": "5a973e6f8762f644",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-gamma/SKILL.md": "302b386e7187fe84",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-hidden/SKILL.md": "fffe70567f97eeac",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-nouser/SKILL.md": "9a1000492cc18742",
+    "investigations/subagent-skill-awareness/prompts/main.md": "9a6871f3a5bbef7e",
+    "investigations/subagent-skill-awareness/skill-awareness-cli.ts": "3a7c6fd15fbf50cd",
+    "investigations/subagent-skill-awareness/skill-awareness-sdk.ts": "7ef625b9448b988f"
+  }
+}
