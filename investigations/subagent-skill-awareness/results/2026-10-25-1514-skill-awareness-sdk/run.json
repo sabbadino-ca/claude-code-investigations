@@ -1,0 +1,32 @@
+{
+  "driver": "skill-awareness-sdk.ts",
+  "args": [],
+  "investigation": "investigations/subagent-skill-awareness",
+  "started": "2026-10-25T15:14:29.223Z",
+  "versions": {
+    "node": "v22.22.0",
+    "claude_code": {
+      "sdk": "2.1.310"
+    },
+    "agent_sdk": "0.3.310"
+  },
+  "git": {
+    "commit": "2d68b74eb1e123b7d721eb2f75323359b5b57003",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "884aad4209695804",
+    "lib/hook-log.mjs": "c67f43c1bf7248c6",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit.md": "79aadd9c8147eba4",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-preload.md": "ae862e17414bca10",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted.md": "5765fbd88c156b1a",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool.md": "fd6203e824af48b0",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-alpha/SKILL.md": "0e6c37bd0d6c8336",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-beta/SKILL.md": "5a973e6f8762f644",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-gamma/SKILL.md": "302b386e7187fe84",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-hidden/SKILL.md": "fffe70567f97eeac",
+    "investigations/subagent-skill-awareness/prompts/main.md": "9a6871f3a5bbef7e",
+    "investigations/subagent-skill-awareness/skill-awareness-cli.ts": "269d799ba172ba2d",
+    "investigations/subagent-skill-awareness/skill-awareness-sdk.ts": "c038e04e6f197476"
+  }
+}

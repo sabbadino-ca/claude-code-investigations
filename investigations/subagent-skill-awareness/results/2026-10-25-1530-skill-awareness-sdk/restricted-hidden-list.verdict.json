@@ -1,0 +1,70 @@
+{
+  "scenario": "restricted-hidden-list",
+  "driver": "Agent SDK query()",
+  "bundled_claude_code_version": "2.1.310",
+  "agent": "probe-restricted-hidden",
+  "note": "tools: Read, skills: [skill-hidden]",
+  "question": "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. Then a line TOOLS= with the names of all tools you have. Then a line BODIES= with every BODY_MARK value you can see anywhere in your context, or NONE.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma"
+    ],
+    "anywhere_body": []
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a2837147a7fc7e328.jsonl",
+      "context_desc": [],
+      "context_body": [],
+      "carriers": [],
+      "anywhere_desc": [],
+      "anywhere_body": []
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [],
+  "answer_tools_line": "TOOLS=Read",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "No skills are visible in my context, so there is nothing to list under name | description.\n\nTOOLS=Read\n\nBODIES=NONE",
+  "cost_usd": 0.0340409,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/7e6185a7-b273-44e1-8a99-57a45edf6224.jsonl"
+}

@@ -1,0 +1,81 @@
+{
+  "scenario": "filter-hidden-preload-list",
+  "driver": "claude -p --input-format stream-json (no SDK)",
+  "initialize_skills": [
+    "skill-beta"
+  ],
+  "cli_version": "2.1.310",
+  "claude_bin": "/root/claude-cli-2.1.310/node_modules/@anthropic-ai/claude-code-linux-x64/claude",
+  "agent": "probe-restricted-nouser",
+  "note": "initialize skills: [skill-beta]; tools: Read, skills: [skill-nouser] (nouser filtered out of main)",
+  "question": "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. Then a line TOOLS= with the names of all tools you have. Then a line BODIES= with every BODY_MARK value you can see anywhere in your context, or NONE.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-beta"
+    ],
+    "anywhere_body": [
+      "skill-nouser"
+    ]
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a5a63724fac1a4892.jsonl",
+      "context_desc": [],
+      "context_body": [
+        "skill-nouser"
+      ],
+      "carriers": [
+        "user",
+        "api-request-blob"
+      ],
+      "anywhere_desc": [],
+      "anywhere_body": [
+        "skill-nouser"
+      ]
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-nouser"
+  ],
+  "answer_tools_line": "TOOLS=Read",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "Skills listed in my context: none. I have no skill listing, only the invoked skill body below.\n\nskill-nouser | (no description visible in my context; only its body was provided)\n\nTOOLS=Read\n\nBODIES=19467203",
+  "cost_usd": 0.0324566,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/524eab3e-b3f3-4722-8b56-ac64533c9d27.jsonl"
+}

@@ -1,0 +1,77 @@
+{
+  "scenario": "filter-hidden-preload-list",
+  "driver": "Agent SDK query()",
+  "bundled_claude_code_version": "2.1.310",
+  "agent": "probe-restricted-nouser",
+  "note": "SDK skills: [skill-beta]; tools: Read, skills: [skill-nouser] (nouser filtered out of main)",
+  "question": "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. Then a line TOOLS= with the names of all tools you have. Then a line BODIES= with every BODY_MARK value you can see anywhere in your context, or NONE.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-beta"
+    ],
+    "anywhere_body": [
+      "skill-nouser"
+    ]
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a10b87577b60f9e06.jsonl",
+      "context_desc": [],
+      "context_body": [
+        "skill-nouser"
+      ],
+      "carriers": [
+        "user",
+        "api-request-blob"
+      ],
+      "anywhere_desc": [],
+      "anywhere_body": [
+        "skill-nouser"
+      ]
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-nouser"
+  ],
+  "answer_tools_line": "TOOLS=Read",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "skill-nouser | NONE of a description is visible to me; the skill body was loaded directly, but no skill listing with descriptions is in my context.\n\nSkills with verbatim descriptions: none visible.\n\nTOOLS=Read\nBODIES=19467203",
+  "cost_usd": 0.0243607,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/1fce164d-f85c-49bd-9d9a-cdc1b2e3865a.jsonl"
+}

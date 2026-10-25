@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subagent skill awareness</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Controlling which skills the main conversation and subagents load</h1>
+
+<blockquote>
+<p><strong>Goal.</strong> Decide which skills the main conversation sees and which a subagent sees, <strong>without editing the skill</strong> (you may not own it). The control has to sit at the hosting level: a settings file, command-line arguments or SDK arguments. Skill and agent frontmatter can do part of it, but it needs edits to those files.</p>
+<p><strong>Rule that explains most results: a subagent gets the skill names and descriptions only if it has the Skill tool.</strong> A subagent with no <code>tools:</code> field in its frontmatter inherits every tool, the Skill tool included, so by default subagents see the same skill listing as the main conversation. With a <code>tools:</code> list, <code>Skill</code> must be in it; with <code>tools: Read</code> alone the subagent's context held no skill content. The <code>skills:</code> field does not change this: it injects bodies only and gives no listing.</p>
+<p><strong>Host-level controls, to hide a skill from main while a subagent keeps it (Claude Code 2.1.310):</strong></p>
+<ul>
+  <li><strong>Settings file (<code>skillOverrides</code>): does not meet the goal.</strong> <code>off</code> and <code>user-invocable-only</code> hid the skill from main and from the subagents alike, and <code>skills:</code> preload did not bring it back.</li>
+  <li><strong><code>claude -p</code>: only in a stateful mode.</strong> Plain <code>claude -p "prompt"</code> has no way to set a skill filter and there is no command-line flag. The filter works in headless streaming-input mode (<code>--input-format stream-json</code>), where the process stays up and reads stdin, so it is no longer one-shot, and an <code>initialize</code> control request carries <code>skills</code>. That protocol is undocumented as far as I found; the message was copied from the SDK source.</li>
+  <li><strong>Agent SDK <code>skills</code> option: works.</strong> Main lists only the named skills; subagents are unaffected and can still preload a filtered-out skill through their own <code>skills:</code>.</li>
+</ul>
+</blockquote>
+
+<h2>Question</h2>
+<p>This began as a question from the user: is a subagent aware of the skills (name and description) the way the main conversation is, or must it name them in its frontmatter? It widened into the goal above. The sub-agents docs page,
+<a href="https://code.claude.com/docs/en/sub-agents">code.claude.com/docs/en/sub-agents</a>, says the following (quoted from a WebFetch of the page, which summarises with a small model, so wording may be trimmed):</p>
+<blockquote>
+<p>"This field controls which skills are preloaded, not which skills the subagent can access: without it, the subagent can still discover and invoke project, user, and plugin skills through the Skill tool during execution. To prevent a subagent from invoking skills entirely, omit <code>Skill</code> from the <code>tools</code> list or add it to <code>disallowedTools</code>."</p>
+<p>"Each subagent starts with a fresh, isolated context window. It doesn't see your conversation history, the skills you've already invoked, or the files Claude has already read."</p>
+</blockquote>
+<p>Testable form: what does each subagent configuration have in its context (skill names and descriptions, skill bodies), and which skill-level or host-level control changes what main and subagents see? Run modes: Agent SDK and headless <code>claude -p</code> (one-shot and streaming-input). Interactive was not tested. Results are reported as outcomes, with no confirmed or refuted label.</p>
+
+<h2>Setup</h2>
+<pre><code>main --Agent--> probe-inherit | probe-skilltool | probe-restricted | probe-preload | ...
+main (baseline: answers itself, no subagent)</code></pre>
+<p>Each fixture skill carries <code>DESC_MARK=&lt;n&gt;</code> in its description and <code>BODY_MARK=&lt;n&gt;</code> in its body. A mark found in a context or an answer shows the text reached that model. The context is read from the transcripts: everything before the first assistant entry.</p>
+<ul>
+  <li><a href=".claude/skills/skill-alpha/SKILL.md">skill-alpha</a>, <a href=".claude/skills/skill-beta/SKILL.md">skill-beta</a>, <a href=".claude/skills/skill-gamma/SKILL.md">skill-gamma</a>: ordinary skills with unique marks.</li>
+  <li><a href=".claude/skills/skill-hidden/SKILL.md">skill-hidden</a>: same, with <code>disable-model-invocation: true</code>.</li>
+  <li><a href=".claude/agents/probe-inherit.md">probe-inherit</a>: no <code>tools:</code>, no <code>skills:</code>.</li>
+  <li><a href=".claude/agents/probe-skilltool.md">probe-skilltool</a>: <code>tools: Read, Skill</code>, no <code>skills:</code>.</li>
+  <li><a href=".claude/agents/probe-restricted.md">probe-restricted</a>: <code>tools: Read</code>, no <code>skills:</code>.</li>
+  <li><a href=".claude/agents/probe-preload.md">probe-preload</a>: <code>tools: Read</code>, <code>skills: [skill-alpha]</code>.</li>
+  <li><a href=".claude/agents/probe-inherit-hidden.md">probe-inherit-hidden</a>, <a href=".claude/agents/probe-skilltool-hidden.md">probe-skilltool-hidden</a>, <a href=".claude/agents/probe-restricted-hidden.md">probe-restricted-hidden</a>: the same three tool variants (none, <code>Read, Skill</code>, <code>Read</code>), each with <code>skills: [skill-hidden]</code>.</li>
+  <li><a href=".claude/skills/skill-nouser/SKILL.md">skill-nouser</a>: marks as above, with <code>user-invocable: false</code>. Added after the first runs; the earlier runs' listings do not include it.</li>
+  <li><a href=".claude/agents/probe-inherit-nouser.md">probe-inherit-nouser</a>, <a href=".claude/agents/probe-skilltool-nouser.md">probe-skilltool-nouser</a>, <a href=".claude/agents/probe-restricted-nouser.md">probe-restricted-nouser</a>: the three tool variants, each with <code>skills: [skill-nouser]</code>.</li>
+  <li><a href=".claude/agents/probe-inherit-gamma.md">probe-inherit-gamma</a>, <a href=".claude/agents/probe-restricted-gamma.md">probe-restricted-gamma</a>: no <code>tools:</code> and <code>tools: Read</code>, each with <code>skills: [skill-gamma]</code>, used with the <code>skillOverrides</code> scenarios.</li>
+  <li><a href="skill-awareness-cli-overrides.ts">skill-awareness-cli-overrides.ts</a>: one-shot <code>claude -p</code> with <code>skillOverrides: {"skill-gamma": "off"}</code> or <code>"user-invocable-only"</code> merged into the <code>--settings</code> file. <code>skillOverrides</code> is a settings key in Claude Code 2.1.310 (SDK 0.3.310 type: "name-only" lists the skill without its description, "user-invocable-only" hides it from the model but keeps /name, "off" hides it from both).</li>
+  <li><a href="prompts/main.md">prompts/main.md</a>: the strict main script. Either call the Agent tool once and return its answer verbatim, or (baseline) answer directly.</li>
+  <li>Two questions, in both drivers: <em>list</em> asks the agent to list every skill it knows (name | description, verbatim), its tools, and any BODY_MARK it can see, using no tool. <em>invoke</em> asks it to call the Skill tool for skill-beta and report the BODY_MARK, or say SKILL_TOOL_UNAVAILABLE.</li>
+  <li><a href="skill-awareness-cli.ts">skill-awareness-cli.ts</a>: spawns the binary at <code>CLAUDE_BIN</code> (default <code>~/.local/bin/claude.exe</code>) with <code>-p --output-format stream-json --verbose --model sonnet --setting-sources project --allowedTools Agent Skill Read --permission-mode dontAsk</code>.</li>
+  <li><a href="skill-awareness-cli-stream.ts">skill-awareness-cli-stream.ts</a>: <code>claude -p --input-format stream-json</code>, stdin kept open until the result; sends the <code>initialize</code> control request with <code>skills</code> where a scenario has a filter. Same tools, model and permission mode as the one-shot driver.</li>
+  <li><a href="skill-awareness-sdk.ts">skill-awareness-sdk.ts</a>: <code>query()</code> with the same model, tools and permission mode, <code>settingSources: ["project"]</code>, and <code>skills</code> left at its default.</li>
+  <li>Env: both drivers strip inherited <code>CLAUDE*</code> variables and add <code>ISOLATION_ENV</code>. <code>CLAUDE_BIN</code> is read by the CLI driver in the parent before stripping.</li>
+</ul>
+</ul>
+<p>Bundled skills, plugin skills and the account's skills also appear in the listing; only the fixture marks are judged.</p>
+
+<h2>Run</h2>
+<pre><code>npm install                                                # repo root
+node lib/claude-home.mjs investigations/subagent-skill-awareness --check
+CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill-awareness-cli.ts [scenario ...]
+npx tsx investigations/subagent-skill-awareness/skill-awareness-sdk.ts [scenario ...]
+CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill-awareness-cli-stream.ts [scenario ...]
+CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill-awareness-cli-overrides.ts [scenario ...]</code></pre>
+<p>Scenarios: <code>main-list inherit-list restricted-list skilltool-list preload-list inherit-invoke skilltool-invoke restricted-invoke</code>. The CLI binary was installed with <code>npm install @anthropic-ai/claude-code@2.1.310</code> into its own directory and pointed to through <code>CLAUDE_BIN</code>.</p>
+
+<h2>Runs</h2>
+<p>Which run feeds which section: 15:12 CLI and 15:14 SDK (default behaviour); 15:28 CLI and 15:30 SDK (<code>skill-hidden</code>); 15:37 CLI and 15:39 SDK (<code>skill-nouser</code>); 15:48 SDK and 16:00 streaming-input CLI (the <code>skills</code> filter); 16:14 CLI (<code>skillOverrides</code>). The 15:08 CLI and 15:10 SDK runs are the first six scenarios, before <code>probe-skilltool</code> existed.</p>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>fixture</th><th>outcome</th></tr></thead>
+<tbody>
+<tr><td><a href="results/2026-10-25-1512-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1512-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final, 8 scenarios</td><td>see Result</td></tr>
+<tr><td><a href="results/2026-10-25-1514-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1514-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>final, 8 scenarios</td><td>same as the CLI run, in every row</td></tr>
+<tr><td><a href="results/2026-10-25-1508-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1508-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>earlier, 6 scenarios (no probe-skilltool)</td><td>same as the final run for the six scenarios it has</td></tr>
+<tr><td><a href="results/2026-10-25-1510-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1510-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>earlier, 6 scenarios (no probe-skilltool)</td><td>same as the final run for the six scenarios it has</td></tr>
+<tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
+<tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
+<tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-25-1614-skill-awareness-cli-overrides/skill-awareness-cli-overrides-summary.md">2026-10-25-1614-skill-awareness-cli-overrides</a></td><td>skill-awareness-cli-overrides.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the gamma agents; 8 scenarios</td><td>see "skillOverrides" below</td></tr>
+<tr><td><a href="results/2026-10-25-1600-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">2026-10-25-1600-skill-awareness-cli-stream</a></td><td>skill-awareness-cli-stream.ts</td><td>2.1.310 via <code>claude -p --input-format stream-json</code></td><td>final plus the filter scenarios; 7 scenarios</td><td>same rows as the SDK filter run</td></tr>
+<tr><td><a href="results/2026-10-25-1548-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1548-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>final plus the <code>sdkSkills</code> field; 6 filter-* scenarios</td><td>see "Agent SDK skills option" below</td></tr>
+<tr><td><a href="results/2026-10-25-1539-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1539-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 7 scenarios</td><td>same as the CLI run</td></tr>
+</tbody></table></div>
+<p>An SDK run made before the 15:10 one was discarded: the driver passed the whole environment through, and the outer session's <code>CLAUDE_CODE_SESSION_ID</code> made every scenario log under one session id, mixing subagent transcripts. The SDK driver now strips <code>CLAUDE*</code> variables, as the CLI driver does. The shared harness was also changed for these runs: with no login file and <code>ANTHROPIC_BASE_URL</code> set (host-managed auth in the cloud container), <code>lib/claude-home.mjs</code> warns and skips the credential sync instead of throwing. The SDK pin in the root <code>package.json</code> was bumped from 0.3.296 to 0.3.310.</p>
+
+<h2>Result</h2>
+
+<h3>1. Default: what a subagent sees</h3>
+<p>The 15:12 CLI and 15:14 SDK runs agree in every scenario.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>skill bodies in its context</th><th>how it got them</th></tr></thead>
+<tbody>
+<tr><td>main (baseline)</td><td>n/a</td><td>alpha, beta, gamma</td><td>none</td><td><code>attachment:skill_listing</code></td></tr>
+<tr><td>probe-inherit</td><td>none</td><td>alpha, beta, gamma</td><td>none</td><td><code>attachment:skill_listing</code> in the subagent transcript</td></tr>
+<tr><td>probe-skilltool</td><td><code>tools: Read, Skill</code></td><td>alpha, beta, gamma</td><td>none</td><td><code>attachment:skill_listing</code></td></tr>
+<tr><td>probe-restricted</td><td><code>tools: Read</code></td><td>none (answered "No skills are listed")</td><td>none</td><td>no skill content in its context</td></tr>
+<tr><td>probe-preload</td><td><code>tools: Read</code>, <code>skills: [skill-alpha]</code></td><td>none (it reported no name or description for alpha)</td><td>alpha</td><td>injected as a <code>user</code> entry</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>skill-hidden</strong> (<code>disable-model-invocation: true</code>) was in no listing, main or subagent.</li>
+  <li><strong>Invoke.</strong> probe-inherit and probe-skilltool called <code>Skill</code> for skill-beta and returned its BODY_MARK. probe-restricted reported <code>SKILL_TOOL_UNAVAILABLE</code> with <code>TOOLS=Read</code> and made no call.</li>
+  <li>The Skill tool result reads only "Launching skill: skill-beta". The body arrives in a separate message, so the judge reads body marks from the transcript, not from the tool result.</li>
+  <li>With <code>skills: [skill-alpha]</code> and no <code>Skill</code> tool, the subagent held alpha's full body but no skill list.</li>
+  <li>The listing in the subagent came with the Skill tool: given by default when <code>tools:</code> is omitted, or when <code>Skill</code> is named in <code>tools:</code>.</li>
+  <li>The user's own interactive observation matches: a subagent with no <code>skills</code> and no <code>tools</code> in its frontmatter knows the skill names and descriptions and can load them; once <code>tools</code> is given, <code>Skill</code> must be in it for the names and descriptions to be available.</li>
+  <li>Costs were small, roughly $0.03 to $0.12 per scenario.</li>
+</ul>
+
+<h3>2. Skill-level controls (frontmatter)</h3>
+<p>These work, but each needs an edit to a skill file or an agent file, which is not what we want when we do not own the skill.</p>
+<ul>
+  <li><strong>Agent <code>tools:</code> and <code>skills:</code></strong> (table above): omitting <code>tools:</code> or including <code>Skill</code> gives the subagent the listing; <code>skills:</code> preloads a body.</li>
+  <li><strong><code>disable-model-invocation: true</code> on the skill</strong> hides it from main and from every subagent; naming it in <code>skills:</code> does not preload it.</li>
+  <li><strong><code>user-invocable: false</code> on the skill</strong> hides it from the slash menu only; main and subagents still see it, and <code>skills:</code> preloads it.</li>
+</ul>
+<h4><code>skills: [skill-hidden]</code> on each tool variant</h4>
+<p>Scenarios <code>inherit-hidden-list</code>, <code>skilltool-hidden-list</code>, <code>restricted-hidden-list</code>, same list question, CLI and SDK alike:</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>skill-hidden body in its context</th><th>skill-hidden description in its context</th></tr></thead>
+<tbody>
+<tr><td>probe-inherit-hidden</td><td>no <code>tools:</code>, <code>skills: [skill-hidden]</code></td><td>alpha, beta, gamma</td><td>no</td><td>no</td></tr>
+<tr><td>probe-skilltool-hidden</td><td><code>tools: Read, Skill</code>, <code>skills: [skill-hidden]</code></td><td>alpha, beta, gamma</td><td>no</td><td>no</td></tr>
+<tr><td>probe-restricted-hidden</td><td><code>tools: Read</code>, <code>skills: [skill-hidden]</code></td><td>none</td><td>no</td><td>no</td></tr>
+</tbody></table></div>
+<ul>
+  <li>Naming <code>skill-hidden</code> in <code>skills:</code> had no visible effect: its body was not injected in any of the three agents, and the rest of the picture is the same as without the field. The listing still followed the Skill tool.</li>
+  <li>The agents ran without an error. The docs say a skill with <code>disable-model-invocation: true</code> cannot be preloaded and that a missing or disabled skill is skipped with a warning in the debug log. The debug log was not read in these runs.</li>
+</ul>
+<h4><code>user-invocable: false</code> skill, and <code>skills: [skill-nouser]</code></h4>
+<p>CLI and SDK gave the same result. The first four rows re-ran the baseline and the plain probes with the new skill in the fixture.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>skill-nouser body in its context</th></tr></thead>
+<tbody>
+<tr><td>main (baseline)</td><td>n/a</td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-inherit</td><td>no <code>tools:</code>, no <code>skills:</code></td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-skilltool</td><td><code>tools: Read, Skill</code></td><td>alpha, beta, gamma, <strong>nouser</strong></td><td>none</td></tr>
+<tr><td>probe-restricted</td><td><code>tools: Read</code></td><td>none</td><td>none</td></tr>
+<tr><td>probe-inherit-nouser</td><td>no <code>tools:</code>, <code>skills: [skill-nouser]</code></td><td>alpha, beta, gamma, nouser</td><td>yes</td></tr>
+<tr><td>probe-skilltool-nouser</td><td><code>tools: Read, Skill</code>, <code>skills: [skill-nouser]</code></td><td>alpha, beta, gamma, nouser</td><td>yes</td></tr>
+<tr><td>probe-restricted-nouser</td><td><code>tools: Read</code>, <code>skills: [skill-nouser]</code></td><td>none</td><td>yes</td></tr>
+</tbody></table></div>
+<ul>
+  <li>A <code>user-invocable: false</code> skill is <strong>in the main conversation's listing</strong>, so the flag does not hide it from main. It hides it from the user's slash menu, not from the model.</li>
+  <li>Naming it in <code>skills:</code> did preload its body in all three tool variants, including <code>tools: Read</code>, whose subagent had no listing. Unlike <code>disable-model-invocation: true</code>, this flag does not block preloading.</li>
+  <li>Among the skill frontmatter flags tried, none hid a skill from main while making it available to a subagent. <code>disable-model-invocation: true</code> hid it from both. <code>user-invocable: false</code> hid it from neither. The SDK <code>skills</code> option, below, did. The <code>skillOverrides</code> setting did not (see its subsection).</li>
+</ul>
+
+<h3>3. Host-level controls</h3>
+<p>Skills left unmodified; the control is passed to or set for the host. Skill probes and fixture are the same as above.</p>
+
+<h4>Settings file: <code>skillOverrides</code></h4>
+<p><code>skillOverrides</code> is a settings key in Claude Code 2.1.310 (SDK 0.3.310 type: "name-only" lists the skill without its description, "user-invocable-only" hides it from the model but keeps /name, "off" hides it from both). The issue that requested its documentation (anthropics/claude-code #56494) is closed; its resolution is the author's own verification comment, and it does not mention subagents. Tested through <code>--settings</code> in <code>claude -p</code>, on skill-gamma.</p>
+<p>Set to <code>off</code>, then <code>user-invocable-only</code>. The two modes gave the same rows. In both, alpha, beta and nouser were listed and gamma was not, so the setting took effect.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>gamma description in its context</th><th>gamma body in its context</th></tr></thead>
+<tbody>
+<tr><td>main</td><td>n/a</td><td>no</td><td>none</td></tr>
+<tr><td>probe-inherit</td><td>no <code>tools:</code>, no <code>skills:</code></td><td>no (the listing it got had the other skills)</td><td>none</td></tr>
+<tr><td>probe-inherit-gamma</td><td>no <code>tools:</code>, <code>skills: [skill-gamma]</code></td><td>no</td><td><strong>none</strong></td></tr>
+<tr><td>probe-restricted-gamma</td><td><code>tools: Read</code>, <code>skills: [skill-gamma]</code></td><td>no</td><td><strong>none</strong>; it answered "No skills are visible"</td></tr>
+</tbody></table></div>
+<ul>
+  <li>Both <code>off</code> and <code>user-invocable-only</code> removed gamma's description from the main listing and from the subagent listing.</li>
+  <li>Naming gamma in <code>skills:</code> did not preload its body under either setting.</li>
+  <li>So a <code>skillOverrides</code> entry behaved like <code>disable-model-invocation: true</code> for subagents in these runs: the skill was hidden from main and from the subagents. The setting is not a way to hide a skill from main only.</li>
+  <li>The two modes were not told apart by anything this test looks at, because it checks the model-facing context only; <code>user-invocable-only</code> differs from <code>off</code> in keeping <code>/name</code> for the user.</li>
+<p>Outcome: the setting hides the skill from main but also from the subagents, so it does not meet the goal.</p>
+
+<h4><code>claude -p</code></h4>
+<ul>
+  <li><strong>One-shot <code>claude -p "prompt"</code>:</strong> no way to set a skill filter. No command-line flag was found in <code>--help</code> or the SDK source, and the only skill-filtering setting found is <code>skillOverrides</code> (above), which can be passed with <code>--settings</code>.</li>
+  <li><strong>Streaming-input <code>claude -p --input-format stream-json</code>:</strong> the filter works, with an <code>initialize</code> control request carrying <code>skills</code>, sent on stdin before the user message. The process is long-lived: it keeps reading stdin until stdin closes, so this is no longer a one-shot run (the driver closes stdin once the result arrives). The input format, <code>control_request</code> and <code>initialize</code> are not documented on <a href="https://code.claude.com/docs/en/headless">the headless page</a> (read via WebFetch, whose summary may miss a section), and the message was taken from the SDK 0.3.310 source, so this route may change or be unsupported for direct use.</li>
+</ul>
+
+<h4>Agent SDK <code>skills</code> option</h4>
+<p>Run with <code>skills: ['skill-beta']</code> by the SDK driver (<code>sdkSkills</code> field) and, through the streaming-input protocol above, by <a href="skill-awareness-cli-stream.ts">skill-awareness-cli-stream.ts</a>. Both gave the same rows (the streaming driver also ran an unfiltered main baseline, which listed alpha, beta, gamma and nouser).</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>frontmatter</th><th>names and descriptions in its context</th><th>body in its context</th></tr></thead>
+<tbody>
+<tr><td>main</td><td>n/a</td><td><strong>beta only</strong></td><td>none</td></tr>
+<tr><td>probe-inherit</td><td>no <code>tools:</code>, no <code>skills:</code></td><td><strong>alpha, beta, gamma, nouser</strong></td><td>none</td></tr>
+<tr><td>probe-skilltool</td><td><code>tools: Read, Skill</code></td><td>alpha, beta, gamma, nouser</td><td>none</td></tr>
+<tr><td>probe-restricted</td><td><code>tools: Read</code></td><td>none</td><td>none</td></tr>
+<tr><td>probe-preload</td><td><code>tools: Read</code>, <code>skills: [skill-alpha]</code></td><td>none</td><td><strong>alpha</strong></td></tr>
+<tr><td>probe-restricted-nouser</td><td><code>tools: Read</code>, <code>skills: [skill-nouser]</code></td><td>none</td><td><strong>nouser</strong></td></tr>
+</tbody></table></div>
+<ul>
+  <li>The option filtered main's listing to the named skill. It did not filter the subagents' listing: they saw the same four skills as without the option, so skills hidden from main stayed visible to subagents that have the Skill tool.</li>
+  <li>A skill filtered out of main (alpha, nouser) was still preloaded into a subagent that named it in <code>skills:</code>.</li>
+  <li>Not run here: whether main's Skill tool rejects a filtered-out skill (the SDK type comment says it does), and whether the main model's own conversation shows any trace of the filtered skills elsewhere.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>By default (no <code>tools:</code> field) a subagent has the Skill tool and receives the same skill listing as the main conversation, in both <code>claude -p</code> and the Agent SDK; <code>skills:</code> adds a skill's body and no listing entry. Among the host-level controls tried, only the Agent SDK <code>skills</code> option hid skills from main while leaving them to subagents, with the skill files unmodified; the same filter reached <code>claude -p</code> only through the undocumented, stateful streaming-input protocol. The <code>skillOverrides</code> setting hid the skill from subagents too, and frontmatter controls need edits to files that may not be ours. The docs cover the Skill-tool discovery and the effect of omitting <code>Skill</code> from <code>tools</code>; they do not say the listing itself is what is withheld, which the transcripts show.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Interactive terminal mode.</li>
+  <li><code>skillOverrides</code> with <code>name-only</code>: not tested, since it only collapses a description and clearly does not help the goal. Also not tested: <code>skillOverrides</code> in the settings files themselves (only through <code>--settings</code>) and in the SDK.</li>
+  <li>Whether the Skill tool or <code>/name</code> still loads the skill under <code>skillOverrides</code>, and what the difference between <code>off</code> and <code>user-invocable-only</code> is for the user.</li>
+  <li>Whether the streaming-input <code>initialize</code> protocol is supported for use outside the SDK, and how stable it is across versions.</li>
+  <li>Several turns in one streaming-input process; each scenario sent one user message.</li>
+  <li>Whether main's Skill tool rejects a skill filtered out by the SDK option (the SDK type comment says it does).</li>
+  <li><code>user-invocable: false</code> together with <code>disable-model-invocation: true</code>.</li>
+  <li><code>disallowedTools: [Skill]</code> in place of a <code>tools:</code> allowlist.</li>
+  <li><code>skills:</code> listing both a hidden and a normal skill (whether the normal one still loads), and the debug-log warning for a skipped skill.</li>
+  <li>User-level and plugin skills as seen by subagents; only project skills carried marks.</li>
+  <li>The SDK <code>skills</code> option as <code>'all'</code>, with a list of several names, or with plugin-qualified names.</li>
+  <li>Background subagents, nested subagents, and built-in agent types.</li>
+  <li>The 32-name cap on <code>skills:</code>, and the effect of many skills on the listing's size.</li>
+  <li>Other Claude Code versions; only 2.1.310 ran.</li>
+  <li>One run per scenario and driver, with Sonnet; answers depend on the model reporting what it sees, which is why the transcripts, not the answers, are the evidence for what the context held.</li>
+</ul>
+</body>
+</html>

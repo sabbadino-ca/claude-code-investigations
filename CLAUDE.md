@@ -86,9 +86,10 @@ There is no build, lint or test suite. Each run makes real model calls, takes mi
 
 Every investigation ends with a human-readable `REPORT.html` in its folder root: what was investigated, how, and what came out. The `*summary.md` files in `results/` are the raw per-run output that the report is built from; they don't replace it.
 
-1. **Frame the question.** The user asks to investigate something.
-   - Restate it as a testable claim: the doc sentence and its URL, if there is one.
-   - Say what outcome would confirm or refute it, and which run modes are needed (Agent SDK, `claude -p`, interactive).
+1. **Frame the question.** The user asks to investigate something. Say which kind of question it is:
+   - **A claim to test**, usually a doc sentence: restate it with its URL, and say what outcome would confirm or refute it.
+   - **A behaviour to observe**, such as what happens in a given scenario: restate it as the scenario and say what will be recorded (what is measured, from which transcripts or events). The report gives the observed outcome, with no confirm or refute verdict.
+   - Either way, say which run modes are needed (Agent SDK, `claude -p`, interactive).
    - Agree on this with the user before building anything.
 2. **Look for an existing investigation.** Search `investigations/*/REPORT.html` for the same or an overlapping question, then tell the user what you found: the question it answered, its latest runs, and the Claude Code / SDK versions they ran on. The user decides:
    - **Rerun as is**, for example to check a new Claude Code or SDK version.
@@ -108,7 +109,7 @@ Every investigation ends with a human-readable `REPORT.html` in its folder root:
    - Then write or update `REPORT.html` in the investigation root, never in `results/`.
    - On a rerun:
      - Add the new run folders to the runs table.
-     - Say whether each result was confirmed or changed.
+     - Say whether each result is the same as before or different.
      - If something changed, explain the change and update the conclusion, naming the versions before and after.
 
 Write `REPORT.html` directly as HTML, starting from `investigations/_template/REPORT.html`:
@@ -118,7 +119,7 @@ Write `REPORT.html` directly as HTML, starting from `investigations/_template/RE
 - Wrap each table in `<div class="table">` so it scrolls on narrow screens.
 
 Its sections:
-- **Question**: the claim and its doc URL.
+- **Question**: the claim and its doc URL, or the behaviour asked about and what was recorded.
 - **Setup**: the topology, each fixture file and what it proves, the drivers, and the env vars.
 - **Run**: the exact commands.
 - **Runs**: one row per run folder, with driver, Claude Code / SDK versions (from `run.json`) and outcome.
