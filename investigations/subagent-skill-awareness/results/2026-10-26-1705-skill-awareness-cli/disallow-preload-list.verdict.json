@@ -1,0 +1,84 @@
+{
+  "scenario": "disallow-preload-list",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.310",
+  "claude_bin": "/opt/node22/bin/claude",
+  "agent": "probe-disallow-preload",
+  "note": "no tools field, disallowedTools: Skill, skills: [skill-alpha]",
+  "question": "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. Then a line TOOLS= with the names of all tools you have. Then a line BODIES= with every BODY_MARK value you can see anywhere in your context, or NONE.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "anywhere_body": [
+      "skill-alpha"
+    ]
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a8d88eb958889513f.jsonl",
+      "context_desc": [],
+      "context_body": [
+        "skill-alpha"
+      ],
+      "carriers": [
+        "user",
+        "api-request-blob"
+      ],
+      "anywhere_desc": [],
+      "anywhere_body": [
+        "skill-alpha"
+      ]
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-alpha"
+  ],
+  "answer_tools_line": "  TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ShareOnboardingGuide, ToolSearch, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch (the last fourteen are deferred and need ToolSearch to load their schemas)",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": " Skills I know of:\n  skill-alpha | (no description visible; only its body was loaded, with the base directory /home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude/skills/skill-alpha)\n  \n  TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ShareOnboardingGuide, ToolSearch, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch (the last fourteen are deferred and need ToolSearch to load their schemas)\n  \n  BODIES=85206314",
+  "cost_usd": 0.042217500000000005,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/76e5bbe9-eb00-4217-a448-e5edd0f4cfd2.jsonl"
+}

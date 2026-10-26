@@ -1,0 +1,73 @@
+{
+  "scenario": "disallow-list",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.310",
+  "claude_bin": "/opt/node22/bin/claude",
+  "agent": "probe-disallow",
+  "note": "no tools field, disallowedTools: Skill, no skills field",
+  "question": "Do not call any tool. From the context you already have, list every skill you know of, one per line as: name | description, copied verbatim. Then a line TOOLS= with the names of all tools you have. Then a line BODIES= with every BODY_MARK value you can see anywhere in your context, or NONE.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "anywhere_body": []
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a6904bf9810c5291d.jsonl",
+      "context_desc": [],
+      "context_body": [],
+      "carriers": [],
+      "anywhere_desc": [],
+      "anywhere_body": []
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, Read, ToolSearch, Write, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, SendMessage, TaskStop, WebFetch, WebSearch",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "No skills are listed anywhere in my context, so I have no name | description lines to give.\n\nTOOLS=Agent, Bash, Edit, Read, ToolSearch, Write, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, SendMessage, TaskStop, WebFetch, WebSearch\n\nBODIES=NONE",
+  "cost_usd": 0.05387209999999999,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/0ca9ec02-df3e-46bb-ad92-f6166ee542d4.jsonl"
+}

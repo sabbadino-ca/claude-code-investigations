@@ -1,0 +1,30 @@
+{
+  "claudeMdExcludes": [
+    "/home/user/claude-code-investigations/investigations/CLAUDE.md",
+    "/home/user/claude-code-investigations/investigations/CLAUDE.local.md",
+    "/home/user/claude-code-investigations/investigations/AGENTS.md",
+    "/home/user/claude-code-investigations/investigations/.claude/CLAUDE.md",
+    "/home/user/claude-code-investigations/investigations/.claude/rules/**",
+    "/home/user/claude-code-investigations/CLAUDE.md",
+    "/home/user/claude-code-investigations/CLAUDE.local.md",
+    "/home/user/claude-code-investigations/AGENTS.md",
+    "/home/user/claude-code-investigations/.claude/CLAUDE.md",
+    "/home/user/claude-code-investigations/.claude/rules/**",
+    "/home/user/CLAUDE.md",
+    "/home/user/CLAUDE.local.md",
+    "/home/user/AGENTS.md",
+    "/home/user/.claude/CLAUDE.md",
+    "/home/user/.claude/rules/**",
+    "/home/CLAUDE.md",
+    "/home/CLAUDE.local.md",
+    "/home/AGENTS.md",
+    "/home/.claude/CLAUDE.md",
+    "/home/.claude/rules/**",
+    "/CLAUDE.md",
+    "/CLAUDE.local.md",
+    "/AGENTS.md",
+    "/.claude/CLAUDE.md",
+    "/.claude/rules/**"
+  ],
+  "cleanupPeriodDays": 36500
+}
