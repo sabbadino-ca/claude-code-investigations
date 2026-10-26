@@ -1,0 +1,96 @@
+{
+  "scenario": "sdk2-inherit-invoke-gamma",
+  "driver": "Agent SDK query()",
+  "bundled_claude_code_version": "2.1.310",
+  "agent": "probe-inherit",
+  "note": "SDK skills: [alpha, beta]; subagent with no tools field invokes gamma (not in main's list)",
+  "question": "Call the Skill tool once with the skill named skill-gamma, then report the BODY_MARK value it returned. You must make the call even if the skill is not in your skill list. If the call is refused, quote the refusal text exactly; if you have no Skill tool, reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "anywhere_body": [
+      "skill-gamma"
+    ]
+  },
+  "subagent_context": [
+    {
+      "file": "agent-a3aa3b80cff381e52.jsonl",
+      "context_desc": [
+        "skill-alpha",
+        "skill-beta",
+        "skill-gamma",
+        "skill-nouser"
+      ],
+      "context_body": [],
+      "carriers": [
+        "attachment:skill_listing",
+        "api-request-blob"
+      ],
+      "anywhere_desc": [
+        "skill-alpha",
+        "skill-beta",
+        "skill-gamma",
+        "skill-nouser"
+      ],
+      "anywhere_body": [
+        "skill-gamma"
+      ]
+    }
+  ],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-gamma"
+  ],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, Read, Skill, ToolSearch, Write, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, SendMessage, TaskStop, WebFetch, WebSearch",
+  "main_skill_tool_calls": [],
+  "subagent_tool_calls": [
+    "Skill {\"skill\":\"skill-gamma\"}"
+  ],
+  "subagent_skill_tool_results": [
+    {
+      "is_error": false,
+      "body_marks": [],
+      "text": "Launching skill: skill-gamma"
+    }
+  ],
+  "final_answer": "BODY_MARK=96150738\n\nTOOLS=Agent, Bash, Edit, Read, Skill, ToolSearch, Write, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, SendMessage, TaskStop, WebFetch, WebSearch\n\nThe last six tools in that list are deferred. Their schemas were not loaded.",
+  "cost_usd": 0.041448399999999996,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/3435135f-38c3-431a-818f-84b891df9e12.jsonl"
+}

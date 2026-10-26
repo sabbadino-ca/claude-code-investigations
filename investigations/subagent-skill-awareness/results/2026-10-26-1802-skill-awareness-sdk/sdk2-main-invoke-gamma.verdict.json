@@ -1,0 +1,69 @@
+{
+  "scenario": "sdk2-main-invoke-gamma",
+  "driver": "Agent SDK query()",
+  "bundled_claude_code_version": "2.1.310",
+  "agent": "(main answers itself)",
+  "note": "SDK skills: [alpha, beta]; main invokes gamma (not in the list)",
+  "question": "Call the Skill tool once with the skill named skill-gamma, then report the BODY_MARK value it returned. You must make the call even if the skill is not in your skill list. If the call is refused, quote the refusal text exactly; if you have no Skill tool, reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "anywhere_body": []
+  },
+  "subagent_context": [],
+  "answer_desc_marks": [],
+  "answer_body_marks": [],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write (deferred, schemas not loaded: CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch)",
+  "main_skill_tool_calls": [
+    {
+      "input": {
+        "skill": "skill-gamma"
+      },
+      "is_error": true,
+      "text": "<tool_use_error>Skill skill-gamma is not in this session's skills allowlist</tool_use_error>",
+      "body_marks": []
+    }
+  ],
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "The Skill call was refused with this text: `<tool_use_error>Skill skill-gamma is not in this session's skills allowlist</tool_use_error>`\n\nBODY_MARK: not returned, because the call was refused.\n\nTOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write (deferred, schemas not loaded: CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch)",
+  "cost_usd": 0.016900400000000003,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/0eaa41f0-b7b2-45ce-ad08-88860a28ee73.jsonl"
+}

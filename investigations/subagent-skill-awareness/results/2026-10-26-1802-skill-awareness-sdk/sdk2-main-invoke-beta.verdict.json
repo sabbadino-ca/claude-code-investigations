@@ -1,0 +1,73 @@
+{
+  "scenario": "sdk2-main-invoke-beta",
+  "driver": "Agent SDK query()",
+  "bundled_claude_code_version": "2.1.310",
+  "agent": "(main answers itself)",
+  "note": "SDK skills: [alpha, beta]; main invokes beta (in the list)",
+  "question": "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. You must make the call even if the skill is not in your skill list. If the call is refused, quote the refusal text exactly; if you have no Skill tool, reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "anywhere_body": [
+      "skill-beta"
+    ]
+  },
+  "subagent_context": [],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-beta"
+  ],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write",
+  "main_skill_tool_calls": [
+    {
+      "input": {
+        "skill": "skill-beta"
+      },
+      "is_error": false,
+      "text": "Launching skill: skill-beta",
+      "body_marks": []
+    }
+  ],
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "BODY_MARK=30478261\nTOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write",
+  "cost_usd": 0.015364700000000002,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/82a02747-048a-4922-99cb-b6a6fc514f0c.jsonl"
+}

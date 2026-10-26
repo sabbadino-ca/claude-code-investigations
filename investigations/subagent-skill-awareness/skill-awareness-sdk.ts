@@ -26,8 +26,20 @@ const Q_INVOKE =
   "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. " +
   "If you have no Skill tool, call nothing and reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.";
 
-type Scenario = { name: string; agent: string | null; question: string; note: string; sdkSkills?: string[] };
+const qInvoke = (skill: string) =>
+  `Call the Skill tool once with the skill named ${skill}, then report the BODY_MARK value it returned. ` +
+  "You must make the call even if the skill is not in your skill list. If the call is refused, quote the refusal text exactly; if you have no Skill tool, reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.";
+const F2 = ["skill-alpha", "skill-beta"];
+const F3 = ["skill-alpha", "skill-gamma", "skill-nouser"];
+
+type Scenario = { name: string; agent: string | null; question: string; note: string; sdkSkills?: string[]; prompt?: string };
 const ALL: Scenario[] = [
+  { name: "sdk2-main-list", agent: null, question: Q_LIST, sdkSkills: F2, note: "SDK skills: [alpha, beta]; main lists what it knows" },
+  { name: "sdk2-main-invoke-beta", agent: null, question: qInvoke("skill-beta"), sdkSkills: F2, prompt: "main-tool", note: "SDK skills: [alpha, beta]; main invokes beta (in the list)" },
+  { name: "sdk2-main-invoke-gamma", agent: null, question: qInvoke("skill-gamma"), sdkSkills: F2, prompt: "main-tool", note: "SDK skills: [alpha, beta]; main invokes gamma (not in the list)" },
+  { name: "sdk2-inherit-list", agent: "probe-inherit", question: Q_LIST, sdkSkills: F2, note: "SDK skills: [alpha, beta]; subagent with no tools field lists" },
+  { name: "sdk2-inherit-invoke-gamma", agent: "probe-inherit", question: qInvoke("skill-gamma"), sdkSkills: F2, note: "SDK skills: [alpha, beta]; subagent with no tools field invokes gamma (not in main's list)" },
+  { name: "sdk3-main-list", agent: null, question: Q_LIST, sdkSkills: F3, note: "SDK skills: [alpha, gamma, nouser]; main lists what it knows" },
   { name: "main-list", agent: null, question: Q_LIST, note: "baseline: the main conversation lists what it knows" },
   { name: "inherit-list", agent: "probe-inherit", question: Q_LIST, note: "subagent, no tools field, no skills field" },
   { name: "restricted-list", agent: "probe-restricted", question: Q_LIST, note: "subagent, tools: Read, no skills field" },
@@ -92,7 +104,7 @@ async function runScenario(s: Scenario) {
     console.log(`[${s.name}] ${(t / 1000).toFixed(1).padStart(6)}s  ${src.padEnd(6)} ${event.padEnd(14)} ${brief}`);
   };
 
-  const prompt = loadPrompt("main", { agent: s.agent ?? "", question: s.question, direct: s.agent === null });
+  const prompt = s.prompt ? loadPrompt(s.prompt, { question: s.question }) : loadPrompt("main", { agent: s.agent ?? "", question: s.question, direct: s.agent === null });
   const timeout = setTimeout(() => { log("runner", "HARD_TIMEOUT"); process.exit(1); }, 5 * 60_000);
   let sessionId: string | undefined, cliVersion: string | undefined, initSkills: string[] | undefined, finalResult = "", cost: number | undefined;
   const subCalls: { id: string; name: string; input: any }[] = [];
@@ -137,6 +149,15 @@ async function runScenario(s: Scenario) {
   const subDir = sessionId ? join(SESSIONS_DIR, sessionId, "subagents") : "";
   const subFiles = subDir && existsSync(subDir) ? readdirSync(subDir).filter((f) => f.endsWith(".jsonl")) : [];
   const sub = subFiles.map((f) => ({ file: f, ...transcriptMarks(join(subDir, f)) }));
+  const mainSkillCalls: { input: unknown; is_error: boolean; text: string; body_marks: string[] }[] = [];
+  if (sessionId && existsSync(join(SESSIONS_DIR, `${sessionId}.jsonl`))) {
+    const entries = readFileSync(join(SESSIONS_DIR, `${sessionId}.jsonl`), "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
+    const calls = new Map<string, unknown>();
+    for (const e of entries) for (const b of Array.isArray(e.message?.content) ? e.message.content : []) {
+      if (b.type === "tool_use" && b.name === "Skill") calls.set(b.id, b.input);
+      if (b.type === "tool_result" && calls.has(b.tool_use_id)) { const t = textOf(b.content); mainSkillCalls.push({ input: calls.get(b.tool_use_id), is_error: !!b.is_error, text: t.slice(0, 300), body_marks: marksIn(BODY, t) }); }
+    }
+  }
   const toolLine = finalResult.split("\n").find((l) => l.trim().startsWith("TOOLS=")) ?? null;
   const verdict = {
     scenario: s.name, driver: "Agent SDK query()", bundled_claude_code_version: cliVersion ?? null,
@@ -148,6 +169,7 @@ async function runScenario(s: Scenario) {
     answer_desc_marks: marksIn(DESC, finalResult),
     answer_body_marks: marksIn(BODY, finalResult),
     answer_tools_line: toolLine,
+    main_skill_tool_calls: mainSkillCalls,
     subagent_tool_calls: subCalls.map((c) => `${c.name} ${JSON.stringify(c.input)}`),
     subagent_skill_tool_results: subCalls.filter((c) => c.name === "Skill").map((c) => { const r = subResults.find((x) => x.id === c.id); return { is_error: !!r?.is_error, body_marks: marksIn(BODY, r?.text ?? ""), text: (r?.text ?? "").slice(0, 300) }; }),
     final_answer: finalResult,
