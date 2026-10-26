@@ -45,6 +45,11 @@ const ALL: Scenario[] = [
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
   { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },
+  { name: "preload-invoke", agent: "probe-preload", question: Q_INVOKE, note: "tools: Read, skills: [skill-alpha]; asked to invoke the non-named skill-beta" },
+  { name: "disallow-list", agent: "probe-disallow", question: Q_LIST, note: "no tools field, disallowedTools: Skill, no skills field" },
+  { name: "disallow-invoke", agent: "probe-disallow", question: Q_INVOKE, note: "no tools field, disallowedTools: Skill; asked to invoke skill-beta" },
+  { name: "disallow-preload-list", agent: "probe-disallow-preload", question: Q_LIST, note: "no tools field, disallowedTools: Skill, skills: [skill-alpha]" },
+  { name: "disallow-preload-invoke", agent: "probe-disallow-preload", question: Q_INVOKE, note: "no tools field, disallowedTools: Skill, skills: [skill-alpha]; asked to invoke the non-named skill-beta" },
 ];
 
 const CLAUDE = process.env.CLAUDE_BIN ?? join(homedir(), ".local", "bin", "claude.exe");
