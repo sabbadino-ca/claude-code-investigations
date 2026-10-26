@@ -113,6 +113,10 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
 <tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-26-1802-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-26-1802-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>final plus the sdk2/sdk3 scenarios and <code>prompts/main-tool.md</code></td><td>see "Agent SDK skills option with a list of names" below</td></tr>
+<tr><td><a href="results/2026-10-26-1755-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">2026-10-26-1754/1755-skill-awareness-cli-stream</a></td><td>skill-awareness-cli-stream.ts</td><td>2.1.310 via <code>claude -p --input-format stream-json</code></td><td>final plus the list2 scenarios and <code>prompts/main-tool.md</code></td><td>see "Skill filter with a list" below</td></tr>
+<tr><td><a href="results/2026-10-26-1718-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1718/1719-skill-awareness-cli</a></td><td>skill-awareness-cli.ts with <code>EXTRA_ARGS</code></td><td>2.1.310 via <code>claude -p</code></td><td>final; main-list, main-invoke under <code>--agent</code></td><td>see "Main run as an agent" below</td></tr>
+<tr><td><a href="results/2026-10-26-1716-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1716-skill-awareness-cli</a></td><td>skill-awareness-cli.ts with <code>EXTRA_SETTINGS</code></td><td>2.1.310 via <code>claude -p</code></td><td>final; 4 scenarios under <code>permissions.deny: ["Skill"]</code></td><td>see "Global deny of the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-26-1705-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1705-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the two <code>probe-disallow*</code> agents; 6 scenarios</td><td>see "Preload without the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-25-1614-skill-awareness-cli-overrides/skill-awareness-cli-overrides-summary.md">2026-10-25-1614-skill-awareness-cli-overrides</a></td><td>skill-awareness-cli-overrides.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the gamma agents; 8 scenarios</td><td>see "skillOverrides" below</td></tr>
 <tr><td><a href="results/2026-10-25-1600-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">2026-10-25-1600-skill-awareness-cli-stream</a></td><td>skill-awareness-cli-stream.ts</td><td>2.1.310 via <code>claude -p --input-format stream-json</code></td><td>final plus the filter scenarios; 7 scenarios</td><td>same rows as the SDK filter run</td></tr>
@@ -198,6 +202,34 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
   <li>Not read: the Skill tool's own refusal text, since the models made no call; the evidence is the reported tool list and the transcripts.</li>
 </ul>
 
+<h3>Global deny of the Skill tool (added 2026-10-26, headless only)</h3>
+<p>Question: does a settings-level deny of the Skill tool apply to main as well as subagents, with no <code>--agent</code>? Run with <code>EXTRA_SETTINGS='{"permissions":{"deny":["Skill"]}}'</code> merged into the <code>--settings</code> file (the driver still passes <code>--allowedTools Agent Skill Read</code>). The run folder's <code>*.settings.json</code> files hold the setting. Only passed through <code>--settings</code>; project, user and managed settings files were not tried. One run each, 2.1.310.</p>
+<div class="table"><table>
+<tr><th>scenario</th><th>names and descriptions in context</th><th>skill bodies in context</th><th>outcome</th></tr>
+<tr><td>main-list</td><td>none</td><td>none</td><td>TOOLS had no Skill</td></tr>
+<tr><td>main-invoke</td><td>none</td><td>none</td><td>SKILL_TOOL_UNAVAILABLE, no call</td></tr>
+<tr><td>inherit-list (no <code>tools:</code>)</td><td>none</td><td>none</td><td>TOOLS had no Skill; "No skills are listed"</td></tr>
+<tr><td>preload-list (<code>tools: Read</code>, <code>skills: [skill-alpha]</code>)</td><td>none</td><td>alpha</td><td>preload unaffected</td></tr>
+</table></div>
+<ul>
+  <li>The deny removed the tool and the listing from main and from a subagent that would otherwise inherit it. Preloading through <code>skills:</code> still worked.</li>
+  <li>The <code>system:init</code> event's <code>skills</code> field still named the skills; the model's context did not contain them.</li>
+  <li>This is all or nothing for main: no skill is invocable through the model. Whether the user's <code>/name</code> still works was not tested.</li>
+</ul>
+
+<h3>Main run as an agent: <code>--agent</code> (added 2026-10-26, headless only)</h3>
+<p>Question: can main be given preload requirements the way a subagent is, by starting it as an agent? Run with <code>EXTRA_ARGS="--agent probe-preload"</code> and <code>"--agent probe-disallow-preload"</code> (both have <code>skills: [skill-alpha]</code>), scenarios <code>main-list</code> and <code>main-invoke</code>, 2.1.310, one run each. Results: <a href="results/2026-10-26-1718-skill-awareness-cli/skill-awareness-cli-summary.md">1718</a> and <a href="results/2026-10-26-1719-skill-awareness-cli/skill-awareness-cli-summary.md">1719</a>.</p>
+<div class="table"><table>
+<tr><th>main started as</th><th>tools main reported</th><th>names and descriptions in main's context</th><th>alpha body in main's context</th><th>asked to invoke skill-beta</th></tr>
+<tr><td><code>--agent probe-preload</code> (<code>tools: Read</code>)</td><td>Read</td><td>none</td><td><strong>no</strong></td><td>SKILL_TOOL_UNAVAILABLE</td></tr>
+<tr><td><code>--agent probe-disallow-preload</code> (<code>disallowedTools: Skill</code>)</td><td>all but Skill</td><td>none</td><td><strong>no</strong></td><td>SKILL_TOOL_UNAVAILABLE</td></tr>
+</table></div>
+<ul>
+  <li><code>--agent</code> applied the agent's <code>tools:</code> and <code>disallowedTools</code> to main: the Skill tool and the listing were gone.</li>
+  <li>The agent's <code>skills:</code> was <strong>not</strong> applied to main: alpha's body was not in the context, and main answered "BODIES=NONE". The same agents as subagents did preload alpha.</li>
+  <li>So in these runs main has no way to express a preload list. Not tried: injecting a body by other means (<code>--append-system-prompt</code>, a SessionStart hook, an <code>@import</code> in CLAUDE.md), the <code>agent</code> settings key, and <code>--agent</code> in the Agent SDK or interactive mode.</li>
+</ul>
+
 <h3>3. Host-level controls</h3>
 <p>Skills left unmodified; the control is passed to or set for the host. Skill probes and fixture are the same as above.</p>
 
@@ -243,11 +275,48 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
   <li>Not run here: whether main's Skill tool rejects a filtered-out skill (the SDK type comment says it does), and whether the main model's own conversation shows any trace of the filtered skills elsewhere.</li>
 </ul>
 
+<h3>Agent SDK <code>skills</code> option with a list of names (added 2026-10-26)</h3>
+<p>Question: what exactly does naming a skill in the SDK <code>skills</code> option do: preload it, list it, or leave all skills listed and block the rest? Run <a href="results/2026-10-26-1802-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-26-1802-skill-awareness-sdk</a>, Claude Code 2.1.310 bundled in Agent SDK 0.3.310, one run each. Main's own Skill calls were read from its transcript. The gamma invoke uses <code>prompts/main-tool.md</code>, which requires the call.</p>
+<div class="table"><table>
+<tr><th>scenario (<code>skills:</code> value)</th><th>outcome</th></tr>
+<tr><td>sdk2-main-list (<code>[alpha, beta]</code>)</td><td>main's context held the names and descriptions of alpha and beta only; no skill body; main's tools included Skill</td></tr>
+<tr><td>sdk3-main-list (<code>[alpha, gamma, nouser]</code>)</td><td>main's context held exactly those three, no bodies</td></tr>
+<tr><td>sdk2-main-invoke-beta (in the list)</td><td>Skill call succeeded: "Launching skill: skill-beta", BODY_MARK returned</td></tr>
+<tr><td>sdk2-main-invoke-gamma (not in the list)</td><td>Skill call made and refused: <code>Skill skill-gamma is not in this session's skills allowlist</code> (tool error)</td></tr>
+<tr><td>sdk2-inherit-list (subagent, no <code>tools:</code>)</td><td>the subagent's context held alpha, beta, gamma and nouser: the option did not reach it</td></tr>
+<tr><td>sdk2-inherit-invoke-gamma (subagent)</td><td>Skill call succeeded: "Launching skill: skill-gamma", BODY_MARK returned, though gamma is not in main's list</td></tr>
+</table></div>
+<ul>
+  <li>Answer to the question: the named skills are <strong>listed</strong> in main's context with name and description and stay invocable; they are <strong>not preloaded</strong> (no body in the context before the first call). Skills not named are removed from the listing and a Skill call for them is refused by an allowlist check. So it is neither "all listed, others blocked" nor "preload": it is listing plus allowlist.</li>
+  <li>The Skill tool stays in main's tool list, so it does not need disallowing for main.</li>
+  <li>The allowlist applies to main only: a subagent with the Skill tool saw the full listing and could invoke a skill outside main's list.</li>
+  <li>In the sdk2-inherit-list answer the harness prefixed a notice that the subagent's output matched an instruction-shaped pattern (the skill descriptions mention settings text); the judged context comes from the transcript, not the answer.</li>
+</ul>
+
+<h3>Skill filter with a list, and main's own Skill tool (added 2026-10-26, headless streaming input)</h3>
+<p>Question: with <code>initialize skills: [skill-alpha, skill-beta]</code>, what does main see, can main invoke a skill outside the list, and does the Skill tool have to be disallowed for main? Runs <a href="results/2026-10-26-1754-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">1754</a> and <a href="results/2026-10-26-1755-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">1755</a>, 2.1.310, one run each. The 1754 gamma scenario is not valid: the shared prompt told main to use no tool, so it made no call. It was rerun in 1755 with <code>prompts/main-tool.md</code>, which requires the call. Main's own Skill calls were read from its transcript.</p>
+<div class="table"><table>
+<tr><th>scenario</th><th>outcome</th></tr>
+<tr><td>list2-main-list</td><td>main's context held alpha and beta, not gamma or nouser; main's tools included Skill</td></tr>
+<tr><td>list2-main-invoke-beta (in the list)</td><td>Skill call succeeded: "Launching skill: skill-beta", BODY_MARK returned</td></tr>
+<tr><td>list2-main-invoke-gamma (not in the list)</td><td>Skill call made and refused: <code>Skill skill-gamma is not in this session's skills allowlist</code> (tool error)</td></tr>
+<tr><td>list2-inherit-list (subagent, no <code>tools:</code>)</td><td>subagent's context held alpha, beta, gamma and nouser: the filter did not reach it</td></tr>
+</table></div>
+<ul>
+  <li>The filter takes a list. Main's Skill tool stays but enforces it: a skill outside the list is refused, not just unlisted. Main does not need the Skill tool disallowed. This settles the "not run here" item in the SDK-option section, for the streaming-input route.</li>
+  <li>Not run: the same list through the Agent SDK <code>skills</code> option (the streaming route sends the same <code>initialize</code> message), and whether a subagent's Skill call is checked against main's list (the subagent's listing was unfiltered; its invocation was not tried under the filter).</li>
+</ul>
+
 <h2>Conclusion</h2>
+<h3>Final recap (2026-10-26, Claude Code 2.1.310)</h3>
+<p><strong>1. Give a subagent selected skills and hide the others.</strong> Preload the needed ones with <code>skills:</code>, and remove the Skill tool: leave it out of a <code>tools:</code> allowlist (which also drops every tool not listed), or put <code>disallowedTools: Skill</code> in the agent, which keeps the other tools. The two are equivalent for removing the Skill tool and its listing: both gave the same outcome in the runs. Removing the tool is required: <code>skills:</code> only adds bodies. Without removing the tool the subagent still gets the full listing and can invoke any skill. With it removed, the named bodies are in the context at start, no other skill can be loaded, and no listing is injected. It is all or nothing for the listing: a subagent cannot keep Skill and hide one specific skill. A skill with <code>disable-model-invocation: true</code> or one hidden by <code>skillOverrides</code> cannot be preloaded.</p>
+<p><strong>2. Let main see only some skills, without changing the subagents' setup.</strong> The Agent SDK <code>skills</code> option, with a list of names (tested with two and with three). Each named skill is listed in main's context (name and description) and stays invocable; none is preloaded. Skills not named are removed from the listing and main's Skill call for them is refused (<code>not in this session's skills allowlist</code>), so the Skill tool does not need disabling for main. The option does not reach subagents: one with the Skill tool saw every skill and could invoke one outside main's list. One-shot <code>claude -p</code> has no flag for it; a headless streaming-input route also exists (see its section) but was not considered as a recommendation. The alternatives affect more than main: <code>skillOverrides</code> and <code>disable-model-invocation: true</code> also hide the skill from subagents, and <code>permissions.deny: ["Skill"]</code> removes every skill from main (and inheriting subagents). <code>--agent</code> applies an agent's <code>tools:</code> and <code>disallowedTools</code> to main but not its <code>skills:</code> preload. A preload for main has no mechanism found.</p>
+<p><strong>The two sides are opposite.</strong> The goal of a restricted skill set is reachable for both main and subagents, but through different mechanisms. For <strong>main</strong> you get a listing and lazy loading: the chosen skills are listed and loaded on demand when main invokes them, and a preload is not possible. For a <strong>subagent</strong> you get only a preload: the chosen bodies are in the context from the start, with no listing and no lazy loading, because the Skill tool has to be removed to hide the other skills.</p>
 <p><strong>Hiding chosen skills from main only:</strong> found, through the Agent SDK <code>skills</code> option. <strong>Hiding chosen skills from a specific subagent, selectively:</strong> no option found among those tested. For a subagent the controls are all or nothing (<code>tools:</code> without <code>Skill</code> removes the whole listing) or add-only (<code>skills:</code> preloads bodies and removes nothing). Selective exclusion exists only for main and subagents together, through <code>skillOverrides</code> or <code>disable-model-invocation: true</code>. The SDK <code>skills</code> option does not reach subagents.</p>
 <p>By default (no <code>tools:</code> field) a subagent has the Skill tool and receives the same skill listing as the main conversation, in both <code>claude -p</code> and the Agent SDK; <code>skills:</code> adds a skill's body and no listing entry. Among the host-level controls tried, only the Agent SDK <code>skills</code> option hid skills from main while leaving them to subagents, with the skill files unmodified; the same filter reached <code>claude -p</code> only through the undocumented, stateful streaming-input protocol. The <code>skillOverrides</code> setting hid the skill from subagents too, and frontmatter controls need edits to files that may not be ours. The docs cover the Skill-tool discovery and the effect of omitting <code>Skill</code> from <code>tools</code>; they do not say the listing itself is what is withheld, which the transcripts show.</p>
 
 <p><strong>Preload without the Skill tool (2026-10-26, headless):</strong> as expected. With the Skill tool removed (by <code>tools:</code> allowlist or by <code>disallowedTools: Skill</code>) and skills named in <code>skills:</code>, the named skill's body is in the context from the start, the other skills cannot be loaded, and no listing is injected. The two ways of removing the tool gave the same outcome.</p>
+<p><strong>Limit of <code>--agent</code> for main (2026-10-26, headless):</strong> starting main as an agent applies the agent's <code>tools:</code> and <code>disallowedTools</code> (main loses the Skill tool and the listing) but not its <code>skills:</code> preload: the body was not in main's context. Anyone considering <code>--agent</code> to give main a skill preload list should know it does not work in these runs. The sub-agents docs describe <code>--agent</code> as giving main the agent's "tool restrictions and model" and do not mention <code>skills</code>, so this is undocumented rather than contradicted (docs read through WebFetch, whose summary may miss text). Not tested: SDK, interactive, or the <code>agent</code> settings key.</p>
 
 <h2>Not tested</h2>
 <ul>

@@ -9,6 +9,8 @@
  * an answer proves the corresponding text reached that model. Judged from the transcripts (what was in the context
  * before the first assistant entry), from the answer, and from the subagent's own Skill tool calls.
  *
+ * Env: EXTRA_SETTINGS = JSON merged into the --settings file (e.g. {"permissions":{"deny":["Skill"]}}).
+ * Env: EXTRA_ARGS = space-separated extra CLI args (e.g. "--agent probe-disallow-preload").
  * Env: CLAUDE_BIN = path of the claude binary to spawn (default ~/.local/bin/claude.exe).
  * Usage:  npx tsx investigations/subagent-skill-awareness/skill-awareness-cli.ts [scenario ...]   (default: all)
  */
@@ -45,6 +47,7 @@ const ALL: Scenario[] = [
   { name: "inherit-invoke", agent: "probe-inherit", question: Q_INVOKE, note: "subagent without skills field is asked to invoke skill-beta" },
   { name: "skilltool-invoke", agent: "probe-skilltool", question: Q_INVOKE, note: "subagent with tools: Read, Skill is asked to invoke skill-beta" },
   { name: "restricted-invoke", agent: "probe-restricted", question: Q_INVOKE, note: "subagent with tools: Read is asked to invoke skill-beta" },
+  { name: "main-invoke", agent: null, question: Q_INVOKE, note: "baseline: the main conversation is asked to invoke skill-beta itself" },
   { name: "preload-invoke", agent: "probe-preload", question: Q_INVOKE, note: "tools: Read, skills: [skill-alpha]; asked to invoke the non-named skill-beta" },
   { name: "disallow-list", agent: "probe-disallow", question: Q_LIST, note: "no tools field, disallowedTools: Skill, no skills field" },
   { name: "disallow-invoke", agent: "probe-disallow", question: Q_INVOKE, note: "no tools field, disallowedTools: Skill; asked to invoke skill-beta" },
@@ -88,11 +91,13 @@ async function runScenario(s: Scenario) {
   const logPath = join(RESULTS_DIR, `${s.name}.jsonl`);
   const settingsPath = join(RESULTS_DIR, `${s.name}.settings.json`);
   writeFileSync(logPath, "");
-  writeFileSync(settingsPath, JSON.stringify({ ...ISOLATION_SETTINGS }, null, 2));
+  writeFileSync(settingsPath, JSON.stringify({ ...ISOLATION_SETTINGS, ...(process.env.EXTRA_SETTINGS ? JSON.parse(process.env.EXTRA_SETTINGS) : {}) }, null, 2));
   const args = [
     "-p", "--output-format", "stream-json", "--verbose", "--model", "sonnet",
     "--setting-sources", "project", "--settings", settingsPath,
     "--allowedTools", "Agent", "Skill", "Read", "--permission-mode", "dontAsk",
+
+    ...(process.env.EXTRA_ARGS ? process.env.EXTRA_ARGS.split(" ") : []),
   ];
   const t0 = Date.now();
   const log = (src: string, event: string, data: Record<string, unknown> = {}) => {

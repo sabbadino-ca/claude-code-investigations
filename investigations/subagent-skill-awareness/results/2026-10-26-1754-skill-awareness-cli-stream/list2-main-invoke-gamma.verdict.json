@@ -1,0 +1,65 @@
+{
+  "scenario": "list2-main-invoke-gamma",
+  "driver": "claude -p --input-format stream-json (no SDK)",
+  "initialize_skills": [
+    "skill-alpha",
+    "skill-beta"
+  ],
+  "cli_version": "2.1.310",
+  "claude_bin": "/opt/node22/bin/claude",
+  "agent": "(main answers itself)",
+  "note": "initialize skills: [alpha, beta]; main invokes gamma (filtered out)",
+  "question": "Call the Skill tool once with the skill named skill-gamma, then report the BODY_MARK value it returned. If the call is refused or you have no Skill tool, say exactly what the refusal said, or reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "anywhere_body": []
+  },
+  "subagent_context": [],
+  "answer_desc_marks": [],
+  "answer_body_marks": [],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write (deferred, schemas not loaded: CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch)",
+  "main_skill_tool_calls": [],
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "I did not call the Skill tool, because step 1 said not to use any tool. So I have no BODY_MARK value to report. Also, skill-gamma is not in my list of available skills, which only has skill-alpha and skill-beta.\nTOOLS=Agent, Bash, Edit, ListAgents, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write (deferred, schemas not loaded: CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch)",
+  "cost_usd": 0.0195013,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/c6e27c9e-07b2-48c5-a896-975c22525383.jsonl"
+}

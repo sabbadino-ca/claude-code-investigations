@@ -1,0 +1,78 @@
+{
+  "scenario": "list2-main-invoke-beta",
+  "driver": "claude -p --input-format stream-json (no SDK)",
+  "initialize_skills": [
+    "skill-alpha",
+    "skill-beta"
+  ],
+  "cli_version": "2.1.310",
+  "claude_bin": "/opt/node22/bin/claude",
+  "agent": "(main answers itself)",
+  "note": "initialize skills: [alpha, beta]; main invokes beta (in the list)",
+  "question": "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. If the call is refused or you have no Skill tool, say exactly what the refusal said, or reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta"
+    ],
+    "anywhere_body": [
+      "skill-beta"
+    ]
+  },
+  "subagent_context": [],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-beta"
+  ],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, Read, ListAgents, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write",
+  "main_skill_tool_calls": [
+    {
+      "input": {
+        "skill": "skill-beta"
+      },
+      "is_error": false,
+      "text": "Launching skill: skill-beta",
+      "body_marks": []
+    }
+  ],
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "BODY_MARK=30478261\nTOOLS=Agent, Bash, Edit, Read, ListAgents, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write",
+  "cost_usd": 0.0219552,
+  "exit_code": 0,
+  "session_log": "/home/user/claude-code-investigations/investigations/subagent-skill-awareness/.claude-home/projects/sessions/5b4582cb-9840-4af2-ac75-8d23be424d4b.jsonl"
+}
