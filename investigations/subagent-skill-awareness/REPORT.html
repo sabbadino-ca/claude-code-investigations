@@ -113,6 +113,7 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
 <tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-26-1718-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1718/1719-skill-awareness-cli</a></td><td>skill-awareness-cli.ts with <code>EXTRA_ARGS</code></td><td>2.1.310 via <code>claude -p</code></td><td>final; main-list, main-invoke under <code>--agent</code></td><td>see "Main run as an agent" below</td></tr>
 <tr><td><a href="results/2026-10-26-1716-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1716-skill-awareness-cli</a></td><td>skill-awareness-cli.ts with <code>EXTRA_SETTINGS</code></td><td>2.1.310 via <code>claude -p</code></td><td>final; 4 scenarios under <code>permissions.deny: ["Skill"]</code></td><td>see "Global deny of the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-26-1705-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1705-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the two <code>probe-disallow*</code> agents; 6 scenarios</td><td>see "Preload without the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-25-1614-skill-awareness-cli-overrides/skill-awareness-cli-overrides-summary.md">2026-10-25-1614-skill-awareness-cli-overrides</a></td><td>skill-awareness-cli-overrides.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the gamma agents; 8 scenarios</td><td>see "skillOverrides" below</td></tr>
@@ -212,6 +213,19 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
   <li>The deny removed the tool and the listing from main and from a subagent that would otherwise inherit it. Preloading through <code>skills:</code> still worked.</li>
   <li>The <code>system:init</code> event's <code>skills</code> field still named the skills; the model's context did not contain them.</li>
   <li>This is all or nothing for main: no skill is invocable through the model. Whether the user's <code>/name</code> still works was not tested.</li>
+</ul>
+
+<h3>Main run as an agent: <code>--agent</code> (added 2026-10-26, headless only)</h3>
+<p>Question: can main be given preload requirements the way a subagent is, by starting it as an agent? Run with <code>EXTRA_ARGS="--agent probe-preload"</code> and <code>"--agent probe-disallow-preload"</code> (both have <code>skills: [skill-alpha]</code>), scenarios <code>main-list</code> and <code>main-invoke</code>, 2.1.310, one run each. Results: <a href="results/2026-10-26-1718-skill-awareness-cli/skill-awareness-cli-summary.md">1718</a> and <a href="results/2026-10-26-1719-skill-awareness-cli/skill-awareness-cli-summary.md">1719</a>.</p>
+<div class="table"><table>
+<tr><th>main started as</th><th>tools main reported</th><th>names and descriptions in main's context</th><th>alpha body in main's context</th><th>asked to invoke skill-beta</th></tr>
+<tr><td><code>--agent probe-preload</code> (<code>tools: Read</code>)</td><td>Read</td><td>none</td><td><strong>no</strong></td><td>SKILL_TOOL_UNAVAILABLE</td></tr>
+<tr><td><code>--agent probe-disallow-preload</code> (<code>disallowedTools: Skill</code>)</td><td>all but Skill</td><td>none</td><td><strong>no</strong></td><td>SKILL_TOOL_UNAVAILABLE</td></tr>
+</table></div>
+<ul>
+  <li><code>--agent</code> applied the agent's <code>tools:</code> and <code>disallowedTools</code> to main: the Skill tool and the listing were gone.</li>
+  <li>The agent's <code>skills:</code> was <strong>not</strong> applied to main: alpha's body was not in the context, and main answered "BODIES=NONE". The same agents as subagents did preload alpha.</li>
+  <li>So in these runs main has no way to express a preload list. Not tried: injecting a body by other means (<code>--append-system-prompt</code>, a SessionStart hook, an <code>@import</code> in CLAUDE.md), the <code>agent</code> settings key, and <code>--agent</code> in the Agent SDK or interactive mode.</li>
 </ul>
 
 <h3>3. Host-level controls</h3>

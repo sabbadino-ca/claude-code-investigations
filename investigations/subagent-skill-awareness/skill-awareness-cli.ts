@@ -10,6 +10,7 @@
  * before the first assistant entry), from the answer, and from the subagent's own Skill tool calls.
  *
  * Env: EXTRA_SETTINGS = JSON merged into the --settings file (e.g. {"permissions":{"deny":["Skill"]}}).
+ * Env: EXTRA_ARGS = space-separated extra CLI args (e.g. "--agent probe-disallow-preload").
  * Env: CLAUDE_BIN = path of the claude binary to spawn (default ~/.local/bin/claude.exe).
  * Usage:  npx tsx investigations/subagent-skill-awareness/skill-awareness-cli.ts [scenario ...]   (default: all)
  */
@@ -95,6 +96,8 @@ async function runScenario(s: Scenario) {
     "-p", "--output-format", "stream-json", "--verbose", "--model", "sonnet",
     "--setting-sources", "project", "--settings", settingsPath,
     "--allowedTools", "Agent", "Skill", "Read", "--permission-mode", "dontAsk",
+
+    ...(process.env.EXTRA_ARGS ? process.env.EXTRA_ARGS.split(" ") : []),
   ];
   const t0 = Date.now();
   const log = (src: string, event: string, data: Record<string, unknown> = {}) => {
