@@ -113,6 +113,7 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
 <tr><td><a href="results/2026-10-25-1528-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1528-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the three <code>-hidden</code> probes; only those 3 scenarios run</td><td>see "skills: [skill-hidden]" below</td></tr>
 <tr><td><a href="results/2026-10-25-1530-skill-awareness-sdk/skill-awareness-sdk-summary.md">2026-10-25-1530-skill-awareness-sdk</a></td><td>skill-awareness-sdk.ts</td><td>2.1.310 bundled in Agent SDK 0.3.310</td><td>same, 3 scenarios</td><td>same as the CLI run</td></tr>
 <tr><td><a href="results/2026-10-25-1537-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-25-1537-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus skill-nouser and the <code>-nouser</code> probes; 7 scenarios</td><td>see "user-invocable: false" below</td></tr>
+<tr><td><a href="results/2026-10-26-1716-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1716-skill-awareness-cli</a></td><td>skill-awareness-cli.ts with <code>EXTRA_SETTINGS</code></td><td>2.1.310 via <code>claude -p</code></td><td>final; 4 scenarios under <code>permissions.deny: ["Skill"]</code></td><td>see "Global deny of the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-26-1705-skill-awareness-cli/skill-awareness-cli-summary.md">2026-10-26-1705-skill-awareness-cli</a></td><td>skill-awareness-cli.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the two <code>probe-disallow*</code> agents; 6 scenarios</td><td>see "Preload without the Skill tool" below</td></tr>
 <tr><td><a href="results/2026-10-25-1614-skill-awareness-cli-overrides/skill-awareness-cli-overrides-summary.md">2026-10-25-1614-skill-awareness-cli-overrides</a></td><td>skill-awareness-cli-overrides.ts</td><td>2.1.310 via <code>claude -p</code></td><td>final plus the gamma agents; 8 scenarios</td><td>see "skillOverrides" below</td></tr>
 <tr><td><a href="results/2026-10-25-1600-skill-awareness-cli-stream/skill-awareness-cli-stream-summary.md">2026-10-25-1600-skill-awareness-cli-stream</a></td><td>skill-awareness-cli-stream.ts</td><td>2.1.310 via <code>claude -p --input-format stream-json</code></td><td>final plus the filter scenarios; 7 scenarios</td><td>same rows as the SDK filter run</td></tr>
@@ -196,6 +197,21 @@ CLAUDE_BIN=/path/to/claude npx tsx investigations/subagent-skill-awareness/skill
   <li>No skill name or description reached the context in any of the three. In the preload agents the only trace of alpha was its body; the agent knew the name from the base-directory path line.</li>
   <li><code>disallowedTools: Skill</code> behaved like omitting Skill from an allowlist: the tool list the agent reported had no Skill, and with no allowlist it kept the other tools (Bash, Edit, Write and others) while losing the listing.</li>
   <li>Not read: the Skill tool's own refusal text, since the models made no call; the evidence is the reported tool list and the transcripts.</li>
+</ul>
+
+<h3>Global deny of the Skill tool (added 2026-10-26, headless only)</h3>
+<p>Question: does a settings-level deny of the Skill tool apply to main as well as subagents, with no <code>--agent</code>? Run with <code>EXTRA_SETTINGS='{"permissions":{"deny":["Skill"]}}'</code> merged into the <code>--settings</code> file (the driver still passes <code>--allowedTools Agent Skill Read</code>). The run folder's <code>*.settings.json</code> files hold the setting. Only passed through <code>--settings</code>; project, user and managed settings files were not tried. One run each, 2.1.310.</p>
+<div class="table"><table>
+<tr><th>scenario</th><th>names and descriptions in context</th><th>skill bodies in context</th><th>outcome</th></tr>
+<tr><td>main-list</td><td>none</td><td>none</td><td>TOOLS had no Skill</td></tr>
+<tr><td>main-invoke</td><td>none</td><td>none</td><td>SKILL_TOOL_UNAVAILABLE, no call</td></tr>
+<tr><td>inherit-list (no <code>tools:</code>)</td><td>none</td><td>none</td><td>TOOLS had no Skill; "No skills are listed"</td></tr>
+<tr><td>preload-list (<code>tools: Read</code>, <code>skills: [skill-alpha]</code>)</td><td>none</td><td>alpha</td><td>preload unaffected</td></tr>
+</table></div>
+<ul>
+  <li>The deny removed the tool and the listing from main and from a subagent that would otherwise inherit it. Preloading through <code>skills:</code> still worked.</li>
+  <li>The <code>system:init</code> event's <code>skills</code> field still named the skills; the model's context did not contain them.</li>
+  <li>This is all or nothing for main: no skill is invocable through the model. Whether the user's <code>/name</code> still works was not tested.</li>
 </ul>
 
 <h3>3. Host-level controls</h3>
