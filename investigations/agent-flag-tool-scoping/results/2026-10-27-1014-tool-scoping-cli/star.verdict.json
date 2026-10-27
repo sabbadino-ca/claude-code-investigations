@@ -1,0 +1,183 @@
+{
+  "scenario": "star",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.311",
+  "note": "every MCP entry written mcp__<server>__* (the documented form)",
+  "all_threads_exact": false,
+  "init_tools": [
+    "Task",
+    "Bash",
+    "mcp__alpha__tool_one",
+    "mcp__alpha__tool_two"
+  ],
+  "init_mcp_servers": [
+    {
+      "name": "alpha",
+      "status": "connected",
+      "source": "project"
+    },
+    {
+      "name": "beta",
+      "status": "connected",
+      "source": "project"
+    },
+    {
+      "name": "gamma",
+      "status": "connected",
+      "source": "project"
+    }
+  ],
+  "threads": {
+    "main": {
+      "agent": "main-star",
+      "expected": [
+        "Agent",
+        "Bash",
+        "mcp__alpha__tool_one",
+        "mcp__alpha__tool_two"
+      ],
+      "exact_match": false,
+      "missing": [],
+      "extra": [
+        "DeferredToolPlaceholder",
+        "advisor"
+      ],
+      "probed": {
+        "Agent": "sent",
+        "Bash": "sent",
+        "Read": "absent",
+        "Write": "absent",
+        "ToolSearch": "absent",
+        "mcp__alpha__tool_one": "sent",
+        "mcp__alpha__tool_two": "sent",
+        "mcp__beta__tool_one": "absent",
+        "mcp__beta__tool_two": "absent",
+        "mcp__gamma__tool_one": "absent",
+        "mcp__gamma__tool_two": "absent"
+      },
+      "expected_tools_used": {
+        "Bash": "ok",
+        "mcp__alpha__tool_one": "ok",
+        "mcp__alpha__tool_two": "ok"
+      },
+      "unexpected_tools_called": [],
+      "sent": [
+        "Agent",
+        "Bash",
+        "DeferredToolPlaceholder",
+        "advisor",
+        "mcp__alpha__tool_one",
+        "mcp__alpha__tool_two"
+      ],
+      "deferred": [],
+      "distinct_tool_sets_sent": 1,
+      "calls": [
+        "mcp__alpha__tool_one {} -> NONCE=58203917",
+        "mcp__alpha__tool_two {} -> NONCE=31749628",
+        "Bash {\"command\":\"echo BASH_RAN\"} -> BASH_RAN",
+        "Agent {\"description\":\"probe sub1-star\",\"subagent_type\":\"sub1-star\",\"run_in_background\":false,\"prompt\":\"Follow these steps exactly.\\n1. Look at every tool available to you, including any listed as deferred. For each tool whose name starts with mcp__, call it once with no arguments (if it is deferred, load it with ToolSearch first). Never guess a tool name: only call tools you can actually see.\\n2. If you have a tool named Bash, run exactly this command with it: echo BASH_RAN\\n3. If you have a tool named Read, read the file D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/read-me.txt\\n4. If you have a tool named Write, write a file at D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-10-27-1014-tool-scoping-cli/star.written.txt whose content is exactly: WRITE_NONCE=61852047\\n5. Reply with one line per tool you called in steps 1 to 4: the tool name, a colon, then the exact text it returned. If you called no tool, reply with exactly NO_TOOLS.\"} ->   <tools-used-before-summary>Read, mcp__beta__tool_one, mcp__beta__tool_two</tools-used-before-summary>\n  \n[Subagent hand-back] The text below is the final repo",
+        "Agent {\"description\":\"probe sub2-star\",\"subagent_type\":\"sub2-star\",\"run_in_background\":false,\"prompt\":\"Follow these steps exactly.\\n1. Look at every tool available to you, including any listed as deferred. For each tool whose name starts with mcp__, call it once with no arguments (if it is deferred, load it with ToolSearch first). Never guess a tool name: only call tools you can actually see.\\n2. If you have a tool named Bash, run exactly this command with it: echo BASH_RAN\\n3. If you have a tool named Read, read the file D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/read-me.txt\\n4. If you have a tool named Write, write a file at D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-10-27-1014-tool-scoping-cli/star.written.txt whose content is exactly: WRITE_NONCE=61852047\\n5. Reply with one line per tool you called in steps 1 to 4: the tool name, a colon, then the exact text it returned. If you called no tool, reply with exactly NO_TOOLS.\"} ->   <tools-used-before-summary>Write, mcp__gamma__tool_one, mcp__gamma__tool_two</tools-used-before-summary>\n  \n[Subagent hand-back] The text below is the final r"
+      ]
+    },
+    "sub1-star": {
+      "agent": "sub1-star",
+      "expected": [
+        "Read",
+        "mcp__beta__tool_one",
+        "mcp__beta__tool_two"
+      ],
+      "exact_match": false,
+      "missing": [],
+      "extra": [
+        "DeferredToolPlaceholder",
+        "advisor"
+      ],
+      "probed": {
+        "Agent": "absent",
+        "Bash": "absent",
+        "Read": "sent",
+        "Write": "absent",
+        "ToolSearch": "absent",
+        "mcp__alpha__tool_one": "absent",
+        "mcp__alpha__tool_two": "absent",
+        "mcp__beta__tool_one": "sent",
+        "mcp__beta__tool_two": "sent",
+        "mcp__gamma__tool_one": "absent",
+        "mcp__gamma__tool_two": "absent"
+      },
+      "expected_tools_used": {
+        "Read": "ok",
+        "mcp__beta__tool_one": "ok",
+        "mcp__beta__tool_two": "ok"
+      },
+      "unexpected_tools_called": [],
+      "sent": [
+        "DeferredToolPlaceholder",
+        "Read",
+        "advisor",
+        "mcp__beta__tool_one",
+        "mcp__beta__tool_two"
+      ],
+      "deferred": [],
+      "distinct_tool_sets_sent": 1,
+      "calls": [
+        "mcp__beta__tool_one {} -> NONCE=86420571",
+        "mcp__beta__tool_two {} -> NONCE=24068395",
+        "Read {\"file_path\":\"D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/read-me.txt\"} -> 1\tREAD_NONCE=73019584\n2\t"
+      ]
+    },
+    "sub2-star": {
+      "agent": "sub2-star",
+      "expected": [
+        "Write",
+        "mcp__gamma__tool_one",
+        "mcp__gamma__tool_two"
+      ],
+      "exact_match": false,
+      "missing": [],
+      "extra": [
+        "DeferredToolPlaceholder",
+        "advisor"
+      ],
+      "probed": {
+        "Agent": "absent",
+        "Bash": "absent",
+        "Read": "absent",
+        "Write": "sent",
+        "ToolSearch": "absent",
+        "mcp__alpha__tool_one": "absent",
+        "mcp__alpha__tool_two": "absent",
+        "mcp__beta__tool_one": "absent",
+        "mcp__beta__tool_two": "absent",
+        "mcp__gamma__tool_one": "sent",
+        "mcp__gamma__tool_two": "sent"
+      },
+      "expected_tools_used": {
+        "Write": "ok",
+        "mcp__gamma__tool_one": "ok",
+        "mcp__gamma__tool_two": "ok"
+      },
+      "unexpected_tools_called": [],
+      "sent": [
+        "DeferredToolPlaceholder",
+        "Write",
+        "advisor",
+        "mcp__gamma__tool_one",
+        "mcp__gamma__tool_two"
+      ],
+      "deferred": [],
+      "distinct_tool_sets_sent": 1,
+      "calls": [
+        "mcp__gamma__tool_one {} -> NONCE=47195362",
+        "mcp__gamma__tool_two {} -> NONCE=90537184",
+        "Write {\"file_path\":\"D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-10-27-1014-tool-scoping-cli/star.written.txt\",\"content\":\"WRITE_NONCE=61852047\"} -> File created successfully at: D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-10-27-1014-tool-scoping-cli/star"
+      ]
+    }
+  },
+  "unattributed_calls": [],
+  "written_file": "WRITE_NONCE=61852047",
+  "final_answer": "mcp__alpha__tool_one: NONCE=58203917\nmcp__alpha__tool_two: NONCE=31749628\nBash: BASH_RAN\n\nsub1-star\nmcp__beta__tool_one: NONCE=86420571\nmcp__beta__tool_two: NONCE=24068395\nRead: READ_NONCE=73019584\n\nI have no Bash or Write tool, so I skipped steps 2 and 4.\n\nsub2-star\nmcp__gamma__tool_one: NONCE=47195362\nmcp__gamma__tool_two: NONCE=90537184\nWrite: File created successfully at: D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-10-27-1014-tool-scoping-cli/star.written.txt (file state is current in your context — no need to Read it back)",
+  "cost_usd": 0.0787136,
+  "exit_code": 0,
+  "session_log": "D:/repos/github-ca/claude-code-investigations/investigations/agent-flag-tool-scoping/.claude-home/projects/sessions/a19e1223-d245-42a0-bffa-df01573f66e5.jsonl"
+}

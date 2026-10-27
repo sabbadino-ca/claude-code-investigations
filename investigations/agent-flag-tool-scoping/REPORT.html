@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool scoping with --agent</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>With <code>--agent</code>, does each thread get exactly the tools its <code>tools:</code> field declares?</h1>
+
+<h2>Question</h2>
+<p>A behaviour to observe. Main runs as an agent (<code>claude -p --agent main-star</code>) and launches two subagents. Every thread declares its built-in tools and whole MCP servers in its own <code>tools:</code> field, and all three MCP servers are defined in the project <code>.mcp.json</code>. Does each thread get exactly what it declares, nothing more and nothing less? In particular, can a subagent get a built-in tool and an MCP server that main's allowlist leaves out? In other words, does main's allowlist cap its subagents?</p>
+<p>The docs, <a href="https://code.claude.com/docs/en/sub-agents">code.claude.com/docs/en/sub-agents</a>, give the syntax for a whole MCP server in <code>tools</code>:</p>
+<blockquote><p>Give the subagent every tool from one server | <code>tools</code> | <code>mcp__github__*</code></p></blockquote>
+<p>They also describe the subagent pool as narrowed from main's, without saying what happens when main itself is restricted by <code>--agent</code>:</p>
+<blockquote><p>Subagents inherit the built-in tools and MCP tools available in the main conversation, narrowed by two filters [...] To restrict tools, use the <code>tools</code> field as an allowlist [...] <code>tools</code> is resolved against the remaining pool.</p></blockquote>
+<blockquote><p>Pass <code>--agent &lt;name&gt;</code> to start a session where the main thread itself takes on that subagent's tool restrictions and model</p></blockquote>
+<p>What is recorded, for each thread (main, sub1, sub2):</p>
+<ul>
+  <li><strong>Visible tools</strong>: every tool name sent in the thread's API requests (<code>api-request-shape</code> entries of its transcript) plus every deferred tool name (<code>deferred_tools_delta</code> attachments). This set is compared with the declared set and every missing or extra tool is listed.</li>
+  <li><strong>ToolSearch and deferral</strong>: no thread declares <code>ToolSearch</code>. The user's expectation is that ToolSearch is then absent and every MCP tool is sent from the start, with no deferred list.</li>
+  <li><strong>Usable tools</strong>: each thread runs the same probe. It calls every <code>mcp__</code> tool it sees (each returns an unguessable <code>NONCE</code>), runs <code>echo BASH_RAN</code> if it has Bash, reads <code>read-me.txt</code> (<code>READ_NONCE</code>) if it has Read, and writes a file with <code>WRITE_NONCE</code> if it has Write.</li>
+</ul>
+<p>Every probed tool is pre-approved with <code>--allowedTools</code> and <code>dontAsk</code>, so a tool that is absent is really not offered. It can't be a permission denial in disguise. Run mode: <code>claude -p</code> only.</p>
+<p>Syntax order (agreed with the user): first the documented <code>mcp__&lt;server&gt;__*</code>. Only if that fails, a second run with <code>mcp__&lt;server&gt;</code>.</p>
+
+<h2>Setup</h2>
+<pre><code>.mcp.json: alpha, beta, gamma   (each: tool_one, tool_two)
+
+main  (claude -p --agent main-star)   tools: Agent, Bash, mcp__alpha__*
+  --Agent (foreground)-->  sub1-star  tools: Read,  mcp__beta__*
+  --Agent (foreground)-->  sub2-star  tools: Write, mcp__gamma__*</code></pre>
+<p>Main has no Read, Write, beta or gamma. If sub1 and sub2 still get theirs, main's allowlist doesn't cap subagents. If main's Bash or alpha appear in a subagent, the subagent's <code>tools:</code> doesn't fully restrict it.</p>
+<ul>
+  <li><a href=".mcp.json">.mcp.json</a>: the three project MCP servers. They are approved through <code>enabledMcpjsonServers</code> in <a href=".claude/settings.json">.claude/settings.json</a> and in the driver's <code>--settings</code>.</li>
+  <li><a href="nonce-mcp.mjs">nonce-mcp.mjs</a>: a stdio MCP server, started once per server name. <code>tool_one</code> and <code>tool_two</code> each return a fixed unguessable nonce. Two tools per server show that <code>*</code> brings in all of them.</li>
+  <li><a href=".claude/agents/main-star.md">.claude/agents/main-star.md</a>: main's agent, <code>tools: Agent, Bash, mcp__alpha__*</code>. Agent is needed to launch the subagents.</li>
+  <li><a href=".claude/agents/sub1-star.md">.claude/agents/sub1-star.md</a>: <code>tools: Read, mcp__beta__*</code>. Both are outside main's allowlist.</li>
+  <li><a href=".claude/agents/sub2-star.md">.claude/agents/sub2-star.md</a>: <code>tools: Write, mcp__gamma__*</code>. Both are outside main's allowlist.</li>
+  <li><a href="read-me.txt">read-me.txt</a>: holds <code>READ_NONCE</code>, which proves a Read went through.</li>
+  <li><a href="prompts/probe.md">prompts/probe.md</a>: the probe every thread runs.</li>
+  <li><a href="prompts/main.md">prompts/main.md</a>: main's script. Main runs the probe itself (step A), launches sub1 and then sub2 in the foreground with the same probe (step B), and relays the replies (step C). The subagents run in the foreground, so the background filter of built-in tools plays no part (and Read, Write and Bash would survive it anyway).</li>
+  <li><a href="tool-scoping-cli.ts">tool-scoping-cli.ts</a>: the driver.
+    <ul>
+      <li>It spawns the installed <code>claude -p --agent main-star --setting-sources project --model sonnet --allowedTools Agent Bash Read Write ToolSearch mcp__alpha mcp__beta mcp__gamma --permission-mode dontAsk</code>.</li>
+      <li>It logs hooks (PreToolUse, PostToolUse, PostToolUseFailure, SubagentStart, SubagentStop) and parses the stream-json.</li>
+      <li>From the transcripts it reads each thread's visible tool set, judges it against the declared set, and writes <code>&lt;scenario&gt;.verdict.json</code> and a summary.</li>
+    </ul>
+  </li>
+  <li>Env: <code>CLAUDE_CONFIG_DIR</code> and <code>CLAUDE_CODE_PROJECT_DIR_NAME=sessions</code>, from the harness. Inherited <code>CLAUDE*</code> vars are stripped.</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                  # repo root
+node lib/claude-home.mjs investigations/agent-flag-tool-scoping --check
+npx tsx investigations/agent-flag-tool-scoping/tool-scoping-cli.ts [star]</code></pre>
+<p>Results: <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-tool-scoping-cli/</code>, which holds <code>star.verdict.json</code>, <code>star.jsonl</code>, <code>star.hooks.jsonl</code>, <code>star.written.txt</code>, <code>tool-scoping-cli-summary.md</code> and <code>run.json</code>. Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>, with the subagents under <code>&lt;session-id&gt;/subagents/</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-10-27-1014-tool-scoping-cli/tool-scoping-cli-summary.md">2026-10-27-1014-tool-scoping-cli</a></td><td>tool-scoping-cli.ts <code>star</code></td><td>2.1.311 via <code>claude -p</code></td><td>Every thread got exactly its declared tools, apart from two hidden harness tools that every thread gets (see below). Every declared tool worked. Main did not cap the subagents. Cost $0.079.</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<h3>Scenario <code>star</code> (every MCP entry written <code>mcp__&lt;server&gt;__*</code>)</h3>
+<p>All three servers were <code>connected</code> (source <code>project</code>). Each thread had one tool set throughout its session (one distinct <code>api-request-shape</code>). Its tool list, with <code>(defer)</code> marking <code>defer_loading: true</code>:</p>
+<div class="table"><table>
+<thead><tr><th>thread</th><th>declared</th><th>tools sent to the API</th><th>used</th><th>deferred list</th></tr></thead>
+<tbody>
+<tr><td>main (<code>--agent main-star</code>)</td><td><code>Agent, Bash, mcp__alpha__*</code></td><td>Agent, Bash, mcp__alpha__tool_one, mcp__alpha__tool_two, DeferredToolPlaceholder (defer), advisor (defer)</td><td>Bash printed BASH_RAN; both alpha nonces came back; Agent launched sub1 and sub2</td><td>empty</td></tr>
+<tr><td>sub1-star</td><td><code>Read, mcp__beta__*</code></td><td>Read, mcp__beta__tool_one, mcp__beta__tool_two, DeferredToolPlaceholder (defer), advisor (defer)</td><td>Read returned READ_NONCE; both beta nonces came back</td><td>empty</td></tr>
+<tr><td>sub2-star</td><td><code>Write, mcp__gamma__*</code></td><td>Write, mcp__gamma__tool_one, mcp__gamma__tool_two, DeferredToolPlaceholder (defer), advisor (defer)</td><td>Write created <code>star.written.txt</code> holding WRITE_NONCE; both gamma nonces came back</td><td>empty</td></tr>
+</tbody>
+</table></div>
+<ul>
+  <li><strong>Nothing missing</strong> in any thread. <code>mcp__X__*</code> brought in both tools of its server, so the fallback <code>mcp__X</code> run was not needed.</li>
+  <li><strong>Nothing leaked between threads.</strong>
+    <ul>
+      <li>Read, Write, beta and gamma were absent from main.</li>
+      <li>Main's Bash and alpha tools were absent from both subagents.</li>
+      <li>Each subagent lacked the other's tools.</li>
+      <li>No thread called a tool outside its declared set. sub1 said: "I have no Bash or Write tool, so I skipped steps 2 and 4."</li>
+    </ul>
+  </li>
+  <li><strong>ToolSearch:</strong> absent everywhere. The MCP tools were sent inline from the first request and the deferred-tool list was empty in every thread, as the user expected.</li>
+  <li><strong>The two extras</strong>, present in every thread whatever it declares, both with <code>defer_loading: true</code>:
+    <ul>
+      <li><code>DeferredToolPlaceholder</code>: "Reserved placeholder that keeps deferred tool loading active; never call this tool."</li>
+      <li><code>advisor</code>: a server tool of type <code>advisor_20260301</code>, model <code>claude-opus-5-5</code>.</li>
+    </ul>
+    Neither was called, and with no ToolSearch neither can be loaded. The <code>tools:</code> field does not control them.</li>
+  <li>The stream-json <code>system:init</code> tools of main read <code>["Task","Bash","mcp__alpha__tool_one","mcp__alpha__tool_two"]</code>, which is the same set under Agent's older name <code>Task</code>, without the two hidden tools.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Yes, on Claude Code 2.1.311 with <code>claude -p --agent</code>. Each thread gets exactly the built-in tools and MCP servers its own <code>tools:</code> field declares. The only exceptions are two hidden harness tools (<code>DeferredToolPlaceholder</code>, <code>advisor</code>) that every thread gets regardless.</p>
+<ul>
+  <li><strong>Main's allowlist does not cap subagents.</strong> A subagent's <code>tools:</code> is resolved against the session's full pool: every built-in tool and every server in <code>.mcp.json</code>. It is not resolved against main's restricted set. sub1 got Read and beta, and sub2 got Write and gamma, though main had none of them. The doc sentence "Subagents inherit the [...] tools available in the main conversation" therefore doesn't hold in this case, where main itself is restricted by <code>--agent</code>.</li>
+  <li><strong>Main gets exactly its agent's <code>tools:</code></strong>, so <code>--agent</code> does restrict main.</li>
+  <li><strong>The one-line syntax for a whole MCP server is the documented <code>mcp__&lt;server&gt;__*</code>.</strong> It works in an agent used as main and in subagents.</li>
+  <li><strong>Without <code>ToolSearch</code> in <code>tools:</code></strong>, MCP tools are loaded up front, not deferred.</li>
+</ul>
+
+<h2>Not tested</h2>
+<ul>
+  <li>The <code>mcp__&lt;server&gt;</code> form without <code>__*</code> (not needed, since <code>__*</code> worked). The docs say that form matches nothing in <code>tools</code> for a server whose name contains <code>__</code>.</li>
+  <li>A subagent with no <code>tools:</code> field under <code>--agent</code>: does it inherit main's restricted set or the full pool?</li>
+  <li>Threads that declare <code>ToolSearch</code> (MCP tools deferred).</li>
+  <li>Background subagents, nested subagents, forks, and <code>disallowedTools</code>.</li>
+  <li>MCP servers defined outside <code>.mcp.json</code>: <code>--mcp-config</code>, user scope, a subagent's <code>mcpServers</code>, claude.ai connectors (connected in the session but absent from every thread here).</li>
+  <li>The interactive terminal and the Agent SDK.</li>
+  <li>A single run; the tool sets come from the harness, not the model, so they should not vary between runs.</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "alpha": { "type": "stdio", "command": "node", "args": ["nonce-mcp.mjs", "alpha"] },
+    "beta": { "type": "stdio", "command": "node", "args": ["nonce-mcp.mjs", "beta"] },
+    "gamma": { "type": "stdio", "command": "node", "args": ["nonce-mcp.mjs", "gamma"] }
+  }
+}

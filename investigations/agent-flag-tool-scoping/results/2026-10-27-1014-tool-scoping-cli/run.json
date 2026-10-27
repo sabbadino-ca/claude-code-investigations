@@ -1,0 +1,32 @@
+{
+  "driver": "tool-scoping-cli.ts",
+  "args": [
+    "star"
+  ],
+  "investigation": "investigations/agent-flag-tool-scoping",
+  "started": "2026-10-27T09:14:06.466Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "cli": "2.1.311"
+    }
+  },
+  "git": {
+    "commit": "fe8c729d62026034fc44b51970b01c8552435933",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "35614c165ad9c53b",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/agent-flag-tool-scoping/.claude/agents/main-star.md": "24389bea9ed39a78",
+    "investigations/agent-flag-tool-scoping/.claude/agents/sub1-star.md": "e396d6b4d03db9ff",
+    "investigations/agent-flag-tool-scoping/.claude/agents/sub2-star.md": "162a6ffb3849c349",
+    "investigations/agent-flag-tool-scoping/.claude/settings.json": "78d10261e1bd6271",
+    "investigations/agent-flag-tool-scoping/.mcp.json": "092e25691dbbf1fe",
+    "investigations/agent-flag-tool-scoping/nonce-mcp.mjs": "d72e959c29febc14",
+    "investigations/agent-flag-tool-scoping/prompts/main.md": "21c08197b349467f",
+    "investigations/agent-flag-tool-scoping/prompts/probe.md": "eb3c7151c7438b90",
+    "investigations/agent-flag-tool-scoping/read-me.txt": "351bbd192b8da93e",
+    "investigations/agent-flag-tool-scoping/tool-scoping-cli.ts": "2e94c6bd66962f20"
+  }
+}
