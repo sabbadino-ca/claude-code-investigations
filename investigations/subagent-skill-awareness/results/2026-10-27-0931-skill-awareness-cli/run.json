@@ -1,0 +1,48 @@
+{
+  "driver": "skill-awareness-cli.ts",
+  "args": [
+    "main-list",
+    "main-invoke"
+  ],
+  "investigation": "investigations/subagent-skill-awareness",
+  "started": "2026-10-27T08:31:27.608Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "cli": "2.1.311"
+    }
+  },
+  "git": {
+    "commit": "1ed195feac9375c1b70ad590484b6c99b30a9001",
+    "dirty": false
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "35614c165ad9c53b",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-disallow-preload.md": "9ede12efed18bd14",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-disallow.md": "87d58f8800633df2",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit-gamma.md": "49fc388bee48fd79",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit-hidden.md": "252078e123ce773b",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit-nouser.md": "ab4ccc1dd0f63461",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-inherit.md": "275d38cdb876fcc8",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-preload.md": "a2849cae34b72afa",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted-gamma.md": "5af010e807f1c4c4",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted-hidden.md": "22d77019427f0f1c",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted-nouser.md": "f6a36f665e7e1f2c",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-restricted.md": "1cd9e143ed0b85d4",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool-hidden.md": "ead49c8bba9619b5",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool-nouser.md": "567c20f4a2494075",
+    "investigations/subagent-skill-awareness/.claude/agents/probe-skilltool.md": "caea5cc8efd9ea1d",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-alpha/SKILL.md": "27cb6fe6bdd9f459",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-beta/SKILL.md": "f4acd9a078c7a731",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-gamma/SKILL.md": "d2b623084f41bfa9",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-hidden/SKILL.md": "008572c9a9f9247c",
+    "investigations/subagent-skill-awareness/.claude/skills/skill-nouser/SKILL.md": "9ecde0ae78fef8f0",
+    "investigations/subagent-skill-awareness/prompts/main-tool.md": "fefb0c5dac52f8c2",
+    "investigations/subagent-skill-awareness/prompts/main.md": "bc5d6a4d796df260",
+    "investigations/subagent-skill-awareness/skill-awareness-cli-overrides.ts": "6880ccf8e3f7ab46",
+    "investigations/subagent-skill-awareness/skill-awareness-cli-stream.ts": "5f55aab339c7bc50",
+    "investigations/subagent-skill-awareness/skill-awareness-cli.ts": "cdb8e5fcfa10410e",
+    "investigations/subagent-skill-awareness/skill-awareness-sdk.ts": "50aa336af9e26580"
+  }
+}

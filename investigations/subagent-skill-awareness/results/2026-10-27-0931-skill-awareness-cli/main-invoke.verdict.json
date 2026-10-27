@@ -1,0 +1,68 @@
+{
+  "scenario": "main-invoke",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.311",
+  "claude_bin": "C:\\Users\\esabbadin\\.local\\bin\\claude.exe",
+  "agent": "(main answers itself)",
+  "note": "baseline: the main conversation is asked to invoke skill-beta itself",
+  "question": "Call the Skill tool once with the skill named skill-beta, then report the BODY_MARK value it returned. If you have no Skill tool, call nothing and reply SKILL_TOOL_UNAVAILABLE. Also add a line TOOLS= with the names of all tools you have.",
+  "init_skills_listed_to_main": [
+    "skill-alpha",
+    "skill-beta",
+    "skill-gamma",
+    "skill-hidden",
+    "deep-research",
+    "design",
+    "design-sync",
+    "dataviz",
+    "update-config",
+    "verify",
+    "debug",
+    "code-review",
+    "simplify",
+    "batch",
+    "fewer-permission-prompts",
+    "doctor",
+    "loop",
+    "schedule",
+    "claude-api",
+    "workflow-authoring",
+    "run",
+    "run-skill-generator",
+    "plugin-authoring"
+  ],
+  "main_context": {
+    "context_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "context_body": [],
+    "carriers": [
+      "attachment:skill_listing",
+      "api-request-blob"
+    ],
+    "anywhere_desc": [
+      "skill-alpha",
+      "skill-beta",
+      "skill-gamma",
+      "skill-nouser"
+    ],
+    "anywhere_body": [
+      "skill-beta"
+    ]
+  },
+  "subagent_context": [],
+  "answer_desc_marks": [],
+  "answer_body_marks": [
+    "skill-beta"
+  ],
+  "answer_tools_line": "TOOLS=Agent, Bash, Edit, Glob, Grep, ListAgents, PowerShell, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch, mcp__claude_ai_Claude_Docs__batch, mcp__claude_ai_Claude_Docs__guide, mcp__claude_ai_Claude_Docs__update, mcp__claude_ai_Claude_Docs__create, mcp__claude_ai_Claude_Docs__delete, mcp__claude_ai_Claude_Docs__export, mcp__claude_ai_Claude_Docs__query, mcp__claude_ai_Claude_Docs__read",
+  "subagent_tool_calls": [],
+  "subagent_skill_tool_results": [],
+  "final_answer": "BODY_MARK=30478261\nTOOLS=Agent, Bash, Edit, Glob, Grep, ListAgents, PowerShell, Read, ReportFindings, ScheduleWakeup, ShareOnboardingGuide, Skill, ToolSearch, Workflow, Write, CronCreate, CronDelete, CronList, DesignSync, EnterWorktree, ExitWorktree, Monitor, NotebookEdit, PublishPlugin, PushNotification, RemoteTrigger, SendMessage, TaskStop, WebFetch, WebSearch, mcp__claude_ai_Claude_Docs__batch, mcp__claude_ai_Claude_Docs__guide, mcp__claude_ai_Claude_Docs__update, mcp__claude_ai_Claude_Docs__create, mcp__claude_ai_Claude_Docs__delete, mcp__claude_ai_Claude_Docs__export, mcp__claude_ai_Claude_Docs__query, mcp__claude_ai_Claude_Docs__read",
+  "cost_usd": 0.0396676,
+  "exit_code": 0,
+  "session_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\subagent-skill-awareness\\.claude-home\\projects\\sessions\\a2e34846-2cfc-443c-bf73-fa012be703ac.jsonl"
+}
