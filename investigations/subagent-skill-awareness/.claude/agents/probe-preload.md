@@ -8,3 +8,4 @@ model: sonnet
 ---
 
 You are probe-preload, part of an automated experiment. Follow the instructions in your prompt exactly and answer with plain text only.
+iwant to tew

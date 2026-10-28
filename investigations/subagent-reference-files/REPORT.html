@@ -47,6 +47,7 @@
 <h2>Question</h2>
 <p>Claim under test (no doc sentence; it comes from the user's design idea): a subagent defined as <code>.claude/agents/architect/architect.md</code> can name files in its body, such as <code>.claude/agents/architect/references/xxx.md</code>, with "read xxx.md for more information". The subagent then reads them only when needed, by going straight to the path, without scanning the directory. Their content is not preloaded into its context, unlike an Agent Skill, whose description is always loaded.</p>
 <p><strong>Confirmed</strong> if the subagent's first tool call for a needed file is a <code>Read</code> that succeeds (no <code>Glob</code>, <code>Grep</code> or <code>ls</code>/<code>find</code> before it), if the file's NONCE is not in the subagent transcript before its first tool call, and if unneeded files are never read. <strong>Refuted</strong> if it has to scan, or if the content is already there without a <code>Read</code>. Run mode: <code>claude -p</code> only (no Agent SDK, no interactive).</p>
+<p><strong>Extension (2026-10-28): the same files named in a skill.</strong> Does the result hold when the reference files are named in a <code>SKILL.md</code> instead of the agent body? The subagent preloads the skill with <code>skills:</code> and has no <code>Skill</code> tool, so it gets no skill listing. Hypothesis: the injected skill message starts with <code>Base directory for this skill: &lt;absolute path&gt;</code> (seen in <code>subagent-skill-awareness</code>), so a path relative to the skill folder should resolve with one <code>Read</code>. Same confirm/refute criteria, <code>claude -p</code> only.</p>
 
 <h2>Setup</h2>
 <pre><code>claude -p (cwd = this folder) --Agent--&gt; architect (tools: Read, Glob, Grep, Bash) --Read--&gt; references/&lt;topic&gt;.md</code></pre>
@@ -56,18 +57,29 @@
   <li><code>references/*.md</code> in each agent folder: one line of content plus an unguessable <code>NONCE=&lt;n&gt;</code> each, different between the two agents.</li>
   <li><a href="prompts/main.md">prompts/main.md</a>: the main prompt, a strict script: call the Agent once, repeat its answer.</li>
   <li><a href="reference-files-cli.ts">reference-files-cli.ts</a>: spawns the installed <code>claude -p</code> with stream-json, collects the subagent's tool calls (events with <code>parent_tool_use_id</code>), judges them and checks the first lines of the subagent transcript for preloaded NONCEs.</li>
+  <li><strong>Skill extension</strong>:
+    <ul>
+      <li><a href=".claude/agents/architect-skill/architect-skill.md">.claude/agents/architect-skill/architect-skill.md</a>: <code>tools: Read, Glob, Grep, Bash</code> (no <code>Skill</code>), <code>skills: [arch-rules]</code>. The body names no file; it only says to follow the skill.</li>
+      <li><a href=".claude/skills/arch-rules/SKILL.md">.claude/skills/arch-rules/SKILL.md</a>: names <code>references/naming.md</code>, <code>layering.md</code>, <code>security.md</code> <strong>relative to the skill folder</strong>, same text as the <code>architect</code> body.</li>
+      <li><a href=".claude/agents/architect-skill-rooted/architect-skill-rooted.md">architect-skill-rooted</a> + <a href=".claude/skills/arch-rules-rooted/SKILL.md">.claude/skills/arch-rules-rooted/SKILL.md</a>: control, paths written from the project root (<code>.claude/skills/arch-rules-rooted/references/…</code>).</li>
+      <li><code>references/*.md</code> in each skill folder, each with its own NONCE.</li>
+      <li><a href="reference-files-skill-cli.ts">reference-files-skill-cli.ts</a>: copy of <code>reference-files-cli.ts</code>, same judging. It also records, up to the subagent's first tool call: whether the skill body is there, the injected skill message and its base-directory line, and whether any skill description (a listing) is there.</li>
+      <li>Scenarios: <code>skill-rel</code>, <code>skill-rooted</code>, <code>skill-two</code>, <code>skill-none</code>, mirroring the agent ones. Same main prompt.</li>
+      <li>The <code>.claude/skills/</code> folder did not exist for the agent runs. On a rerun of those, main's skill listing would include the two skills; the agent subagents have no <code>Skill</code> tool, so theirs would not.</li>
+    </ul></li>
   <li>Scenarios: <code>rel-naming</code> (1 file needed, relative path), <code>rooted-naming</code> (control), <code>rel-two</code> (2 of 3 files needed), <code>rel-none</code> (no file needed). Model: sonnet. Env: <code>ISOLATION_ENV</code> from <code>lib/claude-home.mjs</code>.</li>
 </ul>
 
 <h2>Run</h2>
 <pre><code>node lib/claude-home.mjs investigations/subagent-reference-files --check
-npx tsx investigations/subagent-reference-files/reference-files-cli.ts [rel-naming rooted-naming rel-two rel-none]</code></pre>
+npx tsx investigations/subagent-reference-files/reference-files-cli.ts [rel-naming rooted-naming rel-two rel-none]
+npx tsx investigations/subagent-reference-files/reference-files-skill-cli.ts [skill-rel skill-rooted skill-two skill-none]</code></pre>
 <p>Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>, subagent transcripts under <code>&lt;session-id&gt;/subagents/</code>.</p>
 
 <h2>Runs</h2>
 <div class="table"><table>
 <thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
-<tbody><tr><td><a href="results/2026-10-23-1707-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1707-reference-files-cli</a></td><td>reference-files-cli.ts</td><td>2.1.309 via <code>claude -p</code></td><td>On-demand read confirmed. Direct read without scan confirmed only when the path is written from the project root.</td></tr><tr><td><a href="results/2026-10-23-1712-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1712-reference-files-cli</a></td><td>reference-files-cli.ts anchor-dir-naming anchor-nodir-naming</td><td>2.1.309 via <code>claude -p</code></td><td>Anchor in the body: one <code>Glob</code> then <code>Read</code>, no failed read.</td></tr>
+<tbody><tr><td><a href="results/2026-10-23-1707-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1707-reference-files-cli</a></td><td>reference-files-cli.ts</td><td>2.1.309 via <code>claude -p</code></td><td>On-demand read confirmed. Direct read without scan confirmed only when the path is written from the project root.</td></tr><tr><td><a href="results/2026-10-23-1712-reference-files-cli/reference-files-cli-summary.md">2026-10-23-1712-reference-files-cli</a></td><td>reference-files-cli.ts anchor-dir-naming anchor-nodir-naming</td><td>2.1.309 via <code>claude -p</code></td><td>Anchor in the body: one <code>Glob</code> then <code>Read</code>, no failed read.</td></tr><tr><td><a href="results/2026-10-28-1121-reference-files-skill-cli/reference-files-skill-cli-summary.md">2026-10-28-1121-reference-files-skill-cli</a></td><td>reference-files-skill-cli.ts</td><td>2.1.312 via <code>claude -p</code></td><td>Skill extension: a path relative to the skill folder is read with one direct <code>Read</code>, as is the root-relative control.</td></tr>
 </tbody>
 </table></div>
 
@@ -88,16 +100,43 @@ npx tsx investigations/subagent-reference-files/reference-files-cli.ts [rel-nami
 <li><strong>Side effect, not under test.</strong> In three runs the main session emitted a first <code>result</code> such as "the agent is still running" and then a second one with the real answer.</li>
 </ul>
 
+<h3>Skill extension (2026-10-28, 2.1.312)</h3>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>skill body before first call</th><th>skill listing</th><th>subagent tool calls</th><th>direct read, no scan</th><th>right files read</th><th>unneeded file read</th><th>NONCE preloaded</th></tr></thead>
+<tbody>
+<tr><td>skill-rel</td><td>yes</td><td>none</td><td>1: Read (ok)</td><td><strong>yes</strong></td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>skill-rooted</td><td>yes</td><td>none</td><td>1: Read (ok)</td><td>yes</td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>skill-two</td><td>yes</td><td>none</td><td>2: Read (ok), Read (ok)</td><td><strong>yes</strong></td><td>yes</td><td>none</td><td>no</td></tr>
+<tr><td>skill-none</td><td>yes</td><td>none</td><td>0</td><td>n/a</td><td>yes (NONCE=NONE)</td><td>none</td><td>no</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>What is injected.</strong> The preloaded skill arrives as a user message before the subagent's first turn, with the frontmatter stripped:
+<pre><code>&lt;command-message&gt;arch-rules&lt;/command-message&gt;
+&lt;command-name&gt;arch-rules&lt;/command-name&gt;
+&lt;skill-format&gt;true&lt;/skill-format&gt;
+Base directory for this skill: D:\…\subagent-reference-files\.claude\skills\arch-rules
+
+Architecture rules for the experiment. …
+- For naming conventions, read `references/naming.md` for more information.
+…</code></pre>
+  The base-directory line is a plain statement, not an instruction about paths. The model joined it with the relative path on its own.</li>
+  <li><strong>Relative to the skill folder resolves directly.</strong> In <code>skill-rel</code> and <code>skill-two</code> every Read was the absolute path <code>&lt;base dir&gt;\references\&lt;topic&gt;.md</code>, first time, with no failed read and no <code>Glob</code>/<code>find</code>. The agent-body runs with the same text needed 5 and 8 calls.</li>
+  <li><strong>Not preloaded, read on demand.</strong> No NONCE before the first tool call. <code>skill-none</code> made no call. <code>security.md</code> was never read.</li>
+  <li><strong>No listing.</strong> Neither skill's description reached the subagent: with no <code>Skill</code> tool, only the preloaded body did.</li>
+  <li>Cost: 0.047–0.066 USD per scenario.</li>
+</ul>
+
 <h2>Conclusion</h2>
 <p>Partly confirmed. Files named in the agent body are not loaded in advance and are read only when the question needs them, so this is a progressive-disclosure mechanism with no cost for files that are not used. But the path must be written <strong>from the project root</strong> (<code>.claude/agents/architect/references/xxx.md</code>) for the subagent to read it with one <code>Read</code>. A path relative to the agent file (<code>references/xxx.md</code>) is read against the working directory, fails, and the subagent falls back to scanning. One run per scenario, so the exact failure sequence may vary.</p>
+<p><strong>Skills behave differently (extension).</strong> In a <code>SKILL.md</code> preloaded by a subagent, a path relative to the skill folder (<code>references/xxx.md</code>) is read with one direct <code>Read</code>. A root-relative path also works. The reason is the line <code>Base directory for this skill: &lt;absolute path&gt;</code> that Claude Code puts in front of every skill body. An agent body gets no such line, so the model only knows the cwd. Files are still read on demand only. The agent runs were on 2.1.309 and the skill runs on 2.1.312, one run each.</p>
 
 <h2>Not tested</h2>
 <ul>
   <li>Agent SDK and interactive modes.</li>
-  <li>Other models, other Claude Code versions (only 2.1.309), repeated runs for variance.</li>
+  <li>Other models, other Claude Code versions (only 2.1.309 for agents, 2.1.312 for skills), repeated runs for variance.</li>
   <li>A different cwd than the project root, and agents defined at user level (<code>~/.claude/agents</code>).</li>
   <li>The no-folder anchor when the file name is not unique in the project (several <code>references/naming.md</code>): the search could pick the wrong one. Anchor variants were run once each.</li>
-  <li>Comparison with an Agent Skill in the same setup.</li>
+  <li>Skill extension: the skill invoked through the <code>Skill</code> tool (by main or by a subagent) rather than preloaded; that path also injects the base-directory line (seen in <code>subagent-skill-awareness</code>), but was not run here. User-level and plugin skills. A rerun of the agent scenarios on 2.1.312.</li>
 </ul>
 </body>
 </html>

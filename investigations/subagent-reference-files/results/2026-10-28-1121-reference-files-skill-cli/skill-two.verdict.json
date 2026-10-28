@@ -1,0 +1,56 @@
+{
+  "scenario": "skill-two",
+  "driver": "claude -p (no SDK)",
+  "cli_version": "2.1.312",
+  "agent": "architect-skill",
+  "skill": "arch-rules",
+  "note": "two topics needed, third not",
+  "question": "Which naming convention applies to services, and which layering rule applies between controllers and services?",
+  "subagent_tool_calls": [
+    "Read {\"file_path\":\"D:\\\\repos\\\\github-ca\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\skills\\\\arch-rules\\\\references\\\\naming.md\"}",
+    "Read {\"file_path\":\"D:\\\\repos\\\\github-ca\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\skills\\\\arch-rules\\\\references\\\\layering.md\"}"
+  ],
+  "first_tool_call": "Read {\"file_path\":\"D:\\\\repos\\\\github-ca\\\\claude-code-investigations\\\\investigations\\\\subagent-reference-files\\\\.claude\\\\skills\\\\arch-rules\\\\references\\\\naming.md\"}",
+  "per_topic": {
+    "naming": {
+      "expected": true,
+      "read_ok": true,
+      "read_attempts": 1,
+      "failed_reads_before_success": 0,
+      "scans_before_first_ok_read": [],
+      "nonce_in_read_result": true,
+      "nonce_in_final_answer": true
+    },
+    "layering": {
+      "expected": true,
+      "read_ok": true,
+      "read_attempts": 1,
+      "failed_reads_before_success": 0,
+      "scans_before_first_ok_read": [],
+      "nonce_in_read_result": true,
+      "nonce_in_final_answer": true
+    },
+    "security": {
+      "expected": false,
+      "read_ok": false,
+      "read_attempts": 0,
+      "failed_reads_before_success": null,
+      "scans_before_first_ok_read": null,
+      "nonce_in_read_result": false,
+      "nonce_in_final_answer": false
+    }
+  },
+  "scan_calls_total": [],
+  "direct_read_without_scan": true,
+  "expected_files_read": true,
+  "unexpected_files_read": [],
+  "nonces_preloaded_before_first_tool_call": [],
+  "skill_body_before_first_tool_call": true,
+  "base_dir_line": "Base directory for this skill: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude\\skills\\arch-rules",
+  "skill_listing_descriptions_seen": [],
+  "injected_skill_message": "<command-message>arch-rules</command-message>\n<command-name>arch-rules</command-name>\n<skill-format>true</skill-format>\nBase directory for this skill: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude\\skills\\arch-rules\n\nArchitecture rules for the experiment. Answer architecture questions in one or two lines.\n\nReference material, to be read only when the question needs it:\n\n- For naming conventions, read `references/naming.md` for more information.\n- For layering rules, read `references/layering.md` for more information.\n- For security rules, read `references/security.md` for more information.\n\nIf you used a reference file, end your answer with the `NONCE=...` line found in it (one line per file used). If you used none, end with `NONCE=NONE`.\n",
+  "final_answer": "Services are named `<Domain>Service` in PascalCase (e.g. `BillingService`). Controllers call services and services call repositories, never the reverse.\n\nNONCE=57193846\nNONCE=28465017",
+  "cost_usd": 0.047719,
+  "exit_code": 0,
+  "session_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\subagent-reference-files\\.claude-home\\projects\\sessions\\91771716-e89f-4a42-8351-3890fb616dfa.jsonl"
+}
