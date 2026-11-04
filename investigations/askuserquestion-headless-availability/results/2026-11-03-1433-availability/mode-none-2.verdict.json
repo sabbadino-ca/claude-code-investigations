@@ -1,0 +1,30 @@
+{
+  "run": "mode-none-2",
+  "scenario": "mode-none",
+  "flags": [
+    "--permission-mode",
+    "none"
+  ],
+  "exit_code": 1,
+  "stderr": "error: option '--permission-mode <mode>' argument 'none' is invalid. Allowed choices are acceptEdits, auto, bypassPermissions, manual, dontAsk, plan.",
+  "cli_version": null,
+  "init_permissionMode": null,
+  "init_tools_count": null,
+  "init_tools_has_AskUserQuestion": null,
+  "init_tools_has_ToolSearch": null,
+  "init_tools": null,
+  "toolsearch_calls": [],
+  "ask_calls": [],
+  "other_calls": [],
+  "ask_hook_events": [],
+  "permission_denials": null,
+  "session_mentions": [],
+  "model_reported": {
+    "LISTED": null,
+    "TOOLSEARCH": null,
+    "ASK_RESULT": null
+  },
+  "final_text": null,
+  "cost_usd": null,
+  "transcript": null
+}

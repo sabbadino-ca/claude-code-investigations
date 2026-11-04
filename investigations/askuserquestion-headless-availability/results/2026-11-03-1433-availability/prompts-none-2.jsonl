@@ -1,0 +1,12 @@
+{"t":1,"src":"runner","event":"spawn","args":"-p --output-format stream-json --verbose --model sonnet --setting-sources project --settings D:\\repos\\github-ca\\claude-code-investigations\\investigations\\askuserquestion-headless-availability\\results\\2026-11-03-1433-availability\\prompts-none-2.settings.json --permission-prompts none"}
+{"t":671,"src":"stream","event":"system:init","cli":"2.1.317","permissionMode":"default","tools_count":30,"has_AskUserQuestion":false}
+{"t":2147,"src":"stream","event":"text","text":"LISTED=absent"}
+{"t":2258,"src":"stream","event":"tool_use","name":"ToolSearch","input":{"query":"select:AskUserQuestion","max_results":1}}
+{"t":2478,"src":"stream","event":"tool_result","is_error":false,"text":"No matching deferred tools found"}
+{"t":4622,"src":"stream","event":"tool_use","name":"AskUserQuestion","input":{"questions":"[{\"question\":\"Which color?\",\"header\":\"Color\",\"multiSelect\":false,\"options\":[{\"label\":\"Red\",\"description\":\"red\"},{\"label\":\"Blue\",\"description\":\"blue\"}]}]"}}
+{"t":4623,"src":"stream","event":"tool_result","is_error":true,"text":"<tool_use_error>Error: No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</tool_use_error>"}
+{"t":5883,"src":"stream","event":"text","text":"TOOLSEARCH=returned \"No matching deferred tools found\"\nASK_RESULT=<tool_use_error>Error: No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</tool_use_error>\nPROBE_DONE"}
+{"t":5893,"src":"stream","event":"RESULT","subtype":"success","num_turns":3,"permission_denials":[],"cost":0.0216518}
+{"t":6701,"src":"runner","event":"exited","code":0}
+{"t":2361,"src":"hook","event":"PreToolUse","tool":"ToolSearch"}
+{"t":2463,"src":"hook","event":"PostToolUse","tool":"ToolSearch"}

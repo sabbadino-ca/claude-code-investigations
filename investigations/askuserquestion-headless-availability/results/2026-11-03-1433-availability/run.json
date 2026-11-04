@@ -1,0 +1,26 @@
+{
+  "driver": "availability.ts",
+  "args": [
+    "all",
+    "2"
+  ],
+  "investigation": "investigations/askuserquestion-headless-availability",
+  "started": "2026-11-03T13:33:19.845Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "cli": "2.1.317"
+    }
+  },
+  "git": {
+    "commit": "76679ce41c25c5ae84b7519f8b797bb2bb9c5b45",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "35614c165ad9c53b",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/askuserquestion-headless-availability/.claude/settings.json": "ca3d163bab055381",
+    "investigations/askuserquestion-headless-availability/availability.ts": "f39951749ed55243",
+    "investigations/askuserquestion-headless-availability/prompts/probe.md": "ae47475c4a4b842f"
+  }
+}

@@ -1,0 +1,10 @@
+{"t":1,"src":"runner","event":"spawn","args":"-p --output-format stream-json --verbose --model sonnet --setting-sources project --settings D:\\repos\\github-ca\\claude-code-investigations\\investigations\\askuserquestion-headless-availability\\results\\2026-11-03-1433-availability\\base-2.settings.json"}
+{"t":663,"src":"stream","event":"system:init","cli":"2.1.317","permissionMode":"default","tools_count":30,"has_AskUserQuestion":false}
+{"t":2130,"src":"stream","event":"text","text":"LISTED=deferred"}
+{"t":2131,"src":"stream","event":"tool_use","name":"ToolSearch","input":{"query":"select:AskUserQuestion","max_results":1}}
+{"t":2361,"src":"stream","event":"tool_result","is_error":false,"text":"No matching deferred tools found"}
+{"t":4414,"src":"stream","event":"text","text":"TOOLSEARCH=no matching deferred tools found for select:AskUserQuestion\n\nI have no AskUserQuestion tool, so I can't call it. Step 3 can't run as specified.\n\nASK_RESULT=not called, because no tool named AskUserQuestion exists in my tool list or in the deferred tools\n\nPROBE_DONE\n\nI need to correct step 1: I printed `LISTED=deferred`, but the tool was not in my tool list at all, and ToolSearch confirmed that. The correct value is `LISTED=absent`."}
+{"t":4433,"src":"stream","event":"RESULT","subtype":"success","num_turns":2,"permission_denials":[],"cost":0.0161404}
+{"t":5469,"src":"runner","event":"exited","code":0}
+{"t":2235,"src":"hook","event":"PreToolUse","tool":"ToolSearch"}
+{"t":2344,"src":"hook","event":"PostToolUse","tool":"ToolSearch"}

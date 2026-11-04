@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colon in frontmatter description</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Unquoted colon in an agent or skill description</h1>
+
+<h2>Question</h2>
+<p>A behaviour to observe, with no doc claim tested. Agent and skill files start with YAML frontmatter (<a href="https://code.claude.com/docs/en/sub-agents">sub-agents</a>, <a href="https://code.claude.com/docs/en/skills">skills</a>). In strict YAML, an unquoted <code>: </code> (colon then space) inside a plain value is a syntax error ("mapping values are not allowed here"):</p>
+<pre><code>description: Test-harness agent ... never needed note: TAIL=... for real work.</code></pre>
+<p>Does Claude Code accept such a description whole, cut it at the colon, drop the agent or skill, or report an error?</p>
+<p>Recorded, with no model judgement:</p>
+<ul>
+  <li>The session <code>.jsonl</code> attachments <code>agent_listing_delta</code> and <code>skill_listing</code>, which hold the exact listing text the model receives.</li>
+  <li>The agent and skill names in the stream-json <code>system:init</code>.</li>
+  <li>The <code>--debug-file</code> log, searched for parse warnings.</li>
+</ul>
+<p>Run mode: headless <code>claude -p</code> only.</p>
+
+<h2>Setup</h2>
+<pre><code>claude -p (Haiku), prompt "reply OK", no tool calls; only the listings computed at session start are read</code></pre>
+<p>Each description has <code>HEAD=&lt;n&gt;</code> before the colon and <code>TAIL=&lt;n&gt;</code> after it, so the listing text shows where a description stops if it is cut. The agents put <code>tools: Read</code> after the description, so the <code>(Tools: …)</code> suffix of the agent listing shows whether the frontmatter after the bad line still parsed.</p>
+<ul>
+  <li><a href=".claude/agents/colon-agent.md">.claude/agents/colon-agent.md</a>: the description contains <code>note: TAIL=…</code> (invalid strict YAML), followed by <code>tools: Read</code>.</li>
+  <li><a href=".claude/agents/control-agent.md">.claude/agents/control-agent.md</a>: the same sentence without the colon (the baseline).</li>
+  <li><a href=".claude/skills/colon-skill/SKILL.md">.claude/skills/colon-skill/SKILL.md</a>: the same pattern for a skill.</li>
+  <li><a href=".claude/skills/control-skill/SKILL.md">.claude/skills/control-skill/SKILL.md</a>: the skill baseline without the colon.</li>
+  <li><a href="prompts/main.md">prompts/main.md</a>: "Do not call any tool. Reply with the single word OK."</li>
+  <li><a href="colon-cli.ts">colon-cli.ts</a>: one <code>claude -p</code> run with <code>--debug-file</code>. It extracts each fixture item's listing line(s) from the session log, checks for HEAD, TAIL and the tools suffix, and collects matching debug-log lines.</li>
+  <li>Env: <code>ISOLATION_ENV</code> only. <code>CLAUDE_BIN</code> overrides the binary.</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                  # repo root
+node lib/claude-home.mjs investigations/frontmatter-colon-in-description --check
+npx tsx investigations/frontmatter-colon-in-description/colon-cli.ts</code></pre>
+<p>Results go to <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-colon-cli/</code>: <code>colon.verdict.json</code>, <code>colon-cli-summary.md</code>, <code>colon.debug.log</code> and <code>run.json</code>. Session logs go to <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-11-04-1117-colon-cli/colon-cli-summary.md">2026-11-04-1117-colon-cli</a></td><td>colon-cli.ts</td><td>2.1.318 via <code>claude -p</code></td><td>Both colon items were loaded with the full description and later fields intact. The debug log shows no warning.</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<div class="table"><table>
+<thead><tr><th>item</th><th>in system:init</th><th>HEAD</th><th>TAIL</th><th>tools suffix</th><th>listing line</th></tr></thead>
+<tbody>
+<tr><td>colon-agent</td><td>yes</td><td>yes</td><td>yes</td><td>(Tools: Read)</td><td><code>- colon-agent: Test-harness agent colon-agent HEAD=48213907 never needed note: TAIL=73950264 for real work. (Tools: Read)</code></td></tr>
+<tr><td>control-agent</td><td>yes</td><td>yes</td><td>yes</td><td>(Tools: Read)</td><td><code>- control-agent: Test-harness agent control-agent HEAD=20571836 never needed note TAIL=95316408 for real work. (Tools: Read)</code></td></tr>
+<tr><td>colon-skill</td><td>yes</td><td>yes</td><td>yes</td><td>n/a</td><td><code>- colon-skill: Test-harness skill colon-skill HEAD=82694150 never needed note: TAIL=14063972 for real work.</code></td></tr>
+<tr><td>control-skill</td><td>yes</td><td>yes</td><td>yes</td><td>n/a</td><td><code>- control-skill: Test-harness skill control-skill HEAD=69305284 never needed note TAIL=28457916 for real work.</code></td></tr>
+</tbody>
+</table></div>
+<ul>
+  <li>The colon items' listing lines match their baselines: the full sentence, with the colon kept verbatim. Nothing was cut and nothing was dropped.</li>
+  <li><code>tools: Read</code>, which follows the bad line, still applied to colon-agent. The rest of the frontmatter parsed normally.</li>
+  <li>The debug log has no line about frontmatter, YAML or a parse failure for these files. Its only WARN and ERROR lines are about CA certificates and the local-settings consent store.</li>
+  <li>The Claude Code session that built this fixture (an interactive one, outside the isolated harness) also picked up <code>colon-skill</code> with its full description when the file was written.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Claude Code 2.1.318 (<code>claude -p</code>) tolerates an unquoted <code>: </code> in the middle of a frontmatter <code>description</code>, for agents and skills alike. The description reaches the model whole, the colon included. The fields after it (<code>tools:</code>) still apply, and no warning is logged. The frontmatter parser is more lenient than strict YAML for this case. That leniency is undocumented, so quoting the value stays the portable choice.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Other placements of the colon: near the start (<code>description: key: value</code>), at the end of the line, or inside <code>name:</code> or other fields.</li>
+  <li>Whether the agent can be launched or the skill invoked. Only the listings were checked.</li>
+  <li>Agent SDK (bundled Claude Code) and interactive mode, including what <code>/agents</code> and <code>/skills</code> show.</li>
+  <li>Other characters that break strict YAML, such as <code> #</code>, a leading <code>[</code> or <code>{</code>, or tabs.</li>
+</ul>
+</body>
+</html>

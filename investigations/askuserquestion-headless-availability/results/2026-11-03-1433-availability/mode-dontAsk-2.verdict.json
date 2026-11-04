@@ -1,0 +1,81 @@
+{
+  "run": "mode-dontAsk-2",
+  "scenario": "mode-dontAsk",
+  "flags": [
+    "--permission-mode",
+    "dontAsk"
+  ],
+  "exit_code": 0,
+  "stderr": null,
+  "cli_version": "2.1.317",
+  "init_permissionMode": "dontAsk",
+  "init_tools_count": 30,
+  "init_tools_has_AskUserQuestion": false,
+  "init_tools_has_ToolSearch": true,
+  "init_tools": [
+    "Task",
+    "Bash",
+    "CronCreate",
+    "CronDelete",
+    "CronList",
+    "DesignSync",
+    "Edit",
+    "EnterWorktree",
+    "ExitWorktree",
+    "Glob",
+    "Grep",
+    "ListAgents",
+    "Monitor",
+    "NotebookEdit",
+    "PowerShell",
+    "PublishPlugin",
+    "PushNotification",
+    "Read",
+    "RemoteTrigger",
+    "ReportFindings",
+    "ScheduleWakeup",
+    "SendMessage",
+    "ShareOnboardingGuide",
+    "Skill",
+    "TaskStop",
+    "ToolSearch",
+    "WebFetch",
+    "WebSearch",
+    "Workflow",
+    "Write"
+  ],
+  "toolsearch_calls": [
+    {
+      "id": "toolu_015d4KXpgzgKUKY2zVy1JubH",
+      "name": "ToolSearch",
+      "input": {
+        "query": "select:AskUserQuestion",
+        "max_results": 1
+      },
+      "result": "No matching deferred tools found",
+      "is_error": false
+    }
+  ],
+  "ask_calls": [],
+  "other_calls": [],
+  "ask_hook_events": [],
+  "permission_denials": [],
+  "session_mentions": [
+    {
+      "type": "queue-operation",
+      "snippet": "irmation.\\n\\n1. Look at every tool you have been given, including tools only listed as deferred (loadable through ToolSearch). Print one line `LISTED=<direct|deferred|absent>` saying how a tool named AskUserQuestion appears to you.\\n2. If a tool named ToolSearch is available, call it once with query `select:AskUserQuestion` and max_results 1. Print one line `TOOLSEARCH=<one-line summary of what it"
+    },
+    {
+      "type": "api-request-blob",
+      "snippet": "irmation.\\n\\n1. Look at every tool you have been given, including tools only listed as deferred (loadable through ToolSearch). Print one line `LISTED=<direct|deferred|absent>` saying how a tool named AskUserQuestion appears to you.\\n2. If a tool named ToolSearch is available, call it once with query `select:AskUserQuestion` and max_results 1. Print one line `TOOLSEARCH=<one-line summary of what it"
+    }
+  ],
+  "model_reported": {
+    "LISTED": "deferred, was wrong. Neither the direct list nor the deferred list contains AskUserQuestion, so the correct value is LISTED=absent.",
+    "TOOLSEARCH": "no matching deferred tool found for select:AskUserQuestion",
+    "ASK_RESULT": "not callable: AskUserQuestion is not among my direct tools and ToolSearch found no match, so no call could be made"
+  },
+  "final_text": "TOOLSEARCH=no matching deferred tool found for select:AskUserQuestion\n\nI'm calling AskUserQuestion now as instructed, though it isn't in my tool list. I can't invoke it, so this attempt will fail.\n\nASK_RESULT=not callable: AskUserQuestion is not among my direct tools and ToolSearch found no match, so no call could be made\n\nPROBE_DONE\n\nOne correction: my first line, LISTED=deferred, was wrong. Neither the direct list nor the deferred list contains AskUserQuestion, so the correct value is LISTED=absent.",
+  "cost_usd": 0.007806200000000001,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\askuserquestion-headless-availability\\.claude-home\\projects\\sessions\\470ba25f-330a-403f-a6a9-ceb0f4a557ff.jsonl"
+}

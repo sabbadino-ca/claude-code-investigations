@@ -1,0 +1,10 @@
+{"t":2,"src":"runner","event":"spawn","args":"-p --output-format stream-json --verbose --model sonnet --setting-sources project --settings D:\\repos\\github-ca\\claude-code-investigations\\investigations\\askuserquestion-headless-availability\\results\\2026-11-03-1433-availability\\mode-dontAsk-2.settings.json --permission-mode dontAsk"}
+{"t":706,"src":"stream","event":"system:init","cli":"2.1.317","permissionMode":"dontAsk","tools_count":30,"has_AskUserQuestion":false}
+{"t":1936,"src":"stream","event":"text","text":"LISTED=deferred"}
+{"t":1938,"src":"stream","event":"tool_use","name":"ToolSearch","input":{"query":"select:AskUserQuestion","max_results":1}}
+{"t":2170,"src":"stream","event":"tool_result","is_error":false,"text":"No matching deferred tools found"}
+{"t":4319,"src":"stream","event":"text","text":"TOOLSEARCH=no matching deferred tool found for select:AskUserQuestion\n\nI'm calling AskUserQuestion now as instructed, though it isn't in my tool list. I can't invoke it, so this attempt will fail.\n\nASK_RESULT=not callable: AskUserQuestion is not among my direct tools and ToolSearch found no match, so no call could be made\n\nPROBE_DONE\n\nOne correction: my first line, LISTED=deferred, was wrong. Neither the direct list nor the deferred list contains AskUserQuestion, so the correct value is LISTED=absent."}
+{"t":4345,"src":"stream","event":"RESULT","subtype":"success","num_turns":2,"permission_denials":[],"cost":0.007806200000000001}
+{"t":5289,"src":"runner","event":"exited","code":0}
+{"t":2037,"src":"hook","event":"PreToolUse","tool":"ToolSearch"}
+{"t":2154,"src":"hook","event":"PostToolUse","tool":"ToolSearch"}

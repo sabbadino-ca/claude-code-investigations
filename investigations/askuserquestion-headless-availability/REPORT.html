@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AskUserQuestion in claude -p</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Is AskUserQuestion available in a plain <code>claude -p</code> run?</h1>
+
+<h2>Question</h2>
+<p>This is a behaviour to observe, not a doc claim. In headless mode (<code>claude -p</code>), is AskUserQuestion left out of the tools offered to the model by default? Does <code>--permission-prompts none</code> or <code>--permission-mode dontAsk</code> change that?</p>
+<p>Recorded for each run:</p>
+<ul>
+  <li>The <code>system:init</code> <code>tools</code> list and <code>permissionMode</code> from the stdout stream-json.</li>
+  <li>From the session <code>.jsonl</code>: the result of <code>ToolSearch select:AskUserQuestion</code>, which checks whether it is a deferred tool, and the result of a direct AskUserQuestion call.</li>
+  <li>PreToolUse/PostToolUse/PostToolUseFailure/PermissionRequest hook events.</li>
+  <li>The result message's <code>permission_denials</code>, the exit code and stderr.</li>
+</ul>
+<p>Run mode: <code>claude -p</code> only.</p>
+
+<h2>Setup</h2>
+<pre><code>driver --spawn--&gt;  claude.exe -p --output-format stream-json --verbose --model sonnet
+                   --setting-sources project --settings &lt;run&gt;.settings.json  [scenario flags]
+       stdin: prompts/probe.md</code></pre>
+<ul>
+  <li><a href="prompts/probe.md">prompts/probe.md</a> is a scripted probe. The model reports how AskUserQuestion appears to it (<code>LISTED=</code>), calls <code>ToolSearch select:AskUserQuestion</code>, then calls AskUserQuestion with one fixed question even if it thinks the tool is missing.</li>
+  <li><a href="availability.ts">availability.ts</a> is the driver. The runs pass no <code>--allowedTools</code>, no <code>--permission-prompt-tool</code> and no MCP config, so the only difference between scenarios is the scenario flag. The <code>--settings</code> file holds <code>ISOLATION_SETTINGS</code> plus hooks that only log, via <code>lib/hook-log.mjs</code>. The driver writes <code>&lt;run&gt;.verdict.json</code> and <code>availability-summary.md</code>.</li>
+  <li><a href=".claude/settings.json">.claude/settings.json</a> is empty (<code>{}</code>). The fixture has no agents, skills or <code>CLAUDE.md</code>.</li>
+  <li>Env: <code>ISOLATION_ENV</code> only. Inherited <code>CLAUDE*</code> vars are stripped.</li>
+</ul>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>extra flags</th></tr></thead>
+<tbody>
+<tr><td>base</td><td>(none)</td></tr>
+<tr><td>prompts-none</td><td><code>--permission-prompts none</code></td></tr>
+<tr><td>mode-dontAsk</td><td><code>--permission-mode dontAsk</code></td></tr>
+</tbody></table></div>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                   # repo root
+node lib/claude-home.mjs investigations/askuserquestion-headless-availability --check
+npx tsx investigations/askuserquestion-headless-availability/availability.ts all 2   # scenario|all, runs</code></pre>
+<p>Results go to <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-availability/</code>. Session logs go to <code>.claude-home/projects/sessions/</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-11-03-1433-availability/availability-summary.md">2026-11-03-1433-availability</a></td><td>availability.ts all 2</td><td>2.1.317 via <code>claude -p</code></td><td>AskUserQuestion was absent in every scenario (6/6 sessions).</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>init permissionMode</th><th>AskUserQuestion in init tools</th><th>ToolSearch select:AskUserQuestion</th><th>AskUserQuestion call</th></tr></thead>
+<tbody>
+<tr><td>base (×2)</td><td>default</td><td>no</td><td>No matching deferred tools found</td><td>run 1: <code>No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</code> Run 2: the model declined to call it.</td></tr>
+<tr><td>prompts-none (×2)</td><td>default</td><td>no</td><td>No matching deferred tools found</td><td>both runs: the same "disabled for this session" error</td></tr>
+<tr><td>mode-dontAsk (×2)</td><td>dontAsk</td><td>no</td><td>No matching deferred tools found</td><td>run 1: the same error. Run 2: the model declined to call it.</td></tr>
+</tbody></table></div>
+<ul>
+  <li>The init <code>tools</code> list had 30 entries in every session that started, ToolSearch among them, and never AskUserQuestion. The list was the same across scenarios.</li>
+  <li>When the model called the tool anyway, the CLI answered with an <code>is_error</code> tool_result and fired no hook (no PreToolUse, no PermissionRequest). <code>permission_denials</code> stayed <code>[]</code>. The tool is rejected as non-existent, not denied by the permission system.</li>
+  <li>The error text says the tool is disabled "in subagents as well as here", that is, for the whole session.</li>
+  <li>The summary's "other session mentions" column shows 2 for each session. Both are copies of the probe prompt itself, in <code>queue-operation</code> and <code>api-request-blob</code> entries, not a tool listing. The driver's filter doesn't exclude those entry types. The <code>LISTED=</code> self-reports are unreliable: in two runs the model printed <code>deferred</code>, then corrected itself to <code>absent</code>.</li>
+  <li>Each session cost about $0.01 and took 5–9 s.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Yes. On Claude Code 2.1.317, <code>claude -p</code> removes AskUserQuestion by default. It is not in the init tool list, not loadable through ToolSearch, and a direct call returns "No such tool available … disabled for this session". Neither <code>--permission-prompts none</code> nor <code>--permission-mode dontAsk</code> brings it back.</p>
+<p>For contrast, the <a href="../askuserquestion-relay/REPORT.html">askuserquestion-relay</a> investigation, on CLI 2.1.296/2.1.299, got AskUserQuestion offered in <code>-p</code> when it passed a <code>--permission-prompt-tool</code>, a permission host. That was not re-tested here.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>A positive control in this folder: <code>--permission-prompt-tool &lt;mcp tool&gt;</code>, <code>--permission-prompts host</code> with such a tool, <code>--input-format stream-json</code>, or <code>--allowedTools AskUserQuestion</code> / <code>--tools AskUserQuestion</code>.</li>
+  <li>Other permission modes: <code>acceptEdits</code>, <code>auto</code>, <code>bypassPermissions</code>, <code>manual</code>, <code>plan</code>.</li>
+  <li>The Agent SDK and interactive mode.</li>
+  <li>The exact tool definitions sent to the API. The session log's <code>api-request-blob</code> entries hold the messages but not the tool schemas, so the evidence is the init list, ToolSearch and the call error.</li>
+</ul>
+</body>
+</html>

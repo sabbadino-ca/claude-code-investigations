@@ -1,0 +1,88 @@
+{
+  "run": "base-1",
+  "scenario": "base",
+  "flags": [],
+  "exit_code": 0,
+  "stderr": null,
+  "cli_version": "2.1.317",
+  "init_permissionMode": "default",
+  "init_tools_count": 30,
+  "init_tools_has_AskUserQuestion": false,
+  "init_tools_has_ToolSearch": true,
+  "init_tools": [
+    "Task",
+    "Bash",
+    "CronCreate",
+    "CronDelete",
+    "CronList",
+    "DesignSync",
+    "Edit",
+    "EnterWorktree",
+    "ExitWorktree",
+    "Glob",
+    "Grep",
+    "ListAgents",
+    "Monitor",
+    "NotebookEdit",
+    "PowerShell",
+    "PublishPlugin",
+    "PushNotification",
+    "Read",
+    "RemoteTrigger",
+    "ReportFindings",
+    "ScheduleWakeup",
+    "SendMessage",
+    "ShareOnboardingGuide",
+    "Skill",
+    "TaskStop",
+    "ToolSearch",
+    "WebFetch",
+    "WebSearch",
+    "Workflow",
+    "Write"
+  ],
+  "toolsearch_calls": [
+    {
+      "id": "toolu_01BEMzMoyteW28uwwjKABWXz",
+      "name": "ToolSearch",
+      "input": {
+        "query": "select:AskUserQuestion",
+        "max_results": 1
+      },
+      "result": "No matching deferred tools found",
+      "is_error": false
+    }
+  ],
+  "ask_calls": [
+    {
+      "id": "toolu_01MZTLz9CavMVXJvKB72hbv4",
+      "name": "AskUserQuestion",
+      "input": {
+        "questions": "[{\"question\":\"Which color?\",\"header\":\"Color\",\"multiSelect\":false,\"options\":[{\"label\":\"Red\",\"description\":\"red\"},{\"label\":\"Blue\",\"description\":\"blue\"}]}]"
+      },
+      "result": "<tool_use_error>Error: No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</tool_use_error>",
+      "is_error": true
+    }
+  ],
+  "other_calls": [],
+  "ask_hook_events": [],
+  "permission_denials": [],
+  "session_mentions": [
+    {
+      "type": "queue-operation",
+      "snippet": "irmation.\\n\\n1. Look at every tool you have been given, including tools only listed as deferred (loadable through ToolSearch). Print one line `LISTED=<direct|deferred|absent>` saying how a tool named AskUserQuestion appears to you.\\n2. If a tool named ToolSearch is available, call it once with query `select:AskUserQuestion` and max_results 1. Print one line `TOOLSEARCH=<one-line summary of what it"
+    },
+    {
+      "type": "api-request-blob",
+      "snippet": "irmation.\\n\\n1. Look at every tool you have been given, including tools only listed as deferred (loadable through ToolSearch). Print one line `LISTED=<direct|deferred|absent>` saying how a tool named AskUserQuestion appears to you.\\n2. If a tool named ToolSearch is available, call it once with query `select:AskUserQuestion` and max_results 1. Print one line `TOOLSEARCH=<one-line summary of what it"
+    }
+  ],
+  "model_reported": {
+    "LISTED": null,
+    "TOOLSEARCH": "No matching deferred tools found for select:AskUserQuestion",
+    "ASK_RESULT": "<tool_use_error>Error: No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</tool_use_error>"
+  },
+  "final_text": "TOOLSEARCH=No matching deferred tools found for select:AskUserQuestion\nASK_RESULT=<tool_use_error>Error: No such tool available: AskUserQuestion. AskUserQuestion is disabled for this session, in subagents as well as here.</tool_use_error>\nPROBE_DONE",
+  "cost_usd": 0.0453444,
+  "transcript": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\askuserquestion-headless-availability\\.claude-home\\projects\\sessions\\da8522cc-3300-41f9-83ea-a5a25ba1fa4b.jsonl"
+}

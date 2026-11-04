@@ -1,0 +1,26 @@
+{
+  "driver": "colon-cli.ts",
+  "args": [],
+  "investigation": "investigations/frontmatter-colon-in-description",
+  "started": "2026-11-04T10:17:37.559Z",
+  "versions": {
+    "node": "v22.15.0",
+    "claude_code": {
+      "cli": "2.1.318"
+    }
+  },
+  "git": {
+    "commit": "76679ce41c25c5ae84b7519f8b797bb2bb9c5b45",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "35614c165ad9c53b",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/frontmatter-colon-in-description/.claude/agents/colon-agent.md": "8e4a9bf5997b9323",
+    "investigations/frontmatter-colon-in-description/.claude/agents/control-agent.md": "c8178a86c08136e0",
+    "investigations/frontmatter-colon-in-description/.claude/skills/colon-skill/SKILL.md": "cb793f3bd10aaf86",
+    "investigations/frontmatter-colon-in-description/.claude/skills/control-skill/SKILL.md": "840aee35b1322cce",
+    "investigations/frontmatter-colon-in-description/colon-cli.ts": "dc41e9fe7787548c",
+    "investigations/frontmatter-colon-in-description/prompts/main.md": "9c4b7d96266a133e"
+  }
+}

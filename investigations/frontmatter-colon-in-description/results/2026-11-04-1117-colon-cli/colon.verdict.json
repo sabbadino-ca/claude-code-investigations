@@ -1,0 +1,74 @@
+{
+  "driver": "claude -p",
+  "cli_version": "2.1.318",
+  "items": [
+    {
+      "kind": "agent",
+      "name": "colon-agent",
+      "head": "48213907",
+      "tail": "73950264",
+      "in_init": true,
+      "listing_lines": [
+        "- colon-agent: Test-harness agent colon-agent HEAD=48213907 never needed note: TAIL=73950264 for real work. (Tools: Read)"
+      ],
+      "head_seen": true,
+      "tail_seen": true,
+      "tools_suffix": "(Tools: Read)"
+    },
+    {
+      "kind": "agent",
+      "name": "control-agent",
+      "head": "20571836",
+      "tail": "95316408",
+      "in_init": true,
+      "listing_lines": [
+        "- control-agent: Test-harness agent control-agent HEAD=20571836 never needed note TAIL=95316408 for real work. (Tools: Read)"
+      ],
+      "head_seen": true,
+      "tail_seen": true,
+      "tools_suffix": "(Tools: Read)"
+    },
+    {
+      "kind": "skill",
+      "name": "colon-skill",
+      "head": "82694150",
+      "tail": "14063972",
+      "in_init": true,
+      "listing_lines": [
+        "- colon-skill: Test-harness skill colon-skill HEAD=82694150 never needed note: TAIL=14063972 for real work."
+      ],
+      "head_seen": true,
+      "tail_seen": true
+    },
+    {
+      "kind": "skill",
+      "name": "control-skill",
+      "head": "69305284",
+      "tail": "28457916",
+      "in_init": true,
+      "listing_lines": [
+        "- control-skill: Test-harness skill control-skill HEAD=69305284 never needed note TAIL=28457916 for real work."
+      ],
+      "head_seen": true,
+      "tail_seen": true
+    }
+  ],
+  "debug_log_lines": [
+    "2026-11-04T10:17:37.754Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.json",
+    "2026-11-04T10:17:37.939Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\settings.json",
+    "2026-11-04T10:17:37.953Z [DEBUG] Loading skills from: managed=C:\\Program Files\\ClaudeCode\\.claude\\skills, user=D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\skills, project=[D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\skills]",
+    "2026-11-04T10:17:38.016Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.local.json",
+    "2026-11-04T10:17:38.274Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.json",
+    "2026-11-04T10:17:38.276Z [DEBUG] Remote settings: Saved to D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\remote-settings.json",
+    "2026-11-04T10:17:38.279Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.json",
+    "2026-11-04T10:17:38.281Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\settings.json",
+    "2026-11-04T10:17:38.430Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.json",
+    "2026-11-04T10:17:38.436Z [DEBUG] Broken symlink or missing file encountered for settings.json at path: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\settings.json",
+    "2026-11-04T10:17:38.531Z [DEBUG] Watching for changes in skill/command directories: D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\skills, D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\agents...",
+    "2026-11-04T10:17:38.536Z [DEBUG] Watching for changes in setting files D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\settings.json, D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.json, D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude\\settings.local.json..."
+  ],
+  "final_answer": "OK",
+  "cost_usd": 0.00154476,
+  "exit_code": 0,
+  "session_log": "D:\\repos\\github-ca\\claude-code-investigations\\investigations\\frontmatter-colon-in-description\\.claude-home\\projects\\sessions\\2f5ebb0b-e6ad-4ac1-a1a5-6539a49ebcf0.jsonl"
+}
