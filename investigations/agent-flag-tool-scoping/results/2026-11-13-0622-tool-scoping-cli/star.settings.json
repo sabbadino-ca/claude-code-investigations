@@ -1,0 +1,87 @@
+{
+  "claudeMdExcludes": [
+    "/home/user/claude-code-investigations/investigations/CLAUDE.md",
+    "/home/user/claude-code-investigations/investigations/CLAUDE.local.md",
+    "/home/user/claude-code-investigations/investigations/AGENTS.md",
+    "/home/user/claude-code-investigations/investigations/.claude/CLAUDE.md",
+    "/home/user/claude-code-investigations/investigations/.claude/rules/**",
+    "/home/user/claude-code-investigations/CLAUDE.md",
+    "/home/user/claude-code-investigations/CLAUDE.local.md",
+    "/home/user/claude-code-investigations/AGENTS.md",
+    "/home/user/claude-code-investigations/.claude/CLAUDE.md",
+    "/home/user/claude-code-investigations/.claude/rules/**",
+    "/home/user/CLAUDE.md",
+    "/home/user/CLAUDE.local.md",
+    "/home/user/AGENTS.md",
+    "/home/user/.claude/CLAUDE.md",
+    "/home/user/.claude/rules/**",
+    "/home/CLAUDE.md",
+    "/home/CLAUDE.local.md",
+    "/home/AGENTS.md",
+    "/home/.claude/CLAUDE.md",
+    "/home/.claude/rules/**",
+    "/CLAUDE.md",
+    "/CLAUDE.local.md",
+    "/AGENTS.md",
+    "/.claude/CLAUDE.md",
+    "/.claude/rules/**"
+  ],
+  "cleanupPeriodDays": 36500,
+  "enabledMcpjsonServers": [
+    "alpha",
+    "beta",
+    "gamma"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/user/claude-code-investigations/lib/hook-log.mjs\" \"/home/user/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-11-13-0622-tool-scoping-cli/star.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/user/claude-code-investigations/lib/hook-log.mjs\" \"/home/user/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-11-13-0622-tool-scoping-cli/star.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/user/claude-code-investigations/lib/hook-log.mjs\" \"/home/user/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-11-13-0622-tool-scoping-cli/star.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/user/claude-code-investigations/lib/hook-log.mjs\" \"/home/user/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-11-13-0622-tool-scoping-cli/star.hooks.jsonl\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/user/claude-code-investigations/lib/hook-log.mjs\" \"/home/user/claude-code-investigations/investigations/agent-flag-tool-scoping/results/2026-11-13-0622-tool-scoping-cli/star.hooks.jsonl\""
+          }
+        ]
+      }
+    ]
+  }
+}

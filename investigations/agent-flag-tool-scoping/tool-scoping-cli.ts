@@ -8,6 +8,9 @@
  *     --Agent-->  sub1-star (Read,  mcp__beta__*)
  *     --Agent-->  sub2-star (Write, mcp__gamma__*)
  *
+ * Scenario "bare" is the same topology with every MCP entry written mcp__<server> (no __*): main-bare, sub1-bare,
+ * sub2-bare.
+ *
  * .mcp.json defines alpha, beta and gamma (nonce-mcp.mjs), each with tool_one and tool_two returning a NONCE. No thread
  * declares ToolSearch.
  * What a thread can SEE is read from its transcript: the tool names of every `api-request-shape` entry (tools sent
@@ -37,6 +40,14 @@ const ALL: Scenario[] = [
       { agent: "sub2-star", expected: ["Write", ...mcp("gamma")] },
     ],
   },
+  {
+    name: "bare", note: "every MCP entry written mcp__<server>, without __*",
+    main: { agent: "main-bare", expected: ["Agent", "Bash", ...mcp("alpha")] },
+    subs: [
+      { agent: "sub1-bare", expected: ["Read", ...mcp("beta")] },
+      { agent: "sub2-bare", expected: ["Write", ...mcp("gamma")] },
+    ],
+  },
 ];
 
 const NONCES: Record<string, string> = {
@@ -49,7 +60,9 @@ const WRITE_NONCE = "61852047";
 // tools whose presence or absence is reported for every thread, whatever it declares
 const PROBED = ["Agent", "Bash", "Read", "Write", "ToolSearch", ...Object.keys(NONCES)];
 
-const CLAUDE = join(homedir(), ".local", "bin", "claude.exe");
+// the installed CLI: ~/.local/bin/claude.exe on Windows, otherwise `claude` on PATH (same rule as lib/claude-home.mjs)
+const CLAUDE_EXE = join(homedir(), ".local", "bin", "claude.exe");
+const CLAUDE = existsSync(CLAUDE_EXE) ? CLAUDE_EXE : "claude";
 const fwd = (p: string) => p.replace(/\\/g, "/");
 
 function cleanEnv(): NodeJS.ProcessEnv {
