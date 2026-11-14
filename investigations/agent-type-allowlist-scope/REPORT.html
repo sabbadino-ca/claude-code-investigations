@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent(type) allowlist scope</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Does an agent's <code>Agent(type, …)</code> allowlist apply when the agent runs as a subagent?</h1>
+
+<h2>Question</h2>
+<p>Claim under test, from <a href="https://code.claude.com/docs/en/sub-agents#restrict-which-subagents-can-be-spawned">code.claude.com/docs/en/sub-agents</a>, section “Restrict which subagents can be spawned” (checked 2026-11-14):</p>
+<blockquote>
+<p>When an agent runs as the main thread with <code>claude --agent</code>, it can spawn subagents using the Agent tool. To restrict which subagent types it can spawn, use <code>Agent(agent_type)</code> syntax in the <code>tools</code> field.</p>
+<p>This is an allowlist: only the <code>worker</code> and <code>researcher</code> subagents can be spawned. If the agent tries to spawn any other type, the request fails and the agent sees only the allowed types in its prompt.</p>
+<p>The <code>Agent(agent_type)</code> allowlist syntax applies only to an agent running as the main thread with <code>claude --agent</code>. In a subagent definition, listing <code>Agent</code> in <code>tools</code> lets that subagent spawn subagents of its own while the depth limit allows it, but any type list inside the parentheses is ignored.</p>
+</blockquote>
+<p>Related, from “Let subagents spawn their own subagents”: <q>By default, a subagent can spawn subagents of its own, up to three layers below the main conversation.</q></p>
+<p><strong>Confirmed</strong> if the same agent definition (<code>tools: Agent(allowed-worker)</code>) blocks a non-listed type and lists only the allowed type when it is the main thread (<code>--agent</code>), but can spawn both types and sees every type when it is invoked as a subagent. <strong>Refuted</strong> if the subagent run also blocks the non-listed type, or if the main-thread run lets it through.</p>
+<p>Run mode: headless <code>claude -p</code> only (as asked). Agent SDK and interactive mode are not tested.</p>
+
+<h2>Setup</h2>
+<pre><code>scenario main-thread:  claude -p --agent gate
+  gate (main thread, tools: Agent(allowed-worker))
+    --Agent--&gt; allowed-worker   (expected: runs)
+    --Agent--&gt; blocked-worker   (expected: refused)
+
+scenario subagent:     claude -p   (default main thread, no --agent)
+  main --Agent--&gt; gate (depth 1, tools: Agent(allowed-worker))
+                    --Agent--&gt; allowed-worker  (depth 2, expected: runs)
+                    --Agent--&gt; blocked-worker  (depth 2, expected: runs, list ignored)</code></pre>
+<ul>
+  <li><a href=".claude/agents/gate.md">.claude/agents/gate.md</a>: the agent under test, <code>tools: Agent(allowed-worker)</code>. The same file is used in both scenarios; only how it is launched changes.</li>
+  <li><a href=".claude/agents/allowed-worker.md">.claude/agents/allowed-worker.md</a> and <a href=".claude/agents/blocked-worker.md">blocked-worker.md</a>: reply only with their own unguessable <code>WORKER_TOKEN</code> (40718263 and 95136027). A token in gate's tool result proves that worker really ran.</li>
+  <li><a href="prompts/gate.md">prompts/gate.md</a>: gate's script: spawn allowed-worker, then blocked-worker (even if it expects failure, no substitution, no retry), then report both results verbatim. In <code>main-thread</code> it is the <code>-p</code> prompt.</li>
+  <li><a href="prompts/main-spawns-gate.md">prompts/main-spawns-gate.md</a>: in <code>subagent</code>, the default main thread spawns only gate and passes it the same script.</li>
+  <li><a href="allowlist-cli.ts">allowlist-cli.ts</a>: the driver. It spawns the installed <code>claude -p --output-format stream-json --verbose --model sonnet --setting-sources project --allowedTools Agent Read --permission-mode dontAsk</code> (plus <code>--agent gate</code> in <code>main-thread</code>). Agent is pre-approved, so a refusal cannot be a hidden permission prompt. From gate's own transcript (the main <code>.jsonl</code>, or <code>subagents/agent-&lt;id&gt;.jsonl</code>) it reads:
+    <ul>
+      <li>the agent types gate is told it can spawn (<code>agent_listing_delta</code> attachments),</li>
+      <li>whether the Agent tool is sent to the API for gate (<code>api-request-shape</code>),</li>
+      <li>every Agent <code>tool_use</code> of gate and its <code>tool_result</code> (error flag, text, token).</li>
+    </ul>
+    It also logs PreToolUse / PostToolUse / PostToolUseFailure / SubagentStart / SubagentStop hooks, whose <code>agent_id</code> shows which thread made each Agent call, and the <code>spawnDepth</code> of every subagent from <code>subagents/*.meta.json</code>.</li>
+  <li>Env: <code>CLAUDE_CONFIG_DIR</code> and <code>CLAUDE_CODE_PROJECT_DIR_NAME=sessions</code> from the harness; inherited <code>CLAUDE*</code> vars are stripped. No <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH</code>, so the default depth limit applies.</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                # repo root
+node lib/claude-home.mjs investigations/agent-type-allowlist-scope --check  # isolation smoke test
+npx tsx investigations/agent-type-allowlist-scope/allowlist-cli.ts           # both scenarios
+npx tsx investigations/agent-type-allowlist-scope/allowlist-cli.ts subagent  # or one: main-thread | subagent</code></pre>
+<p>Results: <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-allowlist-cli/</code> (<code>&lt;scenario&gt;.verdict.json</code>, summary, <code>run.json</code>). Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>, nested subagents under <code>&lt;session-id&gt;/subagents/</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-11-14-1611-allowlist-cli/allowlist-cli-summary.md">2026-11-14-1611-allowlist-cli</a></td><td>allowlist-cli.ts (both scenarios)</td><td>2.1.325 via <code>claude -p</code></td><td>Confirmed: allowlist enforced as main thread, ignored as subagent</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>gate is</th><th>gate has Agent tool</th><th>types listed to gate</th><th>allowed-worker</th><th>blocked-worker</th><th>subagents started (depth)</th></tr></thead>
+<tbody>
+<tr><td>main-thread</td><td>main thread (<code>--agent gate</code>)</td><td>yes</td><td>allowed-worker only</td><td>ran (token 40718263 returned)</td><td><strong>refused</strong>: tool error <code>Agent type 'blocked-worker' not found. Available agents: allowed-worker</code></td><td>allowed-worker (1)</td></tr>
+<tr><td>subagent</td><td>depth-1 subagent of the default main</td><td>yes</td><td>all 8: allowed-worker, blocked-worker, claude, Explore, gate, general-purpose, Plan, statusline-setup</td><td>ran (token 40718263 returned)</td><td><strong>ran</strong> (token 95136027 returned)</td><td>gate (1), allowed-worker (2), blocked-worker (2)</td></tr>
+</tbody>
+</table></div>
+<ul>
+  <li><strong>main-thread</strong>: the refusal fires after the PreToolUse hook, as a <code>PostToolUseFailure</code>, and no SubagentStart or transcript for blocked-worker exists, so blocked-worker never started. The error reads “not found”, not a permission denial: as main thread, gate simply cannot see any other type. Its <code>agent_listing_delta</code> holds a single line, the allowed-worker one, matching “the agent sees only the allowed types in its prompt”. Cost $0.017.</li>
+  <li><strong>subagent</strong>: the hooks attribute both worker spawns to <code>subagent gate</code> (they carry gate's <code>agent_id</code>), not to main, so the depth-2 workers were spawned by gate itself. gate's listing is the full one; its own line even reads <code>(Tools: Agent(allowed-worker))</code>, yet blocked-worker went through. Cost $0.051.</li>
+  <li>Surprising, minor: as a subagent, gate is shown <code>gate</code> itself among the spawnable types, so a subagent could in principle spawn another copy of itself until the depth limit.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>On Claude Code 2.1.325 with <code>claude -p</code>, the doc claim holds. <code>tools: Agent(type, …)</code> in an agent's frontmatter is enforced only when that agent is the main thread via <code>--agent</code>: other types are hidden from its listing and a call to one fails with “Agent type '…' not found”. When the very same agent is invoked as a subagent, the parenthesised list is ignored: <code>Agent(…)</code> acts like bare <code>Agent</code>, the subagent sees every agent type and can spawn any of them (within the nesting depth limit). To stop a subagent from spawning, the docs' remedy is to omit <code>Agent</code> from its <code>tools</code> or put it in <code>disallowedTools</code>; to block specific types everywhere, use <code>permissions.deny</code> with <code>Agent(name)</code>. Neither was tested here.</p>
+<p>Note on <code>--agents</code> (the JSON flag that defines subagents): it only defines agents; it does not make one the main thread. An agent defined with <code>--agents</code> and then invoked as a subagent is in the same position as the <code>subagent</code> scenario here; this run used file-based agents only.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Agent SDK (<code>agent</code> / <code>agents</code> options) and interactive mode.</li>
+  <li>The <code>agent</code> setting in <code>settings.json</code> as an alternative to <code>--agent</code>, and agents defined via the <code>--agents</code> JSON flag rather than <code>.claude/agents/</code> files.</li>
+  <li>The legacy <code>Task(…)</code> alias, multi-type lists, and <code>permissions.deny: ["Agent(name)"]</code> as a way to restrict a subagent.</li>
+  <li>Whether a main-thread allowlist constrains grandchildren (e.g. allowed-worker spawning blocked-worker).</li>
+  <li>Background subagents, forks, and a non-default <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH</code>.</li>
+  <li>A single run per scenario; the outcome is harness-enforced (tool error vs token) rather than model-dependent, so repeats are unlikely to differ.</li>
+</ul>
+</body>
+</html>

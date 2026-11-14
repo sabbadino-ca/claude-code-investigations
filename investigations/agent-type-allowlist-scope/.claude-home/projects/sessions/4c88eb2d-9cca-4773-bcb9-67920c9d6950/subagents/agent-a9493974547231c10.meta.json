@@ -1,0 +1,1 @@
+{"agentType":"allowed-worker","isBuiltIn":false,"description":"spawn allowed-worker","toolUseId":"toolu_01AcURNRbVx7aPXZnqCPEV3x","parentAgentId":"a5545876de6c47b63","spawnDepth":2,"requestShape":"foreground","requestNonInteractive":true,"pickedEffortModel":"claude-sonnet-5-5","finished":true}

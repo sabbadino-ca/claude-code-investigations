@@ -1,0 +1,26 @@
+{
+  "driver": "allowlist-cli.ts",
+  "args": [],
+  "investigation": "investigations/agent-type-allowlist-scope",
+  "started": "2026-11-14T16:11:16.823Z",
+  "versions": {
+    "node": "v22.23.4",
+    "claude_code": {
+      "cli": "2.1.325"
+    }
+  },
+  "git": {
+    "commit": "27294b36ac475bfd04ab0e146b490d7e5d6e4677",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "884aad4209695804",
+    "lib/hook-log.mjs": "c67f43c1bf7248c6",
+    "investigations/agent-type-allowlist-scope/.claude/agents/allowed-worker.md": "65b5d2436ba9aee0",
+    "investigations/agent-type-allowlist-scope/.claude/agents/blocked-worker.md": "bc55fed51f7a48cc",
+    "investigations/agent-type-allowlist-scope/.claude/agents/gate.md": "c54009f6d2c8cff9",
+    "investigations/agent-type-allowlist-scope/allowlist-cli.ts": "5d99e789e90ba288",
+    "investigations/agent-type-allowlist-scope/prompts/gate.md": "91b25f9ec0600ecf",
+    "investigations/agent-type-allowlist-scope/prompts/main-spawns-gate.md": "2bdb5e7d3059bb1c"
+  }
+}
