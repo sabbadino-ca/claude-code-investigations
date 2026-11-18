@@ -1,0 +1,84 @@
+{
+  "run": "very-long-text-partial-r3",
+  "scenario": "very-long-text",
+  "mode": "partial",
+  "rep": 3,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "exit_code": 0,
+  "session_id": "5b77ca29-2c6f-4302-86fd-cf9815fb2af0",
+  "api_messages": 1,
+  "totals": {
+    "result_usage_output_tokens": 25685,
+    "result_modelUsage_output_tokens": {
+      "claude-haiku-5-5": 25685
+    },
+    "assistant_first_per_message": 8,
+    "assistant_last_per_message": 8,
+    "assistant_max_per_message": 8,
+    "assistant_naive_sum_all_events": 16,
+    "message_start_sum": 8,
+    "message_delta_last_sum": 25685,
+    "transcript_last_per_message": 25685,
+    "transcript_naive_sum_all_entries": 51370
+  },
+  "matches_result_usage": {
+    "result_modelUsage_total": true,
+    "assistant_first_per_message": false,
+    "assistant_last_per_message": false,
+    "assistant_naive_sum_all_events": false,
+    "message_delta_last_sum": true,
+    "transcript_last_per_message": true
+  },
+  "per_message": [
+    {
+      "id": "msg_011ChAJn7D9SsPzNq8NJtwAJ",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 2,
+      "assistant_blocks": [
+        "thinking",
+        "text"
+      ],
+      "assistant_output_tokens": [
+        8,
+        8
+      ],
+      "assistant_stop_reasons": [
+        null,
+        null
+      ],
+      "message_start_output_tokens": 8,
+      "message_delta_output_tokens": [
+        25685
+      ],
+      "message_delta_stop_reason": "end_turn",
+      "transcript_output_tokens": [
+        25685,
+        25685
+      ]
+    }
+  ],
+  "transcript_ids_not_in_stream": [],
+  "event_counts": {
+    "system:init": 1,
+    "system:status": 1,
+    "stream_event:message_start": 1,
+    "stream_event:content_block_start": 2,
+    "system:thinking_tokens": 28,
+    "stream_event:content_block_delta": 4818,
+    "assistant": 2,
+    "stream_event:content_block_stop": 2,
+    "stream_event:message_delta": 1,
+    "stream_event:message_stop": 1,
+    "rate_limit_event": 1,
+    "result:success": 1
+  },
+  "result_subtype": "success",
+  "num_turns": 1,
+  "cost_usd": 0.01308452,
+  "duration_ms": 137459,
+  "final_text_chars": 63746,
+  "stderr": null,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\.claude-home\\projects\\sessions\\5b77ca29-2c6f-4302-86fd-cf9815fb2af0.jsonl"
+}

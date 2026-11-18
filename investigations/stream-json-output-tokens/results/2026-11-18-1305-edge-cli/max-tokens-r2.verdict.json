@@ -1,0 +1,139 @@
+{
+  "run": "max-tokens-r2",
+  "scenario": "max-tokens",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "session_ids": [
+    "7cf0d9e4-fe8d-469f-9a13-574c95662517"
+  ],
+  "processes": [
+    {
+      "step": 1,
+      "args": [],
+      "env": {
+        "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "300"
+      },
+      "killed": false,
+      "kill_note": null,
+      "exit": 1,
+      "results": [
+        {
+          "subtype": "success",
+          "stop_reason": "stop_sequence",
+          "usage": {
+            "input_tokens": 8,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 97732,
+            "output_tokens": 1200
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 8,
+              "outputTokens": 1200,
+              "cacheReadInputTokens": 97732,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.0015781200000000001,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 1199,
+              "cacheCreationEphemeral5mInputTokens": 0,
+              "cacheCreationEphemeral1hInputTokens": 0,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.0015781200000000001,
+          "num_turns": 4
+        }
+      ],
+      "stream_messages": 4,
+      "stream_messages_with_delta": 4,
+      "delta_stop_reasons": [
+        "max_tokens",
+        "max_tokens",
+        "max_tokens",
+        "max_tokens"
+      ],
+      "assistant_events": {
+        "main": 5,
+        "sub": 0,
+        "sub_text_blocks": 0,
+        "sub_ids": 0
+      },
+      "subagent_stream_events": 0,
+      "event_counts": {
+        "system:init": 1,
+        "system:status": 4,
+        "stream_event:message_start": 4,
+        "stream_event:content_block_start": 4,
+        "system:thinking_tokens": 12,
+        "stream_event:content_block_delta": 16,
+        "assistant": 5,
+        "stream_event:content_block_stop": 4,
+        "stream_event:message_delta": 4,
+        "stream_event:message_stop": 4,
+        "rate_limit_event": 1,
+        "user": 3,
+        "result:success": 1
+      },
+      "stderr": null
+    }
+  ],
+  "files": [
+    {
+      "file": "7cf0d9e4-fe8d-469f-9a13-574c95662517.jsonl",
+      "lines": 42,
+      "messages": 5,
+      "cost_states": 1
+    }
+  ],
+  "checks": {
+    "stream_messages_with_truth": 4,
+    "file_equals_truth": 4,
+    "file_vs_truth_mismatches": [],
+    "unfinished_messages": [],
+    "file_messages_not_in_stream": 1,
+    "file_messages_with_null_stop_reason": [],
+    "cost_states": 1,
+    "last_cost_state_equals_files_per_model": false,
+    "files_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 97732,
+        "output_tokens": 1200
+      },
+      "<synthetic>": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    "cost_state_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 97732,
+        "output_tokens": 1200
+      }
+    },
+    "results_total": 1,
+    "sum_result_usage": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 97732,
+      "output_tokens": 1200
+    },
+    "truth_main_sum": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 97732,
+      "output_tokens": 1200
+    },
+    "sum_result_usage_equals_truth_main": true
+  }
+}

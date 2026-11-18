@@ -1,0 +1,182 @@
+{
+  "run": "kill-mid-text-r2",
+  "scenario": "kill-mid-text",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "session_ids": [
+    "a279d025-1fa3-4967-9a49-1b249e33261c",
+    "a279d025-1fa3-4967-9a49-1b249e33261c"
+  ],
+  "processes": [
+    {
+      "step": 1,
+      "args": [],
+      "env": {},
+      "killed": true,
+      "kill_note": "after 150 main text deltas",
+      "exit": null,
+      "results": [],
+      "stream_messages": 1,
+      "stream_messages_with_delta": 0,
+      "delta_stop_reasons": [
+        null
+      ],
+      "assistant_events": {
+        "main": 1,
+        "sub": 0,
+        "sub_text_blocks": 0,
+        "sub_ids": 0
+      },
+      "subagent_stream_events": 0,
+      "event_counts": {
+        "system:init": 1,
+        "system:status": 1,
+        "stream_event:message_start": 1,
+        "stream_event:content_block_start": 2,
+        "system:thinking_tokens": 5,
+        "stream_event:content_block_delta": 157,
+        "assistant": 1,
+        "stream_event:content_block_stop": 1
+      },
+      "stderr": null
+    },
+    {
+      "step": 2,
+      "args": [],
+      "env": {},
+      "killed": false,
+      "kill_note": null,
+      "exit": 0,
+      "results": [
+        {
+          "subtype": "success",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 2,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 24402,
+            "output_tokens": 4130
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 2,
+              "outputTokens": 4130,
+              "cacheReadInputTokens": 24402,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.0023092200000000003,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 1293,
+              "cacheCreationEphemeral5mInputTokens": 0,
+              "cacheCreationEphemeral1hInputTokens": 0,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.0023092200000000003,
+          "num_turns": 1
+        }
+      ],
+      "stream_messages": 1,
+      "stream_messages_with_delta": 1,
+      "delta_stop_reasons": [
+        "end_turn"
+      ],
+      "assistant_events": {
+        "main": 2,
+        "sub": 0,
+        "sub_text_blocks": 0,
+        "sub_ids": 0
+      },
+      "subagent_stream_events": 0,
+      "event_counts": {
+        "system:init": 1,
+        "system:status": 1,
+        "stream_event:message_start": 1,
+        "stream_event:content_block_start": 2,
+        "system:thinking_tokens": 6,
+        "stream_event:content_block_delta": 776,
+        "assistant": 2,
+        "stream_event:content_block_stop": 2,
+        "stream_event:message_delta": 1,
+        "stream_event:message_stop": 1,
+        "rate_limit_event": 1,
+        "result:success": 1
+      },
+      "stderr": null
+    }
+  ],
+  "files": [
+    {
+      "file": "a279d025-1fa3-4967-9a49-1b249e33261c.jsonl",
+      "lines": 41,
+      "messages": 2,
+      "cost_states": 1
+    }
+  ],
+  "checks": {
+    "stream_messages_with_truth": 1,
+    "file_equals_truth": 1,
+    "file_vs_truth_mismatches": [],
+    "unfinished_messages": [
+      {
+        "id": "msg_011ChAN8R94Ust2nBrFb1Nq9",
+        "process": 1,
+        "parent": null,
+        "message_start": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 24340,
+          "output_tokens": 0
+        },
+        "in_files": false,
+        "file_outputs": null,
+        "file_stop_reasons": null,
+        "file_has_output_tokens_details": null
+      }
+    ],
+    "file_messages_not_in_stream": 1,
+    "file_messages_with_null_stop_reason": [],
+    "cost_states": 1,
+    "last_cost_state_equals_files_per_model": false,
+    "files_by_model": {
+      "<synthetic>": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "claude-haiku-5-5": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 24402,
+        "output_tokens": 4130
+      }
+    },
+    "cost_state_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 24402,
+        "output_tokens": 4130
+      }
+    },
+    "results_total": 1,
+    "sum_result_usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 24402,
+      "output_tokens": 4130
+    },
+    "truth_main_sum": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 24402,
+      "output_tokens": 4130
+    },
+    "sum_result_usage_equals_truth_main": true
+  }
+}

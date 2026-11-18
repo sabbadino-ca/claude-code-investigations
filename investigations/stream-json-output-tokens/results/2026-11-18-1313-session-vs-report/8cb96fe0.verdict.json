@@ -1,0 +1,510 @@
+{
+  "session": "8cb96fe0-c2f4-48ec-9875-cfbe43c0e91b",
+  "session_file": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\samples\\8cb96fe0\\8cb96fe0-c2f4-48ec-9875-cfbe43c0e91b.jsonl",
+  "report_file": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\samples\\8cb96fe0\\CAIP-report-8cb96fe0.json",
+  "claude_code_versions": [
+    "2.1.319"
+  ],
+  "cost_states": 2,
+  "files_by_model": {
+    "claude-sonnet-5-5": {
+      "output": 20750,
+      "thinking": 2414,
+      "input": 90,
+      "cache_read": 2925191,
+      "cache_write": 221022
+    }
+  },
+  "last_cost_state_by_model": {
+    "claude-sonnet-5-5": {
+      "output": 20750,
+      "thinking": 2414,
+      "input": 90,
+      "cache_read": 2925191,
+      "cache_write": 221022
+    }
+  },
+  "last_cost_state_equals_files": true,
+  "output_total_files": 20750,
+  "output_total_report": 9917,
+  "report_over_files": 0.4779277108433735,
+  "rows": [
+    {
+      "agent": "main",
+      "agentType": "main session",
+      "description": null,
+      "toolUseId": null,
+      "model": "claude-sonnet-5-5",
+      "messages": 4,
+      "synthetic": 0,
+      "entries": 6,
+      "provisional": {
+        "messages_with_differing_outputs": 0,
+        "messages_without_output_tokens_details": 0,
+        "messages_with_null_stop_reason": 0
+      },
+      "output": 3102,
+      "thinking": 203,
+      "naive_output_over_entries": 5012,
+      "report": {
+        "label": "main session",
+        "calls": 4,
+        "out_sum": 2106
+      },
+      "calls_matched": 4,
+      "report_out_matched": 2106,
+      "pairs": [
+        {
+          "n": 1,
+          "id": "msg_011CgmcSLSKmTXFsdVFBPxzB",
+          "blocks": "thinking | tool_use",
+          "output": 870,
+          "thinking": 157,
+          "report_out": 478,
+          "entries": 2
+        },
+        {
+          "n": 2,
+          "id": "msg_011CgmcZj53rrTKF475PckKM",
+          "blocks": "thinking | text",
+          "output": 1040,
+          "thinking": 46,
+          "report_out": 757,
+          "entries": 2
+        },
+        {
+          "n": 3,
+          "id": "msg_011CgmcfpiYHXfR4J1Cg9CJJ",
+          "blocks": "tool_use",
+          "output": 564,
+          "thinking": 0,
+          "report_out": 363,
+          "entries": 1
+        },
+        {
+          "n": 4,
+          "id": "msg_011CgmckAnQNVubD4SWojSzh",
+          "blocks": "text",
+          "output": 628,
+          "thinking": 0,
+          "report_out": 508,
+          "entries": 1
+        }
+      ]
+    },
+    {
+      "agent": "a3de139157d34b107",
+      "agentType": "CAIP Architect Validator",
+      "description": "Validate Post Service L3/L4",
+      "toolUseId": "toolu_01PuvxP8xBXDiTm7oy3uNp23",
+      "model": "claude-sonnet-5-5",
+      "messages": 16,
+      "synthetic": 0,
+      "entries": 40,
+      "provisional": {
+        "messages_with_differing_outputs": 0,
+        "messages_without_output_tokens_details": 0,
+        "messages_with_null_stop_reason": 0
+      },
+      "output": 6300,
+      "thinking": 1142,
+      "naive_output_over_entries": 16058,
+      "report": {
+        "label": "CAIP Architect Validator",
+        "calls": 16,
+        "out_sum": 2830
+      },
+      "calls_matched": 16,
+      "report_out_matched": 2830,
+      "pairs": [
+        {
+          "n": 1,
+          "id": "msg_011CgmcgAgbQVCBuN7bUiMZq",
+          "blocks": "thinking | text | tool_use | tool_use",
+          "output": 420,
+          "thinking": 13,
+          "report_out": 241,
+          "entries": 4
+        },
+        {
+          "n": 2,
+          "id": "msg_011CgmcgSDyfHX2BVsE48kmk",
+          "blocks": "tool_use",
+          "output": 97,
+          "thinking": 0,
+          "report_out": 29,
+          "entries": 1
+        },
+        {
+          "n": 3,
+          "id": "msg_011CgmcgYMZxCoCzFTqR952W",
+          "blocks": "tool_use | tool_use",
+          "output": 151,
+          "thinking": 0,
+          "report_out": 31,
+          "entries": 2
+        },
+        {
+          "n": 4,
+          "id": "msg_011CgmcgfcPAqhMCZWBf3Xmj",
+          "blocks": "tool_use | tool_use",
+          "output": 128,
+          "thinking": 0,
+          "report_out": 8,
+          "entries": 2
+        },
+        {
+          "n": 5,
+          "id": "msg_011CgmcgmbYYUx4CKRK2x79d",
+          "blocks": "thinking | tool_use | tool_use | tool_use",
+          "output": 484,
+          "thinking": 71,
+          "report_out": 247,
+          "entries": 4
+        },
+        {
+          "n": 6,
+          "id": "msg_011Cgmch37hHLrZko4QqhiFT",
+          "blocks": "thinking | tool_use | tool_use | tool_use",
+          "output": 370,
+          "thinking": 78,
+          "report_out": 137,
+          "entries": 4
+        },
+        {
+          "n": 7,
+          "id": "msg_011CgmchFwNaDzuSmLzyx9tm",
+          "blocks": "tool_use | tool_use",
+          "output": 149,
+          "thinking": 0,
+          "report_out": 34,
+          "entries": 2
+        },
+        {
+          "n": 8,
+          "id": "msg_011CgmchQ4nM3d2T6zj1nLGE",
+          "blocks": "thinking | tool_use",
+          "output": 118,
+          "thinking": 21,
+          "report_out": 28,
+          "entries": 2
+        },
+        {
+          "n": 9,
+          "id": "msg_011CgmchWmrQpn5834GXaNN9",
+          "blocks": "tool_use | tool_use",
+          "output": 150,
+          "thinking": 0,
+          "report_out": 35,
+          "entries": 2
+        },
+        {
+          "n": 10,
+          "id": "msg_011Cgmchdj4Qrj8eTqdiT3Nm",
+          "blocks": "thinking | tool_use | tool_use",
+          "output": 325,
+          "thinking": 128,
+          "report_out": 88,
+          "entries": 3
+        },
+        {
+          "n": 11,
+          "id": "msg_011Cgmchrsq3Cz4x2Z7TQ6Ma",
+          "blocks": "tool_use | tool_use | tool_use | tool_use",
+          "output": 341,
+          "thinking": 0,
+          "report_out": 141,
+          "entries": 4
+        },
+        {
+          "n": 12,
+          "id": "msg_011Cgmci4iUYYqYxwpUdV73T",
+          "blocks": "thinking | tool_use",
+          "output": 147,
+          "thinking": 50,
+          "report_out": 29,
+          "entries": 2
+        },
+        {
+          "n": 13,
+          "id": "msg_011CgmciDb29RXUzc1WsQ3y2",
+          "blocks": "tool_use | tool_use",
+          "output": 264,
+          "thinking": 0,
+          "report_out": 138,
+          "entries": 2
+        },
+        {
+          "n": 14,
+          "id": "msg_011CgmciPKf8HbVPQsGdGdHj",
+          "blocks": "thinking | tool_use",
+          "output": 164,
+          "thinking": 62,
+          "report_out": 28,
+          "entries": 2
+        },
+        {
+          "n": 15,
+          "id": "msg_011CgmciXXmCfaXTj268uAHY",
+          "blocks": "tool_use | tool_use",
+          "output": 292,
+          "thinking": 0,
+          "report_out": 138,
+          "entries": 2
+        },
+        {
+          "n": 16,
+          "id": "msg_011Cgmciht7pANPBRkfrK3ot",
+          "blocks": "thinking | text",
+          "output": 2700,
+          "thinking": 719,
+          "report_out": 1478,
+          "entries": 2
+        }
+      ]
+    },
+    {
+      "agent": "ab10914d3a3d01aeb",
+      "agentType": "CAIP Architect",
+      "description": "Model L3 and L4 Post Service",
+      "toolUseId": "toolu_01XdqS22QnxWfywbgSk1BYqS",
+      "model": "claude-sonnet-5-5",
+      "messages": 24,
+      "synthetic": 0,
+      "entries": 68,
+      "provisional": {
+        "messages_with_differing_outputs": 0,
+        "messages_without_output_tokens_details": 0,
+        "messages_with_null_stop_reason": 0
+      },
+      "output": 11348,
+      "thinking": 1069,
+      "naive_output_over_entries": 42139,
+      "report": {
+        "label": "CAIP Architect",
+        "calls": 24,
+        "out_sum": 4981
+      },
+      "calls_matched": 24,
+      "report_out_matched": 4981,
+      "pairs": [
+        {
+          "n": 1,
+          "id": "msg_011CgmcSumnK4Cuf31m8mc6T",
+          "blocks": "thinking | text | tool_use | tool_use | tool_use | tool_use",
+          "output": 1031,
+          "thinking": 29,
+          "report_out": 632,
+          "entries": 6
+        },
+        {
+          "n": 2,
+          "id": "msg_011CgmcTP2d73kKLrMHe2Poo",
+          "blocks": "tool_use",
+          "output": 47,
+          "thinking": 0,
+          "report_out": 2,
+          "entries": 1
+        },
+        {
+          "n": 3,
+          "id": "msg_011CgmcTU6UfCiF64L72ah5P",
+          "blocks": "tool_use",
+          "output": 56,
+          "thinking": 0,
+          "report_out": 2,
+          "entries": 1
+        },
+        {
+          "n": 4,
+          "id": "msg_011CgmcTa2fGcpeLzu9NDneU",
+          "blocks": "thinking | tool_use | tool_use | tool_use",
+          "output": 296,
+          "thinking": 24,
+          "report_out": 69,
+          "entries": 4
+        },
+        {
+          "n": 5,
+          "id": "msg_011CgmcTjrWg5c8atQZwBAqx",
+          "blocks": "thinking | tool_use | tool_use | tool_use | tool_use | tool_use | tool_use",
+          "output": 1024,
+          "thinking": 611,
+          "report_out": 30,
+          "entries": 7
+        },
+        {
+          "n": 6,
+          "id": "msg_011CgmcUGgQbcw4NAUtmxJGX",
+          "blocks": "thinking | tool_use",
+          "output": 408,
+          "thinking": 41,
+          "report_out": 179,
+          "entries": 2
+        },
+        {
+          "n": 7,
+          "id": "msg_011CgmcUZTDQJYdbicGXnqE2",
+          "blocks": "thinking | tool_use",
+          "output": 625,
+          "thinking": 118,
+          "report_out": 395,
+          "entries": 2
+        },
+        {
+          "n": 8,
+          "id": "msg_011CgmcUuUyXuUiiC66vt3nn",
+          "blocks": "tool_use | tool_use",
+          "output": 679,
+          "thinking": 0,
+          "report_out": 472,
+          "entries": 2
+        },
+        {
+          "n": 9,
+          "id": "msg_011CgmcVJDiKcUsr8qYuMxKB",
+          "blocks": "text | tool_use | tool_use | tool_use",
+          "output": 300,
+          "thinking": 0,
+          "report_out": 114,
+          "entries": 4
+        },
+        {
+          "n": 10,
+          "id": "msg_011CgmcVVJiGU9NT4TMrGEir",
+          "blocks": "thinking | tool_use",
+          "output": 257,
+          "thinking": 130,
+          "report_out": 39,
+          "entries": 2
+        },
+        {
+          "n": 11,
+          "id": "msg_011CgmcViC72FcMhmaaWguRS",
+          "blocks": "tool_use | tool_use | tool_use",
+          "output": 404,
+          "thinking": 0,
+          "report_out": 130,
+          "entries": 3
+        },
+        {
+          "n": 12,
+          "id": "msg_011CgmcVv3kEfcLe2K2vSr6z",
+          "blocks": "tool_use",
+          "output": 121,
+          "thinking": 0,
+          "report_out": 34,
+          "entries": 1
+        },
+        {
+          "n": 13,
+          "id": "msg_011CgmcW3hrztiuFqguxHvdq",
+          "blocks": "tool_use | tool_use | tool_use",
+          "output": 374,
+          "thinking": 0,
+          "report_out": 127,
+          "entries": 3
+        },
+        {
+          "n": 14,
+          "id": "msg_011CgmcWF1GUk6WDp8zrTHCP",
+          "blocks": "tool_use",
+          "output": 150,
+          "thinking": 0,
+          "report_out": 58,
+          "entries": 1
+        },
+        {
+          "n": 15,
+          "id": "msg_011CgmcWMs1pmnbFzH2qyini",
+          "blocks": "tool_use | tool_use | tool_use",
+          "output": 378,
+          "thinking": 0,
+          "report_out": 140,
+          "entries": 3
+        },
+        {
+          "n": 16,
+          "id": "msg_011CgmcWZQJ8XsWbtH8QpKmK",
+          "blocks": "tool_use",
+          "output": 261,
+          "thinking": 0,
+          "report_out": 122,
+          "entries": 1
+        },
+        {
+          "n": 17,
+          "id": "msg_011CgmcWohmeanDZJWHEPixs",
+          "blocks": "text | tool_use | tool_use | tool_use | tool_use | tool_use | tool_use | tool_use",
+          "output": 1060,
+          "thinking": 0,
+          "report_out": 375,
+          "entries": 8
+        },
+        {
+          "n": 18,
+          "id": "msg_011CgmcXLNzRSCDGoF2UnLSw",
+          "blocks": "tool_use",
+          "output": 272,
+          "thinking": 0,
+          "report_out": 123,
+          "entries": 1
+        },
+        {
+          "n": 19,
+          "id": "msg_011CgmcXaRbLXphtbbpbedMe",
+          "blocks": "tool_use | tool_use | tool_use | tool_use | tool_use",
+          "output": 873,
+          "thinking": 0,
+          "report_out": 327,
+          "entries": 5
+        },
+        {
+          "n": 20,
+          "id": "msg_011CgmcXz6PH5n7Hp5zpqoAw",
+          "blocks": "text | tool_use",
+          "output": 86,
+          "thinking": 0,
+          "report_out": 11,
+          "entries": 2
+        },
+        {
+          "n": 21,
+          "id": "msg_011CgmcY5yb8s2WX6ateH69y",
+          "blocks": "thinking | tool_use | tool_use",
+          "output": 260,
+          "thinking": 116,
+          "report_out": 31,
+          "entries": 3
+        },
+        {
+          "n": 22,
+          "id": "msg_011CgmcYJpzxUiG4VTP1Ydfo",
+          "blocks": "tool_use | tool_use",
+          "output": 93,
+          "thinking": 0,
+          "report_out": 4,
+          "entries": 2
+        },
+        {
+          "n": 23,
+          "id": "msg_011CgmcYWG6eLBbjztmEgVm6",
+          "blocks": "text | tool_use | tool_use",
+          "output": 906,
+          "thinking": 0,
+          "report_out": 519,
+          "entries": 3
+        },
+        {
+          "n": 24,
+          "id": "msg_011CgmcZ2VmgWcapiK6fkcPz",
+          "blocks": "text",
+          "output": 1387,
+          "thinking": 0,
+          "report_out": 1046,
+          "entries": 1
+        }
+      ]
+    }
+  ]
+}

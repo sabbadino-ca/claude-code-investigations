@@ -1,0 +1,30 @@
+{
+  "claudeMdExcludes": [
+    "C:/Users/spesce/claude-code-investigations/investigations/CLAUDE.md",
+    "C:/Users/spesce/claude-code-investigations/investigations/CLAUDE.local.md",
+    "C:/Users/spesce/claude-code-investigations/investigations/AGENTS.md",
+    "C:/Users/spesce/claude-code-investigations/investigations/.claude/CLAUDE.md",
+    "C:/Users/spesce/claude-code-investigations/investigations/.claude/rules/**",
+    "C:/Users/spesce/claude-code-investigations/CLAUDE.md",
+    "C:/Users/spesce/claude-code-investigations/CLAUDE.local.md",
+    "C:/Users/spesce/claude-code-investigations/AGENTS.md",
+    "C:/Users/spesce/claude-code-investigations/.claude/CLAUDE.md",
+    "C:/Users/spesce/claude-code-investigations/.claude/rules/**",
+    "C:/Users/spesce/CLAUDE.md",
+    "C:/Users/spesce/CLAUDE.local.md",
+    "C:/Users/spesce/AGENTS.md",
+    "C:/Users/spesce/.claude/CLAUDE.md",
+    "C:/Users/spesce/.claude/rules/**",
+    "C:/Users/CLAUDE.md",
+    "C:/Users/CLAUDE.local.md",
+    "C:/Users/AGENTS.md",
+    "C:/Users/.claude/CLAUDE.md",
+    "C:/Users/.claude/rules/**",
+    "C:/CLAUDE.md",
+    "C:/CLAUDE.local.md",
+    "C:/AGENTS.md",
+    "C:/.claude/CLAUDE.md",
+    "C:/.claude/rules/**"
+  ],
+  "cleanupPeriodDays": 36500
+}

@@ -1,0 +1,1225 @@
+{
+  "prices_usd_per_mtok": {
+    "claude-haiku-5-5": {
+      "input": 0.1,
+      "output": 0.5,
+      "write5m": 0.125,
+      "write1h": 0.2,
+      "read": 0.01
+    },
+    "claude-sonnet-5-5": {
+      "input": 2,
+      "output": 10,
+      "write5m": 2.5,
+      "write1h": 4,
+      "read": 0.1
+    }
+  },
+  "sessions_with_cost_state": 40,
+  "model_entries_checked": 42,
+  "model_entries_exact": 42,
+  "totals_exact": 40,
+  "sessions_with_subagents": 4,
+  "rows": [
+    {
+      "session": "00fd7e89-3d8b-462b-a750-92ea96c2d04a",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 4,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 768,
+          "cost_usd": 0.00457882
+        },
+        {
+          "agent": "agent-a0cea6574292ab75a",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 529,
+          "cost_usd": 0.0186515
+        },
+        {
+          "agent": "agent-a68943ea59b3de642",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 571,
+          "cost_usd": 0.013208800000000001
+        },
+        {
+          "agent": "agent-af603905276e660fe",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 543,
+          "cost_usd": 0.018788899999999997
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00457882,
+          "cost_state": 0.004578820000000001,
+          "diff": -8.673617379884035e-19
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "computed": 0.050649200000000005,
+          "cost_state": 0.0506492,
+          "diff": 6.938893903907228e-18
+        }
+      ],
+      "computed_total": 0.05522802,
+      "cost_state_total": 0.055228019999999996,
+      "total_diff": 6.938893903907228e-18,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "10d324d2-a556-4c2f-b394-d8c799ef270b",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0002516
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0002516,
+          "cost_state": 0.0002516,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0002516,
+      "cost_state_total": 0.0002516,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "1b62fdbc-603a-4d07-ae70-93303c94809e",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "1e44664d-18b8-410d-9f88-34417afda2db",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.00105321
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00105321,
+          "cost_state": 0.00105321,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00105321,
+      "cost_state_total": 0.00105321,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "2f345375-f905-44f4-8d3a-325690230041",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0002516
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0002516,
+          "cost_state": 0.0002516,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0002516,
+      "cost_state_total": 0.0002516,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "303f7d7b-a953-48a8-ac9c-8a9298c6ad70",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 4,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 789,
+          "cost_usd": 0.00462134
+        },
+        {
+          "agent": "agent-a865953dd6e23c538",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 566,
+          "cost_usd": 0.0107175
+        },
+        {
+          "agent": "agent-aa14f1bdb698482b3",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 623,
+          "cost_usd": 0.013666300000000001
+        },
+        {
+          "agent": "agent-adb23137a456de70d",
+          "messages": 2,
+          "models": [
+            "claude-sonnet-5-5"
+          ],
+          "output_tokens": 594,
+          "cost_usd": 0.0110598
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00462134,
+          "cost_state": 0.00462134,
+          "diff": 0
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "computed": 0.0354436,
+          "cost_state": 0.0354436,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.04006494,
+      "cost_state_total": 0.04006493999999999,
+      "total_diff": 6.938893903907228e-18,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "3463cf05-27d8-4d41-8c18-10d93a757229",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 25880,
+          "cost_usd": 0.01399161
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.01399161,
+          "cost_state": 0.013991610000000002,
+          "diff": -1.734723475976807e-18
+        }
+      ],
+      "computed_total": 0.01399161,
+      "cost_state_total": 0.013991610000000002,
+      "total_diff": -1.734723475976807e-18,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "34a4a7a8-c238-4302-9fbf-325bcc5c380b",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0002516
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0002516,
+          "cost_state": 0.0002516,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0002516,
+      "cost_state_total": 0.0002516,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "34e54866-6cba-43b0-a86f-517cb96328fd",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "37efe484-40c6-4ffa-8ea3-dabb4a8341e1",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 29341,
+          "cost_usd": 0.01491252
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.01491252,
+          "cost_state": 0.01491252,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.01491252,
+      "cost_state_total": 0.01491252,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "38ae3661-0622-4a5e-a257-77436343efda",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0010524
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0010524,
+          "cost_state": 0.0010524,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0010524,
+      "cost_state_total": 0.0010524,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "4fe7c3ac-14b8-4501-9d46-576208bcd3bb",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 3607,
+          "cost_usd": 0.00204524
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00204524,
+          "cost_state": 0.00204524,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00204524,
+      "cost_state_total": 0.00204524,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "5204e9dd-5de0-4f5e-b618-7d65c7effb56",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.00105321
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00105321,
+          "cost_state": 0.00105321,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00105321,
+      "cost_state_total": 0.00105321,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "5494b80e-800b-49b7-99b6-f1d36a2e14c8",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 4,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 738,
+          "cost_usd": 0.0046061900000000005
+        },
+        {
+          "agent": "agent-a2f679a66837802c7",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1055,
+          "cost_usd": 0.0006154800000000001
+        },
+        {
+          "agent": "agent-ac84a208bac7601e9",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 857,
+          "cost_usd": 0.00072275
+        },
+        {
+          "agent": "agent-acd2fc010fcd02f50",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 955,
+          "cost_usd": 0.0007714800000000001
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0067159,
+          "cost_state": 0.0067158999999999995,
+          "diff": 8.673617379884035e-19
+        }
+      ],
+      "computed_total": 0.0067159,
+      "cost_state_total": 0.0067158999999999995,
+      "total_diff": 8.673617379884035e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "5528ca24-ec8e-4523-8cb0-1d7703038f75",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1149,
+          "cost_usd": 0.00142367
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00142367,
+          "cost_state": 0.00142367,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00142367,
+      "cost_state_total": 0.00142367,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "56e9d94e-1ee0-488d-a867-61ea26453561",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 4488,
+          "cost_usd": 0.0024857399999999997
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0024857399999999997,
+          "cost_state": 0.00248574,
+          "diff": -4.336808689942018e-19
+        }
+      ],
+      "computed_total": 0.0024857399999999997,
+      "cost_state_total": 0.00248574,
+      "total_diff": -4.336808689942018e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "5b77ca29-2c6f-4302-86fd-cf9815fb2af0",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 25685,
+          "cost_usd": 0.01308452
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.01308452,
+          "cost_state": 0.01308452,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.01308452,
+      "cost_state_total": 0.01308452,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "5c1102f8-9331-481b-9c2f-6994b928033d",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "609c6c0d-01f1-4dd1-bded-d2ef23424c4d",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "6faae256-1b87-419e-a0ec-15454cc3a1fa",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 26287,
+          "cost_usd": 0.01338552
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.01338552,
+          "cost_state": 0.013385520000000001,
+          "diff": -1.734723475976807e-18
+        }
+      ],
+      "computed_total": 0.01338552,
+      "cost_state_total": 0.013385520000000001,
+      "total_diff": -1.734723475976807e-18,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "7fb74409-1797-49d2-909a-1433345d4553",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 5,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 3050,
+          "cost_usd": 0.00509956
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00509956,
+          "cost_state": 0.00509956,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00509956,
+      "cost_state_total": 0.00509956,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "88abceb5-05fc-4e5d-8168-96f0faa7002a",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 3831,
+          "cost_usd": 0.00296151
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00296151,
+          "cost_state": 0.00296151,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00296151,
+      "cost_state_total": 0.00296151,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "9a1a859e-f39d-4630-841d-e396b06e9ca0",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 4305,
+          "cost_usd": 0.0023942399999999997
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0023942399999999997,
+          "cost_state": 0.00239424,
+          "diff": -4.336808689942018e-19
+        }
+      ],
+      "computed_total": 0.0023942399999999997,
+      "cost_state_total": 0.00239424,
+      "total_diff": -4.336808689942018e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "a7ce5f94-6719-4b75-9a21-b186a70b9293",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 93,
+          "cost_usd": 0.0013029200000000002
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0013029200000000002,
+          "cost_state": 0.00130292,
+          "diff": 2.168404344971009e-19
+        }
+      ],
+      "computed_total": 0.0013029200000000002,
+      "cost_state_total": 0.00130292,
+      "total_diff": 2.168404344971009e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "ab918205-de36-41f1-a55d-6fa79f9b0c3c",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 5,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 3135,
+          "cost_usd": 0.0051618
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0051618,
+          "cost_state": 0.005161799999999999,
+          "diff": 8.673617379884035e-19
+        }
+      ],
+      "computed_total": 0.0051618,
+      "cost_state_total": 0.005161799999999999,
+      "total_diff": 8.673617379884035e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "ad2a5ecf-9db5-4a7e-8cef-4a6a497f5c71",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1353,
+          "cost_usd": 0.0015285300000000002
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0015285300000000002,
+          "cost_state": 0.0015285300000000002,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0015285300000000002,
+      "cost_state_total": 0.0015285300000000002,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "b3a91e5e-b0d7-432f-af2d-afd0321f7f33",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1274,
+          "cost_usd": 0.00147977
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00147977,
+          "cost_state": 0.00147977,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00147977,
+      "cost_state_total": 0.00147977,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "bbe9a750-ccf2-4e3c-a0ed-dee4e41ef1ef",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1374,
+          "cost_usd": 0.00232845
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00232845,
+          "cost_state": 0.00232845,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00232845,
+      "cost_state_total": 0.00232845,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "c4d82156-b328-4968-922e-3f9a1962468e",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1307,
+          "cost_usd": 0.0015055300000000001
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0015055300000000001,
+          "cost_state": 0.0015055300000000001,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0015055300000000001,
+      "cost_state_total": 0.0015055300000000001,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "c90a8e90-6624-4ec3-a4a9-cbd1cc6fc640",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 29694,
+          "cost_usd": 0.01508902
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.01508902,
+          "cost_state": 0.015089020000000002,
+          "diff": -1.734723475976807e-18
+        }
+      ],
+      "computed_total": 0.01508902,
+      "cost_state_total": 0.015089020000000002,
+      "total_diff": -1.734723475976807e-18,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "d56eaab7-59d1-4196-95c9-a1994a5a413f",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 18274,
+          "cost_usd": 0.00937902
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00937902,
+          "cost_state": 0.00937902,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00937902,
+      "cost_state_total": 0.00937902,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "de9c2884-37e8-4801-987c-0a8bcd19e8f9",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0010524
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0010524,
+          "cost_state": 0.0010524,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0010524,
+      "cost_state_total": 0.0010524,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "e40ac66f-45c3-45fd-92d9-0f04d76ce4da",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00056844
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00056844,
+          "cost_state": 0.0005684400000000001,
+          "diff": -1.0842021724855044e-19
+        }
+      ],
+      "computed_total": 0.00056844,
+      "cost_state_total": 0.0005684400000000001,
+      "total_diff": -1.0842021724855044e-19,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "ea8d966e-3754-4957-a86d-74a56249e27d",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 20,
+          "cost_usd": 0.0002516
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0002516,
+          "cost_state": 0.0002516,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0002516,
+      "cost_state_total": 0.0002516,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "f4df0fbc-b53d-4a6d-a4f4-1d27d9d912dc",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 3,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 1146,
+          "cost_usd": 0.0030237400000000005
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0030237400000000005,
+          "cost_state": 0.0030237400000000005,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.0030237400000000005,
+      "cost_state_total": 0.0030237400000000005,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "f5fd90b6-eb8d-4c51-9b35-ab8874aa9f05",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 4,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 765,
+          "cost_usd": 0.00463076
+        },
+        {
+          "agent": "agent-a37b2e686e95ae655",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 993,
+          "cost_usd": 0.0009044100000000001
+        },
+        {
+          "agent": "agent-a4ac7f0543e9f149c",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 994,
+          "cost_usd": 0.000904515
+        },
+        {
+          "agent": "agent-a62c67908b451eba7",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 702,
+          "cost_usd": 0.001045065
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00748475,
+          "cost_state": 0.00748475,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00748475,
+      "cost_state_total": 0.00748475,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "f741a828-1a2f-4fcd-8882-e94c4ce2e280",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 2,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 92,
+          "cost_usd": 0.00258491
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00258491,
+          "cost_state": 0.00258491,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00258491,
+      "cost_state_total": 0.00258491,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "f9a7205d-6ce6-4604-802f-d823bf4beae1",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 3931,
+          "cost_usd": 0.00220724
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.00220724,
+          "cost_state": 0.00220724,
+          "diff": 0
+        }
+      ],
+      "computed_total": 0.00220724,
+      "cost_state_total": 0.00220724,
+      "total_diff": 0,
+      "models_missing_from_files": []
+    },
+    {
+      "session": "fb821a4c-6bb2-4c72-b190-c4fc6ba035f6",
+      "agents": [
+        {
+          "agent": "main",
+          "messages": 1,
+          "models": [
+            "claude-haiku-5-5"
+          ],
+          "output_tokens": 4211,
+          "cost_usd": 0.0023472399999999996
+        }
+      ],
+      "unpriced_messages": 0,
+      "per_model": [
+        {
+          "model": "claude-haiku-5-5",
+          "computed": 0.0023472399999999996,
+          "cost_state": 0.0023472400000000004,
+          "diff": -8.673617379884035e-19
+        }
+      ],
+      "computed_total": 0.0023472399999999996,
+      "cost_state_total": 0.0023472400000000004,
+      "total_diff": -8.673617379884035e-19,
+      "models_missing_from_files": []
+    }
+  ]
+}

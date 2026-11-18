@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Output tokens in claude -p stream-json</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>Does <code>claude -p --output-format stream-json</code> report the real output-token count?</h1>
+
+<h2>Question</h2>
+<p>No doc sentence: a practical bug report. An integration launches <code>claude -p --output-format stream-json --verbose</code> <strong>without</strong> <code>--include-partial-messages</code> and reads <code>message.usage.output_tokens</code> from the <code>assistant</code> events. It sometimes gets 4 or 6 output tokens for a long answer. Hypothesis: those events carry the usage of the API <code>message_start</code> event, not the final count. The final count only arrives in the API <code>message_delta</code> event, and that event is forwarded (as <code>stream_event</code>) only with <code>--include-partial-messages</code>.</p>
+<p><strong>Confirmed</strong> if, for every API message (<code>message.id</code>), the <code>assistant</code> events carry a value far below the real one, while with the flag <code>message_delta.usage.output_tokens</code>, summed per message, equals <code>result.usage.output_tokens</code>. Run mode: <code>claude -p</code> only.</p>
+<p>Follow-up questions, for a chat that spans several processes (<code>claude -p</code>, then <code>claude -p --resume &lt;id&gt;</code> twice):</p>
+<ul>
+  <li><strong>A.</strong> Does each process's <code>result</code> (<code>usage</code>, <code>modelUsage</code>, <code>total_cost_usd</code>) cover that process only, or the conversation so far?</li>
+  <li><strong>B.</strong> Once the chat is over, can every token (input, cache, output) be recovered from the session files alone, without having watched the stream?</li>
+</ul>
+
+<h2>Setup</h2>
+<pre><code>driver --spawn--&gt; claude -p --output-format stream-json --verbose [--include-partial-messages]
+                  --model claude-haiku-5-5 --effort medium --allowedTools Bash --permission-mode dontAsk</code></pre>
+<ul>
+  <li><a href="prompts/short-text.md">prompts/short-text.md</a>: one fixed sentence, no tools (1 API message).</li>
+  <li><a href="prompts/long-text.md">prompts/long-text.md</a>: ~1500-word essay, no tools (1 API message: thinking + text).</li>
+  <li><a href="prompts/very-long-text.md">prompts/very-long-text.md</a>: 6000+-word essay, no tools (1 API message, ~18k–30k output tokens).</li>
+  <li><a href="prompts/one-tool.md">prompts/one-tool.md</a>: one Bash <code>echo NONCE=…</code>, then one sentence (2 API messages).</li>
+  <li><a href="prompts/multi-tool.md">prompts/multi-tool.md</a>: three parallel Bash calls, one more Bash call, then ~400 words (3 API messages, the first with 3 <code>tool_use</code> blocks).</li>
+  <li><a href="output-tokens-cli.ts">output-tokens-cli.ts</a>: runs every scenario in two modes, <code>plain</code> (no flag) and <code>partial</code> (<code>--include-partial-messages</code>).
+    <ul>
+      <li>For each <code>message.id</code> it records the <code>output_tokens</code> of every <code>assistant</code> event, of the <code>stream_event</code> <code>message_start</code> and <code>message_delta</code>, and of the session transcript entries.</li>
+      <li>It compares their sums with <code>result.usage.output_tokens</code> and <code>result.modelUsage[*].outputTokens</code>.</li>
+      <li>The timeline <code>&lt;run&gt;.jsonl</code> keeps every stream line, except <code>content_block_delta</code> payloads, which are reduced to their type and length.</li>
+    </ul></li>
+  <li><a href="prompts/resume-1.md">prompts/resume-1.md</a>, <a href="prompts/resume-2.md">resume-2.md</a>, <a href="prompts/resume-3.md">resume-3.md</a>: the three turns of the multi-process chat.
+    <ul>
+      <li>Turn 1: one Bash call, then ~300 words.</li>
+      <li>Turn 2: ~1000 words, no tools.</li>
+      <li>Turn 3: two parallel Bash calls, then a short paragraph.</li>
+    </ul></li>
+  <li><a href="resume-cli.ts">resume-cli.ts</a>: runs each chat as three processes, every one with <code>--include-partial-messages</code>.
+    <ul>
+      <li>Ground truth per API message: input and cache from <code>message_start</code>, output from <code>message_delta</code>.</li>
+      <li>For each process it checks whether <code>result.usage</code>, <code>modelUsage</code> and <code>total_cost_usd</code> match that process's truth or the running total.</li>
+      <li>After the chat it reads only the session <code>.jsonl</code>, deduplicates by <code>message.id</code>, and compares with the truth of the whole chat.</li>
+    </ul></li>
+  <li><a href=".claude/agents/worker.md">.claude/agents/worker.md</a>: the subagent, on <strong>Sonnet</strong>, so every per-model figure separates it from the Haiku main session. Its tools are Bash only: it runs one <code>echo WORKER_TOKEN=&lt;n&gt;</code>, then writes ~200 words.</li>
+  <li><a href="prompts/subagents-1.md">prompts/subagents-1.md</a>: two <code>worker</code> subagents in parallel, in the foreground. <a href="prompts/subagents-2.md">prompts/subagents-2.md</a> (via <code>--resume</code>): one more <code>worker</code>.</li>
+  <li><a href="subagents-cli.ts">subagents-cli.ts</a>: runs each chat as two processes, both with <code>--include-partial-messages</code>.
+    <ul>
+      <li>It keys the stream truth by <code>parent_tool_use_id</code>.</li>
+      <li>It compares each process's <code>result</code> with main-only and main + subagent figures, both per process and cumulative.</li>
+      <li>After the chat it reads <code>&lt;session&gt;.jsonl</code>, <code>&lt;session&gt;/subagents/agent-*.jsonl</code> and the last <code>cost-state</code> entry.</li>
+    </ul></li>
+  <li><a href=".claude/agents/worker-haiku.md">.claude/agents/worker-haiku.md</a>, <a href="prompts/subagents-same-1.md">prompts/subagents-same-1.md</a>, <a href="prompts/subagents-same-2.md">subagents-same-2.md</a>: the same worker and prompts, but the worker runs on Haiku, the main session's model. Used by <code>subagents-cli.ts --same-model</code>, where per-model totals can no longer separate main and subagents.</li>
+  <li><a href="cost-check.ts">cost-check.ts</a>: offline, no model calls. For every session with a <code>cost-state</code> it does three things:
+    <ul>
+      <li>It prices each message of the main file and of every <code>subagents/agent-*.jsonl</code> (dedup by <code>message.id</code>) as token counts × list price. The token classes are input, output, cache write 5m, cache write 1h and cache read; the prices are in the file.</li>
+      <li>It sums the cost per agent and per model.</li>
+      <li>It compares each model's sum with <code>cost-state.modelUsage[model].costUSD</code> and the overall sum with <code>totalCostUSD</code>.</li>
+    </ul></li>
+  <li><a href="edge-cli.ts">edge-cli.ts</a> with <a href=".claude/agents/nester.md">.claude/agents/nester.md</a>, <a href="prompts/edge-background.md">prompts/edge-background.md</a>, <a href="prompts/edge-nested.md">edge-nested.md</a> and <a href="prompts/edge-continue.md">edge-continue.md</a>: the edge cases. Every process runs with <code>--include-partial-messages</code> as ground truth. After each scenario every <code>.jsonl</code> of the session is read and checked against the truth and the last <code>cost-state</code>.
+    <ul>
+      <li><code>kill-tool-use</code>: the process is killed at the first main <code>assistant</code> tool_use event, before its <code>message_delta</code> (the way a host stops a process on a question card), then continued with <code>--resume</code>.</li>
+      <li><code>kill-mid-text</code>: the process is killed after 150 text deltas of a long answer, then continued with <code>--resume</code>.</li>
+      <li><code>flags-text</code> / <code>flags-subagents</code>: run with <code>--thinking-display summarized --forward-subagent-text</code>.</li>
+      <li><code>background</code>: two <code>run_in_background: true</code> workers.</li>
+      <li><code>nested</code>: main → <code>nester</code> → <code>worker-haiku</code>.</li>
+      <li><code>max-tokens</code>: <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS=300</code>.</li>
+    </ul></li>
+  <li><a href="samples/8cb96fe0/">samples/8cb96fe0/</a>: a real session produced outside this lab by Claude Code 2.1.319: main + 2 foreground subagents (CAIP Architect, CAIP Architect Validator), all on Sonnet 5.5.
+    <ul>
+      <li>The files are copied as Claude Code wrote them: <code>&lt;session&gt;.jsonl</code>, <code>subagents/agent-*.jsonl</code> and <code>*.meta.json</code>.</li>
+      <li>Beside them are the CAIP-report built from the session (<code>CAIP-report-8cb96fe0.html</code>) and the <code>.json</code> it is built from.</li>
+    </ul></li>
+  <li><a href="session-vs-report.ts">session-vs-report.ts</a>: offline. It reads a session's files (dedup by <code>message.id</code>, no <code>&lt;synthetic&gt;</code>) and checks three things:
+    <ul>
+      <li>that every entry of a message carries the same final output;</li>
+      <li>that the files' per-model sum equals the last <code>cost-state</code>;</li>
+      <li>per API call, the file's <code>output_tokens</code> against the CAIP-report's <code>callLog[].out</code>, with each call matched by its exact prompt sizes.</li>
+    </ul>
+    It takes any <code>&lt;session&gt;.jsonl</code> and report <code>.json</code>; the default is the sample.</li>
+  <li>No env vars beyond the harness isolation (and <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS</code> in the <code>max-tokens</code> scenario).</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                 # repo root
+node lib/claude-home.mjs investigations/stream-json-output-tokens --check
+npx tsx investigations/stream-json-output-tokens/output-tokens-cli.ts [--reps N] [--concurrency N] [--modes plain,partial] [scenario ...]
+npx tsx investigations/stream-json-output-tokens/resume-cli.ts [--chats N] [--concurrency N]
+npx tsx investigations/stream-json-output-tokens/subagents-cli.ts [--chats N] [--concurrency N] [--same-model]
+npx tsx investigations/stream-json-output-tokens/cost-check.ts                     # offline: reads every session in .claude-home
+npx tsx investigations/stream-json-output-tokens/edge-cli.ts [--reps N] [--concurrency N] [scenario ...]
+npx tsx investigations/stream-json-output-tokens/session-vs-report.ts [&lt;session&gt;.jsonl &lt;CAIP-report&gt;.json]   # offline</code></pre>
+<p><code>output-tokens-cli.ts</code> defaults: all 5 scenarios, both modes, 3 reps, concurrency 3. That is 30 runs, about 10 minutes and a few cents on Haiku. <code>resume-cli.ts</code> defaults: 2 chats of 3 processes each, about 1 minute. Results: <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-&lt;driver&gt;/</code>. Session logs: <code>.claude-home/projects/sessions/&lt;session-id&gt;.jsonl</code>.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-11-18-1218-output-tokens-cli/output-tokens-cli-summary.md">2026-11-18-1218-output-tokens-cli</a></td><td>output-tokens-cli.ts (defaults)</td><td>2.1.327 via <code>claude -p</code></td><td>Confirmed in 30/30 runs: the <code>assistant</code> events never carry the final count. <code>message_delta</code> always does (15/15 partial runs), and so do the transcript and <code>result</code> (30/30).</td></tr>
+<tr><td><a href="results/2026-11-18-1245-resume-cli/resume-cli-summary.md">2026-11-18-1245-resume-cli</a></td><td>resume-cli.ts (defaults)</td><td>2.1.327 via <code>claude -p</code></td><td>2/2 chats. <code>result.usage</code> covers this process only; <code>modelUsage</code> and <code>total_cost_usd</code> are running totals for the session. The session file alone gives every token exactly (5/5 messages per chat), plus the cumulative totals in <code>cost-state</code>.</td></tr>
+<tr><td><a href="results/2026-11-18-1250-subagents-cli/subagents-cli-summary.md">2026-11-18-1250-subagents-cli</a></td><td>subagents-cli.ts (defaults)</td><td>2.1.327 via <code>claude -p</code></td><td>2/2 chats. The stream does not forward subagent <code>stream_event</code>s. <code>result.usage</code> = this process, main session only. <code>modelUsage</code> / cost = cumulative, subagents included. Main file + subagent files (dedup) = last <code>cost-state</code>, per model, exactly.</td></tr>
+<tr><td><a href="results/2026-11-18-1258-subagents-cli/subagents-cli-summary.md">2026-11-18-1258-subagents-cli</a></td><td>subagents-cli.ts <code>--same-model</code></td><td>2.1.327 via <code>claude -p</code></td><td>2/2 chats, workers on Haiku. Same result as above, but <code>modelUsage</code> / <code>cost-state</code> now have a single Haiku entry mixing main and subagents. Only the files separate them.</td></tr>
+<tr><td><a href="results/2026-11-18-1258-cost-check/cost-check-summary.md">2026-11-18-1258-cost-check</a></td><td>cost-check.ts (offline)</td><td>sessions of the runs above (2.1.327)</td><td>Cost recomputed from the files equals Claude Code's <code>costUSD</code> exactly: 42/42 model entries and 40/40 session totals, including the 4 sessions with subagents.</td></tr>
+<tr><td><a href="results/2026-11-18-1305-edge-cli/edge-cli-summary.md">2026-11-18-1305-edge-cli</a></td><td>edge-cli.ts (defaults: 7 scenarios × 2)</td><td>2.1.327 via <code>claude -p</code></td><td>14/14. Every message that completed is exact in the files and equals the last <code>cost-state</code>. A message cut off by a kill is recorded <strong>nowhere</strong>. The summary's ❌ in "cost-state = files" comes only from zero-usage <code>&lt;synthetic&gt;</code> entries: equal once they are excluded (driver fixed after the run).</td></tr>
+<tr><td><a href="results/2026-11-18-1313-session-vs-report/session-vs-report-summary.md">2026-11-18-1313-session-vs-report</a></td><td>session-vs-report.ts (sample 8cb96fe0)</td><td>session written by 2.1.319</td><td>No provisional value in any of the 44 messages. Files = last <code>cost-state</code> exactly. The CAIP-report estimates 9917 output tokens against the real 20750 (48%).</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<h3>Totals (sum over the run's API messages)</h3>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>msgs</th><th><code>result.usage.output_tokens</code></th><th><code>assistant</code> events, one per message</th><th>naive sum over all <code>assistant</code> events</th><th><code>message_delta</code> (partial only)</th><th>transcript</th></tr></thead>
+<tbody>
+<tr><td>short-text</td><td>1</td><td>20 (all 6 runs)</td><td>8</td><td>8</td><td>20</td><td>20</td></tr>
+<tr><td>long-text</td><td>1</td><td>3607–4488</td><td>2–3</td><td><strong>4–6</strong></td><td>= result</td><td>= result</td></tr>
+<tr><td>very-long-text</td><td>1</td><td>18274–29694</td><td>2–8</td><td>4–16</td><td>= result</td><td>= result</td></tr>
+<tr><td>one-tool</td><td>2</td><td>92–93</td><td>17–18 (16–17 + 1)</td><td>17–18</td><td>= result (82 + 10)</td><td>= result</td></tr>
+<tr><td>multi-tool</td><td>3</td><td>1146–1374</td><td>22–30</td><td>60–80</td><td>= result</td><td>= result</td></tr>
+</tbody></table></div>
+<p><code>result.modelUsage[*].outputTokens</code> equals <code>result.usage.output_tokens</code> in all 30 runs. The per-message detail is in the <a href="results/2026-11-18-1218-output-tokens-cli/output-tokens-cli-summary.md">summary</a>.</p>
+
+<h3>Why: the <code>assistant</code> event is emitted before <code>message_delta</code></h3>
+<p>From the partial-mode timeline (<a href="results/2026-11-18-1218-output-tokens-cli/multi-tool-partial-r1.jsonl">multi-tool-partial-r1.jsonl</a>, ms from start):</p>
+<pre><code>  1792 message_start      id=…C1Rkp1di  output_tokens=20
+  2034 ASSISTANT          …C1Rkp1di tool_use  output_tokens=20  stop_reason=null
+  2244 ASSISTANT          …C1Rkp1di tool_use  output_tokens=20  stop_reason=null
+  2438 ASSISTANT          …C1Rkp1di tool_use  output_tokens=20  stop_reason=null
+  2457 message_delta      output_tokens=246
+  2459 message_stop
+  …
+  9767 RESULT             output_tokens=1374   (= 246 + 206 + 922)</code></pre>
+<ul>
+  <li>Claude Code emits one <code>assistant</code> event per <strong>content block</strong>, when that block ends, so before the API sends <code>message_delta</code>.
+    <ul>
+      <li>Each event carries a copy of the usage from <code>message_start</code>. There, <code>output_tokens</code> is only the handful of tokens counted so far (1–20 here).</li>
+      <li><code>stop_reason</code> is <code>null</code> in every <code>assistant</code> event of all 30 runs.</li>
+    </ul></li>
+  <li>The same partial usage is repeated on every event of a message, and all of them share its <code>message.id</code>.
+    <ul>
+      <li>A message with thinking emits two <code>assistant</code> events (thinking, then text). A message with 3 parallel tool calls emits three.</li>
+      <li>Summing over events instead of over <code>message.id</code> therefore doubles or triples that wrong number. That is how a 4000-token essay shows up as <strong>4 or 6</strong>: 2 + 2, or 3 + 3.</li>
+    </ul></li>
+  <li>The flag changes nothing in the <code>assistant</code> events: they carry the same partial snapshot in both modes. It only adds the <code>stream_event</code>s, among them <code>message_delta</code>. Its <code>usage.output_tokens</code> is the final per-message count.</li>
+  <li>The session transcript <code>.jsonl</code> holds the final count for every message, repeated on each content-block entry. So Claude Code knows the correct value; it just doesn't update the stream event it has already sent.</li>
+  <li><code>system:thinking_tokens</code> events (<code>estimated_tokens</code>) arrive during thinking in both modes. They are an estimate of thinking only, not a usage count.</li>
+</ul>
+
+<h3>Multi-process chat (<code>-p</code>, then <code>--resume</code> ×2)</h3>
+<p>Run <a href="results/2026-11-18-1245-resume-cli/resume-cli-summary.md">2026-11-18-1245-resume-cli</a>, chat1. Usage is given as input / cache_creation / cache_read / <strong>output</strong>. Chat2 behaves the same way.</p>
+<div class="table"><table>
+<thead><tr><th>process</th><th>truth, this process</th><th><code>result.usage</code></th><th><code>modelUsage</code> output / input</th><th><code>total_cost_usd</code></th></tr></thead>
+<tbody>
+<tr><td>1 (<code>-p</code>)</td><td>4 / 8125 / 44103 / <strong>799</strong></td><td>= this process</td><td>799 / 4</td><td>0.00247</td></tr>
+<tr><td>2 (<code>--resume</code>)</td><td>2 / 789 / 28046 / <strong>2062</strong></td><td>= this process</td><td>2861 / 6 (running total)</td><td>0.00394 (running total)</td></tr>
+<tr><td>3 (<code>--resume</code>)</td><td>4 / 2452 / 59861 / <strong>274</strong></td><td>= this process</td><td>3135 / 10 (running total)</td><td>0.00516 (running total)</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>A. At runtime the fields have different scopes.</strong>
+    <ul>
+      <li><code>result.usage</code> covers <strong>this process only</strong>.</li>
+      <li><code>result.modelUsage</code> and <code>total_cost_usd</code> are <strong>running totals of the session</strong>, carried across <code>--resume</code>.</li>
+      <li>Consequence: summing <code>result.usage</code> over the processes gives the chat total, while summing <code>modelUsage</code> or the cost counts earlier turns again.</li>
+    </ul></li>
+  <li><code>--resume</code> kept the same <code>session_id</code> and appended to the same <code>&lt;session-id&gt;.jsonl</code>: one file per chat.</li>
+  <li><strong>B. After the chat, the session file alone is enough.</strong>
+    <ul>
+      <li><strong>Per message:</strong> the <code>assistant</code> entries, deduplicated by <code>message.id</code>, hold the exact input, cache and output of every API message (10/10 messages over the two chats). They also hold <code>output_tokens_details.thinking_tokens</code>. Their sum equals the stream truth exactly: 10 / 11366 / 132010 / 3135 for chat1.</li>
+      <li><strong>Per chat:</strong> the file also holds a <code>cost-state</code> entry, written once per process. It carries the cumulative <code>totalCostUSD</code> and a per-model <code>modelUsage</code> (input, output, <strong>thinking</strong>, cache read, cache creation split into 5m/1h, cost). The last one is the total of the whole chat and matches the truth exactly.</li>
+      <li><strong>Trap:</strong> summing over entries without deduplicating double-counts. The naive output sum was 6077 against the real 3135 for chat1, because a message with thinking + text is written as two entries.</li>
+    </ul></li>
+</ul>
+
+<h3>Subagents (main on Haiku, workers on Sonnet)</h3>
+<p>Run <a href="results/2026-11-18-1250-subagents-cli/subagents-cli-summary.md">2026-11-18-1250-subagents-cli</a>, chat1. Process 1 runs 2 parallel workers; process 2 (<code>--resume</code>) runs 1 worker. Chat2 behaves the same way.</p>
+<div class="table"><table>
+<thead><tr><th>source</th><th>Haiku (main)</th><th>Sonnet (subagents)</th></tr></thead>
+<tbody>
+<tr><td>stream truth (<code>message_start</code> + <code>message_delta</code>)</td><td>8 / 15865 / 105304 / <strong>789</strong></td><td><strong>not available</strong>: no subagent <code>stream_event</code> is forwarded</td></tr>
+<tr><td>main <code>.jsonl</code>, dedup by <code>message.id</code></td><td>8 / 15865 / 105304 / <strong>789</strong> ✅</td><td>–</td></tr>
+<tr><td><code>subagents/agent-*.jsonl</code> (3 files, 2 messages each), dedup</td><td>–</td><td>12 / 6245 / 19771 / <strong>1783</strong></td></tr>
+<tr><td>last <code>cost-state</code> (main file)</td><td>8 / 15865 / 105304 / <strong>789</strong> (thinking 225, $0.0046)</td><td>12 / 6245 / 19771 / <strong>1783</strong> ($0.0354)</td></tr>
+<tr><td>last <code>result.modelUsage</code></td><td colspan="2">= <code>cost-state</code>, per model</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>At runtime the stream is blind on subagents.</strong>
+    <ul>
+      <li><code>--include-partial-messages</code> forwards no subagent <code>stream_event</code>, so no <code>message_delta</code> either.</li>
+      <li>Of the subagent's messages, only the <code>tool_use</code> one shows up as an <code>assistant</code> event (with <code>parent_tool_use_id</code>), carrying the usual provisional output (16).</li>
+      <li>The <code>task_progress</code> / <code>task_notification</code> events carry <code>usage.total_tokens</code> (6140 for one worker). It matches neither that worker's last call (5736) nor the sum of its calls (9284), so it is not a usage count.</li>
+    </ul></li>
+  <li><strong><code>result.usage</code> is the main session of this process only.</strong> In both processes of both chats it equals the main-only truth and leaves out the subagents entirely.</li>
+  <li><strong><code>result.modelUsage</code> and <code>total_cost_usd</code> include the subagents.</strong> They are cumulative over the session and split per model. They are therefore the only runtime source for subagent tokens, but only as a total per model.</li>
+  <li><strong>After the chat:</strong> every subagent has its own <code>subagents/agent-&lt;id&gt;.jsonl</code>, with no <code>cost-state</code> of its own.
+    <ul>
+      <li>Its <code>assistant</code> entries, deduplicated, give the exact usage of each subagent message.</li>
+      <li>The main file plus the subagent files equal the last <code>cost-state</code> exactly, per model and per field.</li>
+      <li>No message id appears in both the main file and a subagent file.</li>
+    </ul></li>
+  <li><strong>Same model</strong> (<a href="results/2026-11-18-1258-subagents-cli/subagents-cli-summary.md">--same-model run</a>): everything above holds, but <code>modelUsage</code> and <code>cost-state</code> now have a single <code>claude-haiku-5-5</code> entry.
+    <ul>
+      <li>Main session and subagents are summed together there (chat1: 3454 output, of which 765 main and 2689 subagents).</li>
+      <li>Only the per-agent files can split them.</li>
+    </ul></li>
+</ul>
+
+<h3>Cost per subagent, recomputed from the files</h3>
+<p>Run <a href="results/2026-11-18-1258-cost-check/cost-check-summary.md">2026-11-18-1258-cost-check</a>, offline over the 40 sessions of the runs above.</p>
+<ul>
+  <li><strong>Formula:</strong> per message (dedup by <code>message.id</code>), <code>input × in + output × out + cache_creation.ephemeral_5m × 1.25·in + cache_creation.ephemeral_1h × 2·in + cache_read × read</code>.</li>
+  <li><strong>Prices</strong> ($/MTok): Haiku 5.5 in 0.10 / out 0.50 / read 0.01; Sonnet 5.5 in 2 / out 10 / read 0.10.</li>
+  <li><strong>Result:</strong> the formula gives the exact <code>costUSD</code> of the <code>cost-state</code> (|diff| &lt; 1e-9) for <strong>42/42</strong> model entries and <strong>40/40</strong> session totals.</li>
+  <li><strong>Thinking:</strong> it is already inside <code>output_tokens</code> and needs no separate price.</li>
+</ul>
+<div class="table"><table>
+<thead><tr><th>session</th><th>agent</th><th>model</th><th>output tokens</th><th>cost</th></tr></thead>
+<tbody>
+<tr><td><code>303f7d7b</code> (Sonnet workers)</td><td>main</td><td>Haiku</td><td>789</td><td>$0.00462</td></tr>
+<tr><td></td><td>agent-a865953dd6e23c538</td><td>Sonnet</td><td>566</td><td>$0.01072</td></tr>
+<tr><td></td><td>agent-aa14f1bdb698482b3</td><td>Sonnet</td><td>623</td><td>$0.01367</td></tr>
+<tr><td></td><td>agent-adb23137a456de70d</td><td>Sonnet</td><td>594</td><td>$0.01106</td></tr>
+<tr><td></td><td><strong>sum</strong></td><td></td><td></td><td><strong>$0.04006494</strong> = <code>totalCostUSD</code> ✅</td></tr>
+<tr><td><code>f5fd90b6</code> (Haiku workers)</td><td>main</td><td>Haiku</td><td>765</td><td>$0.00463</td></tr>
+<tr><td></td><td>agent-a37b2e686e95ae655</td><td>Haiku</td><td>993</td><td>$0.00090</td></tr>
+<tr><td></td><td>agent-a4ac7f0543e9f149c</td><td>Haiku</td><td>994</td><td>$0.00090</td></tr>
+<tr><td></td><td>agent-a62c67908b451eba7</td><td>Haiku</td><td>702</td><td>$0.00105</td></tr>
+<tr><td></td><td><strong>sum</strong></td><td></td><td></td><td><strong>$0.00748475</strong> = <code>totalCostUSD</code> ✅</td></tr>
+</tbody></table></div>
+<h3>Edge cases</h3>
+<p>Run <a href="results/2026-11-18-1305-edge-cli/edge-cli-summary.md">2026-11-18-1305-edge-cli</a>, 2 reps per scenario.</p>
+<div class="table"><table>
+<thead><tr><th>scenario</th><th>what happens</th><th>output tokens</th></tr></thead>
+<tbody>
+<tr><td><code>kill-tool-use</code></td><td>The killed process writes no <code>result</code> and no <code>cost-state</code>. The killed API message (thinking + tool_use, ~70 chars of tool JSON already streamed) is <strong>not in the session file at all</strong>. On <code>--resume</code> Claude Code adds a <code>&lt;synthetic&gt;</code> placeholder (zero usage, <code>stop_reason: stop_sequence</code>), then the new messages.</td><td>Completed messages exact (4/4). The killed message's tokens appear in neither the stream, the files, nor <code>cost-state</code>.</td></tr>
+<tr><td><code>kill-mid-text</code></td><td>Same as above. Before the kill, ~1700 characters of text and ~800–900 estimated thinking tokens (from <code>system:thinking_tokens</code>) had streamed.</td><td>About 1000+ generated tokens per run are recorded <strong>nowhere</strong>. Completed messages exact (2/2).</td></tr>
+<tr><td><code>flags-text</code>, <code>flags-subagents</code></td><td><code>--thinking-display summarized --forward-subagent-text</code> change nothing in the counts. The subagents' final text is forwarded as <code>assistant</code> events, still with no <code>stream_event</code>.</td><td>Exact (6/6 main messages). Files = <code>cost-state</code>.</td></tr>
+<tr><td><code>background</code></td><td>One process emits <strong>3 <code>result</code> events</strong>: the turn, then one per background worker that wakes the main agent. Each <code>result.usage</code> covers only its own part.</td><td>Summing <code>result.usage</code> over <strong>all</strong> results equals the main truth exactly. Files (main + 2 agent files) = <code>cost-state</code>.</td></tr>
+<tr><td><code>nested</code></td><td>The nested worker's transcript sits in the same flat <code>&lt;session&gt;/subagents/</code> folder as the nester's: two <code>agent-*.jsonl</code> files.</td><td>Files = <code>cost-state</code>, nested level included.</td></tr>
+<tr><td><code>max-tokens</code></td><td>Each response stops at 300 tokens (<code>stop_reason: max_tokens</code>). Claude Code continues by itself 3 times with a user message <em>"Output token limit hit. Resume directly…"</em>, then ends with a <code>&lt;synthetic&gt;</code> API-error entry. Exit code 1, yet <code>result.subtype: success</code>, <code>stop_reason: stop_sequence</code>.</td><td>4 API messages × 300 = 1200, exact in <code>message_delta</code>, <code>result.usage</code>, files and <code>cost-state</code>.</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>Interrupted messages are invisible.</strong> A process killed before an API message's <code>message_delta</code> leaves no trace of that message's tokens anywhere, even though the API generated them. The interruption is visible only as the <code>&lt;synthetic&gt;</code> entry written on the next <code>--resume</code>.</li>
+  <li><strong><code>&lt;synthetic&gt;</code> entries</strong> are <code>assistant</code> lines whose <code>message.model</code> is <code>&lt;synthetic&gt;</code>, with zero usage and no <code>output_tokens_details</code>. They never show up in <code>cost-state</code>. Exclude them when comparing per model.</li>
+</ul>
+
+<h3>A real session against its CAIP-report</h3>
+<p>Run <a href="results/2026-11-18-1313-session-vs-report/session-vs-report-summary.md">2026-11-18-1313-session-vs-report</a>, sample <a href="samples/8cb96fe0/">8cb96fe0</a>: written by Claude Code 2.1.319, main + 2 subagents, Sonnet 5.5.</p>
+<div class="table"><table>
+<thead><tr><th>agent</th><th>API messages (entries)</th><th>output, files</th><th>of which thinking</th><th>naive sum over entries</th><th>CAIP-report <code>out</code></th><th>report / files</th></tr></thead>
+<tbody>
+<tr><td>main</td><td>4 (6)</td><td>3102</td><td>203</td><td>5012</td><td>2106</td><td>68%</td></tr>
+<tr><td>CAIP Architect (<code>ab10914d…</code>)</td><td>24 (68)</td><td>11348</td><td>1069</td><td>42139</td><td>4981</td><td>44%</td></tr>
+<tr><td>CAIP Architect Validator (<code>a3de1391…</code>)</td><td>16 (40)</td><td>6300</td><td>1142</td><td>16058</td><td>2830</td><td>45%</td></tr>
+<tr><td><strong>total</strong></td><td>44 (114)</td><td><strong>20750</strong> = <code>cost-state</code> ✅</td><td>2414 = <code>cost-state</code> ✅</td><td>63209</td><td><strong>9917</strong></td><td><strong>48%</strong></td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>No provisional values.</strong> Every entry of every message carries the same output, with <code>output_tokens_details</code> and a <code>stop_reason</code>. The CAIP-report's premise that "only the line carrying <code>output_tokens_details</code> holds the final figure" does not hold for this session.</li>
+  <li><strong>All 44 calls matched.</strong> Each call was paired with the report's <code>callLog</code> on its exact prompt sizes, and the report's estimate is low every time. Three reasons:
+    <ul>
+      <li>thinking is excluded (2414 tokens);</li>
+      <li>the <code>p50k_base</code> tokenizer gives 75–81% of the real count on text-only messages;</li>
+      <li><code>tool_use</code>-only messages drop to 4–50% (e.g. 47 and 56 real tokens counted as 2), so tool-call JSON is mostly not counted.</li>
+    </ul></li>
+  <li><strong><code>agent-&lt;id&gt;.meta.json</code></strong> sits beside each subagent file, in 2.1.319 and in 2.1.327. It holds <code>agentType</code>, <code>description</code> and the <code>toolUseId</code> of the <code>Agent</code> call that started it, so a subagent file can be tied to its call after the fact.</li>
+</ul>
+
+<p>Each <code>agent-&lt;id&gt;</code> file name is the subagent's <code>task_id</code>, as given in the stream's <code>system:task_started</code> event together with the <code>tool_use_id</code> of the <code>Agent</code> call that started it.</p>
+
+<h2>Conclusion</h2>
+<p><strong>Confirmed.</strong> In Claude Code 2.1.327, the <code>assistant.message.usage.output_tokens</code> of <code>claude -p</code> stream-json is the <code>message_start</code> snapshot, never the final count, with or without <code>--include-partial-messages</code>.</p>
+<p>Whether you call it a bug or a design limitation, the field is unreliable for output tokens: the event goes out before the API has reported them. The reliable sources:</p>
+<ol>
+  <li><strong><code>result.usage.output_tokens</code></strong> (or <code>result.modelUsage</code>): the exact total of the whole <code>-p</code> invocation. It needs no flag. This is the simplest fix when one total per run is enough.</li>
+  <li><strong><code>stream_event</code> → <code>message_delta.usage.output_tokens</code></strong>, with <code>--include-partial-messages</code>: exact per API message, in real time.
+    <ul>
+      <li>Attribute it to the <code>message.id</code> of the preceding <code>message_start</code>.</li>
+      <li>Take one value per message.</li>
+    </ul></li>
+  <li>The session transcript, after the fact: exact per message, but deduplicate by <code>message.id</code>.</li>
+</ol>
+<p>Whatever the source, never sum usage over <code>assistant</code> events. Group by <code>message.id</code>.</p>
+<p><strong>Multi-process chats.</strong> Each process's <code>result.usage</code> covers that process only. <code>modelUsage</code> and <code>total_cost_usd</code> are session running totals: take the last one, don't sum them.</p>
+<p><strong>Subagents</strong> appear in neither <code>result.usage</code> nor the stream's <code>stream_event</code>s. At runtime they appear only in the cumulative per-model <code>modelUsage</code> / <code>total_cost_usd</code>. Afterwards they appear exactly in <code>subagents/agent-*.jsonl</code> and in <code>cost-state</code>.</p>
+<p><strong>Edge cases.</strong></p>
+<ul>
+  <li>With background subagents one process emits several <code>result</code> events: sum <code>result.usage</code> over all of them.</li>
+  <li>Nested subagents land in the same <code>subagents/</code> folder.</li>
+  <li><code>--thinking-display summarized</code> and <code>--forward-subagent-text</code> change nothing.</li>
+  <li>A <code>max_tokens</code> stop is counted exactly, including Claude Code's automatic continuations.</li>
+  <li>The one gap: an API message cut off by killing the process is recorded nowhere, not in the stream, the files or <code>cost-state</code>. Those tokens are lost to any accounting.</li>
+</ul>
+<p><strong>Real sessions.</strong> In a real 2.1.319 session (main + 2 subagents), the deduplicated file usage is exact and equals <code>cost-state</code>. A CAIP-report built from the same session estimates only 48% of the output tokens. Reading <code>usage.output_tokens</code> per <code>message.id</code> beats tokenizing the text.</p>
+<p><strong>Cost per agent.</strong> Neither the files nor the stream carry a cost per subagent. Pricing each agent file's deduplicated usage with the list prices reproduces Claude Code's own <code>costUSD</code> exactly, per model and in total, so it is the way to cost each subagent. When subagents share the main session's model, it is the only way.</p>
+<p><strong>After the chat is over</strong>, the session <code>.jsonl</code> holds everything, with no need to have watched the stream:</p>
+<ul>
+  <li><strong>Per message:</strong> the <code>assistant</code> entries, deduplicated by <code>message.id</code>.</li>
+  <li><strong>Per chat:</strong> the last <code>cost-state</code> entry (cumulative cost and per-model usage, thinking included).</li>
+</ul>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Agent SDK (<code>includePartialMessages</code>) and interactive mode.</li>
+  <li>Whether the API bills the tokens of a message cut off by a kill (the session records nothing of them). A kill that hits a subagent mid-message. Prices above 100K-token prompts (Haiku 5.5's higher tier), fast mode, and models other than Haiku 5.5 / Sonnet 5.5 in the cost check. Also <code>--input-format stream-json</code>.</li>
+  <li><code>--fork-session</code>, <code>--continue</code>, and a <code>--resume</code> run after compaction.</li>
+  <li>Other models and effort levels.</li>
+  <li>Runs that hit <code>max_tokens</code> or are interrupted, where <code>message_delta</code> or <code>result</code> may be missing.</li>
+  <li>Input and cache fields in the first batch: only <code>output_tokens</code> was compared there. The resume run compares all four fields.</li>
+</ul>
+</body>
+</html>

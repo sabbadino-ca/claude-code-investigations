@@ -1,0 +1,26 @@
+{
+  "driver": "output-tokens-cli.ts",
+  "args": [],
+  "investigation": "investigations/stream-json-output-tokens",
+  "started": "2026-11-18T11:18:11.077Z",
+  "versions": {
+    "node": "v22.21.1",
+    "claude_code": {
+      "cli": "2.1.327"
+    }
+  },
+  "git": {
+    "commit": "6f8e06f467c8fed9010952c9f9764b497c30ac16",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "2b36d3f1bf8c5459",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/stream-json-output-tokens/output-tokens-cli.ts": "9e6d8d9f15b385d2",
+    "investigations/stream-json-output-tokens/prompts/long-text.md": "d881bc7ebb7025b3",
+    "investigations/stream-json-output-tokens/prompts/multi-tool.md": "ec0f659407d56b63",
+    "investigations/stream-json-output-tokens/prompts/one-tool.md": "ebbd1534305263c4",
+    "investigations/stream-json-output-tokens/prompts/short-text.md": "ea36181a0036c264",
+    "investigations/stream-json-output-tokens/prompts/very-long-text.md": "54f9c8288fb2b633"
+  }
+}

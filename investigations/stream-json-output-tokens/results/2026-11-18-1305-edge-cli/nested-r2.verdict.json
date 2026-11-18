@@ -1,0 +1,145 @@
+{
+  "run": "nested-r2",
+  "scenario": "nested",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "session_ids": [
+    "8b7f7f5c-9a7d-4d3f-8d1f-42e39c2ca463"
+  ],
+  "processes": [
+    {
+      "step": 1,
+      "args": [],
+      "env": {},
+      "killed": false,
+      "kill_note": null,
+      "exit": 0,
+      "results": [
+        {
+          "subtype": "success",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 4,
+            "cache_creation_input_tokens": 4185,
+            "cache_read_input_tokens": 48766,
+            "output_tokens": 245
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 12,
+              "outputTokens": 1426,
+              "cacheReadInputTokens": 62668,
+              "cacheCreationInputTokens": 9274,
+              "webSearchRequests": 0,
+              "costUSD": 0.0028140049999999996,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 537,
+              "cacheCreationEphemeral5mInputTokens": 5089,
+              "cacheCreationEphemeral1hInputTokens": 4185,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.0028140049999999996,
+          "num_turns": 2
+        }
+      ],
+      "stream_messages": 2,
+      "stream_messages_with_delta": 2,
+      "delta_stop_reasons": [
+        "tool_use",
+        "end_turn"
+      ],
+      "assistant_events": {
+        "main": 3,
+        "sub": 1,
+        "sub_text_blocks": 0,
+        "sub_ids": 1
+      },
+      "subagent_stream_events": 0,
+      "event_counts": {
+        "system:init": 1,
+        "system:status": 2,
+        "stream_event:message_start": 2,
+        "stream_event:content_block_start": 3,
+        "stream_event:content_block_delta": 14,
+        "assistant": 4,
+        "stream_event:content_block_stop": 3,
+        "stream_event:message_delta": 2,
+        "system:task_started": 2,
+        "stream_event:message_stop": 2,
+        "user": 3,
+        "rate_limit_event": 1,
+        "system:task_progress": 2,
+        "system:task_updated": 2,
+        "system:task_notification": 2,
+        "system:thinking_tokens": 2,
+        "result:success": 1
+      },
+      "stderr": null
+    }
+  ],
+  "files": [
+    {
+      "file": "8b7f7f5c-9a7d-4d3f-8d1f-42e39c2ca463.jsonl",
+      "lines": 43,
+      "messages": 2,
+      "cost_states": 1
+    },
+    {
+      "file": "8b7f7f5c-9a7d-4d3f-8d1f-42e39c2ca463/subagents/agent-a4a7796c8a9cedd94.jsonl",
+      "lines": 22,
+      "messages": 2,
+      "cost_states": 0
+    },
+    {
+      "file": "8b7f7f5c-9a7d-4d3f-8d1f-42e39c2ca463/subagents/agent-acc17fe59c9825b1c.jsonl",
+      "lines": 22,
+      "messages": 2,
+      "cost_states": 0
+    }
+  ],
+  "checks": {
+    "stream_messages_with_truth": 2,
+    "file_equals_truth": 2,
+    "file_vs_truth_mismatches": [],
+    "unfinished_messages": [],
+    "file_messages_not_in_stream": 4,
+    "file_messages_with_null_stop_reason": [],
+    "cost_states": 1,
+    "last_cost_state_equals_files_per_model": true,
+    "files_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 9274,
+        "cache_read_input_tokens": 62668,
+        "output_tokens": 1426
+      }
+    },
+    "cost_state_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 9274,
+        "cache_read_input_tokens": 62668,
+        "output_tokens": 1426
+      }
+    },
+    "results_total": 1,
+    "sum_result_usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4185,
+      "cache_read_input_tokens": 48766,
+      "output_tokens": 245
+    },
+    "truth_main_sum": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4185,
+      "cache_read_input_tokens": 48766,
+      "output_tokens": 245
+    },
+    "sum_result_usage_equals_truth_main": true
+  }
+}
