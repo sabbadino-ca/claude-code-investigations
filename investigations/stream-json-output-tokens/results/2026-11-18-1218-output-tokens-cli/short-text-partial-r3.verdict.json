@@ -1,0 +1,79 @@
+{
+  "run": "short-text-partial-r3",
+  "scenario": "short-text",
+  "mode": "partial",
+  "rep": 3,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "exit_code": 0,
+  "session_id": "10d324d2-a556-4c2f-b394-d8c799ef270b",
+  "api_messages": 1,
+  "totals": {
+    "result_usage_output_tokens": 20,
+    "result_modelUsage_output_tokens": {
+      "claude-haiku-5-5": 20
+    },
+    "assistant_first_per_message": 8,
+    "assistant_last_per_message": 8,
+    "assistant_max_per_message": 8,
+    "assistant_naive_sum_all_events": 8,
+    "message_start_sum": 8,
+    "message_delta_last_sum": 20,
+    "transcript_last_per_message": 20,
+    "transcript_naive_sum_all_entries": 20
+  },
+  "matches_result_usage": {
+    "result_modelUsage_total": true,
+    "assistant_first_per_message": false,
+    "assistant_last_per_message": false,
+    "assistant_naive_sum_all_events": false,
+    "message_delta_last_sum": true,
+    "transcript_last_per_message": true
+  },
+  "per_message": [
+    {
+      "id": "msg_011ChAJjjB24Rvka3ENZTykE",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 1,
+      "assistant_blocks": [
+        "text"
+      ],
+      "assistant_output_tokens": [
+        8
+      ],
+      "assistant_stop_reasons": [
+        null
+      ],
+      "message_start_output_tokens": 8,
+      "message_delta_output_tokens": [
+        20
+      ],
+      "message_delta_stop_reason": "end_turn",
+      "transcript_output_tokens": [
+        20
+      ]
+    }
+  ],
+  "transcript_ids_not_in_stream": [],
+  "event_counts": {
+    "system:init": 1,
+    "system:status": 1,
+    "stream_event:message_start": 1,
+    "stream_event:content_block_start": 1,
+    "stream_event:content_block_delta": 3,
+    "assistant": 1,
+    "stream_event:content_block_stop": 1,
+    "stream_event:message_delta": 1,
+    "stream_event:message_stop": 1,
+    "rate_limit_event": 1,
+    "result:success": 1
+  },
+  "result_subtype": "success",
+  "num_turns": 1,
+  "cost_usd": 0.0002516,
+  "duration_ms": 1065,
+  "final_text_chars": 44,
+  "stderr": null,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\.claude-home\\projects\\sessions\\10d324d2-a556-4c2f-b394-d8c799ef270b.jsonl"
+}

@@ -1,0 +1,70 @@
+{
+  "run": "short-text-plain-r3",
+  "scenario": "short-text",
+  "mode": "plain",
+  "rep": 3,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "exit_code": 0,
+  "session_id": "34a4a7a8-c238-4302-9fbf-325bcc5c380b",
+  "api_messages": 1,
+  "totals": {
+    "result_usage_output_tokens": 20,
+    "result_modelUsage_output_tokens": {
+      "claude-haiku-5-5": 20
+    },
+    "assistant_first_per_message": 8,
+    "assistant_last_per_message": 8,
+    "assistant_max_per_message": 8,
+    "assistant_naive_sum_all_events": 8,
+    "message_start_sum": null,
+    "message_delta_last_sum": null,
+    "transcript_last_per_message": 20,
+    "transcript_naive_sum_all_entries": 20
+  },
+  "matches_result_usage": {
+    "result_modelUsage_total": true,
+    "assistant_first_per_message": false,
+    "assistant_last_per_message": false,
+    "assistant_naive_sum_all_events": false,
+    "message_delta_last_sum": null,
+    "transcript_last_per_message": true
+  },
+  "per_message": [
+    {
+      "id": "msg_011ChAJjWW28uZbCwS7yFQMF",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 1,
+      "assistant_blocks": [
+        "text"
+      ],
+      "assistant_output_tokens": [
+        8
+      ],
+      "assistant_stop_reasons": [
+        null
+      ],
+      "message_start_output_tokens": null,
+      "message_delta_output_tokens": [],
+      "message_delta_stop_reason": null,
+      "transcript_output_tokens": [
+        20
+      ]
+    }
+  ],
+  "transcript_ids_not_in_stream": [],
+  "event_counts": {
+    "system:init": 1,
+    "assistant": 1,
+    "rate_limit_event": 1,
+    "result:success": 1
+  },
+  "result_subtype": "success",
+  "num_turns": 1,
+  "cost_usd": 0.0002516,
+  "duration_ms": 1114,
+  "final_text_chars": 44,
+  "stderr": null,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\.claude-home\\projects\\sessions\\34a4a7a8-c238-4302-9fbf-325bcc5c380b.jsonl"
+}

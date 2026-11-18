@@ -1,0 +1,481 @@
+{
+  "chat": "chat1",
+  "model": "claude-haiku-5-5",
+  "worker_model": "sonnet (agent frontmatter)",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "session_ids": [
+    "303f7d7b-a953-48a8-ac9c-8a9298c6ad70",
+    "303f7d7b-a953-48a8-ac9c-8a9298c6ad70"
+  ],
+  "subagent_stream_events_forwarded": false,
+  "subagent_assistant_events_in_stream": 3,
+  "per_process": [
+    {
+      "turn": 1,
+      "session_id": "303f7d7b-a953-48a8-ac9c-8a9298c6ad70",
+      "exit": 0,
+      "results_in_stream": 1,
+      "stream_messages": {
+        "main": 2,
+        "subagent": 0,
+        "subagent_without_delta": 0
+      },
+      "assistant_message_ids": {
+        "main": 2,
+        "subagent": 2
+      },
+      "truth_process_main": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 10043,
+        "cache_read_input_tokens": 44230,
+        "output_tokens": 473
+      },
+      "truth_process_all": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 10043,
+        "cache_read_input_tokens": 44230,
+        "output_tokens": 473
+      },
+      "truth_running_main": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 10043,
+        "cache_read_input_tokens": 44230,
+        "output_tokens": 473
+      },
+      "truth_running_all": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 10043,
+        "cache_read_input_tokens": 44230,
+        "output_tokens": 473
+      },
+      "truth_process_by_model": {
+        "claude-haiku-5-5": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 10043,
+          "cache_read_input_tokens": 44230,
+          "output_tokens": 473
+        }
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 10043,
+        "cache_read_input_tokens": 44230,
+        "output_tokens": 473
+      },
+      "result_usage_scope": "process, main only",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 4,
+          "outputTokens": 473,
+          "cacheReadInputTokens": 44230,
+          "cacheCreationInputTokens": 10043,
+          "webSearchRequests": 0,
+          "costUSD": 0.0026878,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 127,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 10043,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5-5": {
+          "inputTokens": 8,
+          "outputTokens": 1160,
+          "cacheReadInputTokens": 13838,
+          "cacheCreationInputTokens": 3511,
+          "webSearchRequests": 0,
+          "costUSD": 0.0217773,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 0,
+          "cacheCreationEphemeral5mInputTokens": 3511,
+          "cacheCreationEphemeral1hInputTokens": 0,
+          "canonicalModel": "claude-sonnet-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_sum": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 13554,
+        "cache_read_input_tokens": 58068,
+        "output_tokens": 1633
+      },
+      "modelUsage_scope": "neither",
+      "total_cost_usd": 0.024465099999999997,
+      "task_events": [
+        {
+          "subtype": "task_started",
+          "task_id": "adb23137a456de70d",
+          "tool_use_id": "toolu_01Q5aVsJXgnppYwTsBfN6uCK",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_started",
+          "task_id": "a865953dd6e23c538",
+          "tool_use_id": "toolu_01EGFJjRyQAqBsw367Vv2H3j",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_progress",
+          "task_id": "a865953dd6e23c538",
+          "tool_use_id": "toolu_01EGFJjRyQAqBsw367Vv2H3j",
+          "usage": {
+            "total_tokens": 3483,
+            "tool_uses": 1,
+            "duration_ms": 2254
+          },
+          "status": null
+        },
+        {
+          "subtype": "task_progress",
+          "task_id": "adb23137a456de70d",
+          "tool_use_id": "toolu_01Q5aVsJXgnppYwTsBfN6uCK",
+          "usage": {
+            "total_tokens": 3482,
+            "tool_uses": 1,
+            "duration_ms": 2698
+          },
+          "status": null
+        },
+        {
+          "subtype": "task_updated",
+          "task_id": "a865953dd6e23c538",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_notification",
+          "task_id": "a865953dd6e23c538",
+          "tool_use_id": "toolu_01EGFJjRyQAqBsw367Vv2H3j",
+          "usage": {
+            "total_tokens": 6109,
+            "tool_uses": 1,
+            "duration_ms": 7714
+          },
+          "status": "completed"
+        },
+        {
+          "subtype": "task_updated",
+          "task_id": "adb23137a456de70d",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_notification",
+          "task_id": "adb23137a456de70d",
+          "tool_use_id": "toolu_01Q5aVsJXgnppYwTsBfN6uCK",
+          "usage": {
+            "total_tokens": 6140,
+            "tool_uses": 1,
+            "duration_ms": 8047
+          },
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "session_id": "303f7d7b-a953-48a8-ac9c-8a9298c6ad70",
+      "exit": 0,
+      "results_in_stream": 1,
+      "stream_messages": {
+        "main": 2,
+        "subagent": 0,
+        "subagent_without_delta": 0
+      },
+      "assistant_message_ids": {
+        "main": 2,
+        "subagent": 1
+      },
+      "truth_process_main": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 5822,
+        "cache_read_input_tokens": 61074,
+        "output_tokens": 316
+      },
+      "truth_process_all": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 5822,
+        "cache_read_input_tokens": 61074,
+        "output_tokens": 316
+      },
+      "truth_running_main": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 15865,
+        "cache_read_input_tokens": 105304,
+        "output_tokens": 789
+      },
+      "truth_running_all": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 15865,
+        "cache_read_input_tokens": 105304,
+        "output_tokens": 789
+      },
+      "truth_process_by_model": {
+        "claude-haiku-5-5": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 5822,
+          "cache_read_input_tokens": 61074,
+          "output_tokens": 316
+        }
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 5822,
+        "cache_read_input_tokens": 61074,
+        "output_tokens": 316
+      },
+      "result_usage_scope": "process, main only",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 8,
+          "outputTokens": 789,
+          "thinkingTokens": 225,
+          "cacheReadInputTokens": 105304,
+          "cacheCreationInputTokens": 15865,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 15865,
+          "webSearchRequests": 0,
+          "costUSD": 0.00462134,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5-5": {
+          "inputTokens": 12,
+          "outputTokens": 1783,
+          "thinkingTokens": 0,
+          "cacheReadInputTokens": 19771,
+          "cacheCreationInputTokens": 6245,
+          "cacheCreationEphemeral5mInputTokens": 6245,
+          "cacheCreationEphemeral1hInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.0354436,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-sonnet-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_sum": {
+        "input_tokens": 20,
+        "cache_creation_input_tokens": 22110,
+        "cache_read_input_tokens": 125075,
+        "output_tokens": 2572
+      },
+      "modelUsage_scope": "neither",
+      "total_cost_usd": 0.04006493999999999,
+      "task_events": [
+        {
+          "subtype": "task_started",
+          "task_id": "aa14f1bdb698482b3",
+          "tool_use_id": "toolu_018PdX5vkstrZ37zzonF2Hhe",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_progress",
+          "task_id": "aa14f1bdb698482b3",
+          "tool_use_id": "toolu_018PdX5vkstrZ37zzonF2Hhe",
+          "usage": {
+            "total_tokens": 3485,
+            "tool_uses": 1,
+            "duration_ms": 1074
+          },
+          "status": null
+        },
+        {
+          "subtype": "task_updated",
+          "task_id": "aa14f1bdb698482b3",
+          "usage": null,
+          "status": null
+        },
+        {
+          "subtype": "task_notification",
+          "task_id": "aa14f1bdb698482b3",
+          "tool_use_id": "toolu_018PdX5vkstrZ37zzonF2Hhe",
+          "usage": {
+            "total_tokens": 6170,
+            "tool_uses": 1,
+            "duration_ms": 6870
+          },
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "truth": {
+    "main": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 15865,
+      "cache_read_input_tokens": 105304,
+      "output_tokens": 789
+    },
+    "subagents": {
+      "input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0
+    },
+    "all": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 15865,
+      "cache_read_input_tokens": 105304,
+      "output_tokens": 789
+    },
+    "by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 15865,
+        "cache_read_input_tokens": 105304,
+        "output_tokens": 789
+      }
+    }
+  },
+  "files": {
+    "main_files": [
+      {
+        "file": "303f7d7b-a953-48a8-ac9c-8a9298c6ad70.jsonl",
+        "lines": 69,
+        "types": {
+          "session-owner": 5,
+          "queue-operation": 4,
+          "user": 5,
+          "attachment": 21,
+          "atis-latch": 5,
+          "last-prompt": 6,
+          "api-request-shape": 1,
+          "api-request-blob": 5,
+          "api-request": 4,
+          "tools-used": 3,
+          "assistant": 7,
+          "cost-state": 2,
+          "mode": 1
+        },
+        "messages": 4,
+        "cost_states": 2
+      }
+    ],
+    "subagent_files": [
+      {
+        "file": "subagents/agent-a865953dd6e23c538.jsonl",
+        "lines": 20,
+        "types": {
+          "user": 2,
+          "attachment": 9,
+          "api-request-shape": 1,
+          "api-request-blob": 4,
+          "api-request": 2,
+          "assistant": 2
+        },
+        "messages": 2,
+        "naive_output_sum": 566,
+        "cost_states": 0
+      },
+      {
+        "file": "subagents/agent-aa14f1bdb698482b3.jsonl",
+        "lines": 20,
+        "types": {
+          "user": 2,
+          "attachment": 9,
+          "api-request-shape": 1,
+          "api-request-blob": 4,
+          "api-request": 2,
+          "assistant": 2
+        },
+        "messages": 2,
+        "naive_output_sum": 623,
+        "cost_states": 0
+      },
+      {
+        "file": "subagents/agent-adb23137a456de70d.jsonl",
+        "lines": 20,
+        "types": {
+          "user": 2,
+          "attachment": 9,
+          "api-request-shape": 1,
+          "api-request-blob": 4,
+          "api-request": 2,
+          "assistant": 2
+        },
+        "messages": 2,
+        "naive_output_sum": 594,
+        "cost_states": 0
+      }
+    ],
+    "main_dedup": {
+      "input_tokens": 8,
+      "cache_creation_input_tokens": 15865,
+      "cache_read_input_tokens": 105304,
+      "output_tokens": 789
+    },
+    "main_equals_truth_main": true,
+    "subagents_dedup": {
+      "input_tokens": 12,
+      "cache_creation_input_tokens": 6245,
+      "cache_read_input_tokens": 19771,
+      "output_tokens": 1783
+    },
+    "subagents_equals_truth_subagents": null,
+    "all_dedup": {
+      "input_tokens": 20,
+      "cache_creation_input_tokens": 22110,
+      "cache_read_input_tokens": 125075,
+      "output_tokens": 2572
+    },
+    "all_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 15865,
+        "cache_read_input_tokens": 105304,
+        "output_tokens": 789
+      },
+      "claude-sonnet-5-5": {
+        "input_tokens": 12,
+        "cache_creation_input_tokens": 6245,
+        "cache_read_input_tokens": 19771,
+        "output_tokens": 1783
+      }
+    },
+    "all_equals_truth_all": null,
+    "message_ids_in_both_main_and_subagent_files": 0,
+    "last_cost_state": {
+      "totalCostUSD": 0.04006493999999999,
+      "by_model": {
+        "claude-haiku-5-5": {
+          "input_tokens": 8,
+          "cache_creation_input_tokens": 15865,
+          "cache_read_input_tokens": 105304,
+          "output_tokens": 789,
+          "thinking": 225,
+          "costUSD": 0.00462134
+        },
+        "claude-sonnet-5-5": {
+          "input_tokens": 12,
+          "cache_creation_input_tokens": 6245,
+          "cache_read_input_tokens": 19771,
+          "output_tokens": 1783,
+          "thinking": 0,
+          "costUSD": 0.0354436
+        }
+      },
+      "sum": {
+        "input_tokens": 20,
+        "cache_creation_input_tokens": 22110,
+        "cache_read_input_tokens": 125075,
+        "output_tokens": 2572
+      }
+    },
+    "cost_state_scope": "main + subagents (= files)",
+    "cost_state_equals_files_all": true
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "run": "multi-tool-partial-r2",
+  "scenario": "multi-tool",
+  "mode": "partial",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "exit_code": 0,
+  "session_id": "b3a91e5e-b0d7-432f-af2d-afd0321f7f33",
+  "api_messages": 3,
+  "totals": {
+    "result_usage_output_tokens": 1274,
+    "result_modelUsage_output_tokens": {
+      "claude-haiku-5-5": 1274
+    },
+    "assistant_first_per_message": 23,
+    "assistant_last_per_message": 23,
+    "assistant_max_per_message": 23,
+    "assistant_naive_sum_all_events": 63,
+    "message_start_sum": 23,
+    "message_delta_last_sum": 1274,
+    "transcript_last_per_message": 1274,
+    "transcript_naive_sum_all_entries": 2791
+  },
+  "matches_result_usage": {
+    "result_modelUsage_total": true,
+    "assistant_first_per_message": false,
+    "assistant_last_per_message": false,
+    "assistant_naive_sum_all_events": false,
+    "message_delta_last_sum": true,
+    "transcript_last_per_message": true
+  },
+  "per_message": [
+    {
+      "id": "msg_011ChAJin1QgQpqoNsVt4Pzm",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 3,
+      "assistant_blocks": [
+        "tool_use",
+        "tool_use",
+        "tool_use"
+      ],
+      "assistant_output_tokens": [
+        17,
+        17,
+        17
+      ],
+      "assistant_stop_reasons": [
+        null,
+        null,
+        null
+      ],
+      "message_start_output_tokens": 17,
+      "message_delta_output_tokens": [
+        243
+      ],
+      "message_delta_stop_reason": "tool_use",
+      "transcript_output_tokens": [
+        243,
+        243,
+        243
+      ]
+    },
+    {
+      "id": "msg_011ChAJitZ4KdfKb9afwNGiZ",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 2,
+      "assistant_blocks": [
+        "thinking",
+        "tool_use"
+      ],
+      "assistant_output_tokens": [
+        3,
+        3
+      ],
+      "assistant_stop_reasons": [
+        null,
+        null
+      ],
+      "message_start_output_tokens": 3,
+      "message_delta_output_tokens": [
+        125
+      ],
+      "message_delta_stop_reason": "tool_use",
+      "transcript_output_tokens": [
+        125,
+        125
+      ]
+    },
+    {
+      "id": "msg_011ChAJiyJoSLJa7pyiNgKtS",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 2,
+      "assistant_blocks": [
+        "thinking",
+        "text"
+      ],
+      "assistant_output_tokens": [
+        3,
+        3
+      ],
+      "assistant_stop_reasons": [
+        null,
+        null
+      ],
+      "message_start_output_tokens": 3,
+      "message_delta_output_tokens": [
+        906
+      ],
+      "message_delta_stop_reason": "end_turn",
+      "transcript_output_tokens": [
+        906,
+        906
+      ]
+    }
+  ],
+  "transcript_ids_not_in_stream": [],
+  "event_counts": {
+    "system:init": 1,
+    "system:status": 3,
+    "stream_event:message_start": 3,
+    "stream_event:content_block_start": 7,
+    "stream_event:content_block_delta": 233,
+    "assistant": 7,
+    "stream_event:content_block_stop": 7,
+    "stream_event:message_delta": 3,
+    "stream_event:message_stop": 3,
+    "rate_limit_event": 1,
+    "user": 4,
+    "system:thinking_tokens": 2,
+    "result:success": 1
+  },
+  "result_subtype": "success",
+  "num_turns": 5,
+  "cost_usd": 0.00147977,
+  "duration_ms": 8393,
+  "final_text_chars": 2810,
+  "stderr": null,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\.claude-home\\projects\\sessions\\b3a91e5e-b0d7-432f-af2d-afd0321f7f33.jsonl"
+}

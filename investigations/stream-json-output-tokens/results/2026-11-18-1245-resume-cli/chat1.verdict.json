@@ -1,0 +1,377 @@
+{
+  "chat": "chat1",
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "session_ids": [
+    "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+    "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+    "ad0db25e-4992-4db0-8d55-7b8bda54f719"
+  ],
+  "same_session_id_across_resume": true,
+  "per_process": [
+    {
+      "turn": 1,
+      "session_id_in": null,
+      "session_id": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "exit": 0,
+      "num_turns": 2,
+      "api_messages": [
+        "msg_011ChALYnpER7ArEfvD4xtAt",
+        "msg_011ChALYyo2TJVKLiRFHyxvG"
+      ],
+      "truth_this_process": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8125,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 799
+      },
+      "truth_running_total": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8125,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 799
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8125,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 799
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 4,
+          "outputTokens": 799,
+          "cacheReadInputTokens": 44103,
+          "cacheCreationInputTokens": 8125,
+          "webSearchRequests": 0,
+          "costUSD": 0.00246593,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 148,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 8125,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 799,
+      "modelUsage_output_equals": "this process",
+      "modelUsage_inputTokens": 4,
+      "modelUsage_input_equals": "this process",
+      "modelUsage_costUSD": 0.00246593,
+      "total_cost_usd": 0.00246593
+    },
+    {
+      "turn": 2,
+      "session_id_in": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "session_id": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "exit": 0,
+      "num_turns": 1,
+      "api_messages": [
+        "msg_011ChALZjmhDgTMSpD6qR3cE"
+      ],
+      "truth_this_process": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 789,
+        "cache_read_input_tokens": 28046,
+        "output_tokens": 2062
+      },
+      "truth_running_total": {
+        "input_tokens": 6,
+        "cache_creation_input_tokens": 8914,
+        "cache_read_input_tokens": 72149,
+        "output_tokens": 2861
+      },
+      "result_usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 789,
+        "cache_read_input_tokens": 28046,
+        "output_tokens": 2062
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 6,
+          "outputTokens": 2861,
+          "thinkingTokens": 471,
+          "cacheReadInputTokens": 72149,
+          "cacheCreationInputTokens": 8914,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 8914,
+          "webSearchRequests": 0,
+          "costUSD": 0.0039353899999999995,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 2861,
+      "modelUsage_output_equals": "running total",
+      "modelUsage_inputTokens": 6,
+      "modelUsage_input_equals": "running total",
+      "modelUsage_costUSD": 0.0039353899999999995,
+      "total_cost_usd": 0.0039353899999999995
+    },
+    {
+      "turn": 3,
+      "session_id_in": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "session_id": "ad0db25e-4992-4db0-8d55-7b8bda54f719",
+      "exit": 0,
+      "num_turns": 3,
+      "api_messages": [
+        "msg_011ChALauUdUCbA8LXFcvtGh",
+        "msg_011ChALb4ap1WWxJionNjzg3"
+      ],
+      "truth_this_process": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2452,
+        "cache_read_input_tokens": 59861,
+        "output_tokens": 274
+      },
+      "truth_running_total": {
+        "input_tokens": 10,
+        "cache_creation_input_tokens": 11366,
+        "cache_read_input_tokens": 132010,
+        "output_tokens": 3135
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2452,
+        "cache_read_input_tokens": 59861,
+        "output_tokens": 274
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 10,
+          "outputTokens": 3135,
+          "thinkingTokens": 471,
+          "cacheReadInputTokens": 132010,
+          "cacheCreationInputTokens": 11366,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 11366,
+          "webSearchRequests": 0,
+          "costUSD": 0.005161799999999999,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 3135,
+      "modelUsage_output_equals": "running total",
+      "modelUsage_inputTokens": 10,
+      "modelUsage_input_equals": "running total",
+      "modelUsage_costUSD": 0.005161799999999999,
+      "total_cost_usd": 0.005161799999999999
+    }
+  ],
+  "truth_total": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 11366,
+    "cache_read_input_tokens": 132010,
+    "output_tokens": 3135
+  },
+  "session_files": {
+    "files": {
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl": {
+        "lines": 71,
+        "types": {
+          "session-owner": 5,
+          "queue-operation": 6,
+          "user": 6,
+          "attachment": 18,
+          "atis-latch": 5,
+          "last-prompt": 6,
+          "api-request-shape": 1,
+          "api-request-blob": 5,
+          "api-request": 5,
+          "tools-used": 2,
+          "assistant": 8,
+          "cost-state": 3,
+          "mode": 1
+        },
+        "message_ids": 5
+      }
+    },
+    "entry_types": {
+      "session-owner": 5,
+      "queue-operation": 6,
+      "user": 6,
+      "attachment": 18,
+      "atis-latch": 5,
+      "last-prompt": 6,
+      "api-request-shape": 1,
+      "api-request-blob": 5,
+      "api-request": 5,
+      "tools-used": 2,
+      "assistant": 8,
+      "cost-state": 3,
+      "mode": 1
+    },
+    "subagent_dirs": [],
+    "lines_mentioning_cost_or_modelUsage": [
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl: attachment: {\"parentUuid\":\"d79764b3-c247-4ff0-86b6-bc0aab25f6cd\",\"isSidechain\":false,\"attachment\":{\"type\":\"skill_listing\",\"content\":\"- dataviz: Use this skill whenever you are about to create ANY chart, graph, pl",
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl: attachment: {\"parentUuid\":\"14f6ece0-1210-46fc-a8ad-9b0d0f8185e9\",\"isSidechain\":false,\"attachment\":{\"type\":\"prompt_snapshot\",\"systemPrompt\":[\"\\nYou are an agent working with the user toward their goals, using your",
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl: api-request-shape: {\"type\":\"api-request-shape\",\"sessionId\":\"ad0db25e-4992-4db0-8d55-7b8bda54f719\",\"shapeHash\":\"b4c06f903f7c493a38b07d7d5411cdceb4c32a68310b34b49a1058d18a3d4b26\",\"timestamp\":\"2026-11-18T11:45:27.807Z\",\"ve",
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl: api-request-blob: {\"type\":\"api-request-blob\",\"sessionId\":\"ad0db25e-4992-4db0-8d55-7b8bda54f719\",\"hash\":\"12a7eb9340a6dba9b4d37c86c297e10a13c646937d5c966f0b14ba644b93adfc\",\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"t",
+      "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl: attachment: {\"parentUuid\":\"87ddd5d2-2440-45d3-b308-ef4d22e4cbf1\",\"isSidechain\":false,\"attachment\":{\"type\":\"prompt_snapshot\",\"systemPrompt\":[\"\\nYou are an agent working with the user toward their goals, using your"
+    ],
+    "totals_dedup_by_message_id": {
+      "input_tokens": 10,
+      "cache_creation_input_tokens": 11366,
+      "cache_read_input_tokens": 132010,
+      "output_tokens": 3135
+    },
+    "equals_truth_total": true,
+    "naive_output_sum_over_entries": 6077,
+    "messages_in_stream_missing_from_files": [],
+    "messages_in_files_not_in_stream": [],
+    "per_message": [
+      {
+        "id": "msg_011ChALYnpER7ArEfvD4xtAt",
+        "turn": 1,
+        "files": [
+          "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl"
+        ],
+        "entries": 1,
+        "output_values_in_file": [
+          84
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4261,
+          "cache_read_input_tokens": 19921,
+          "output_tokens": 84
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4261,
+          "cache_read_input_tokens": 19921,
+          "output_tokens": 84
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALYyo2TJVKLiRFHyxvG",
+        "turn": 1,
+        "files": [
+          "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          715,
+          715
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 3864,
+          "cache_read_input_tokens": 24182,
+          "output_tokens": 715
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 148
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 3864,
+          "cache_read_input_tokens": 24182,
+          "output_tokens": 715
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALZjmhDgTMSpD6qR3cE",
+        "turn": 2,
+        "files": [
+          "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          2062,
+          2062
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 789,
+          "cache_read_input_tokens": 28046,
+          "output_tokens": 2062
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 323
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 789,
+          "cache_read_input_tokens": 28046,
+          "output_tokens": 2062
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALauUdUCbA8LXFcvtGh",
+        "turn": 3,
+        "files": [
+          "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          165,
+          165
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 2191,
+          "cache_read_input_tokens": 28835,
+          "output_tokens": 165
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 2191,
+          "cache_read_input_tokens": 28835,
+          "output_tokens": 165
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALb4ap1WWxJionNjzg3",
+        "turn": 3,
+        "files": [
+          "ad0db25e-4992-4db0-8d55-7b8bda54f719.jsonl"
+        ],
+        "entries": 1,
+        "output_values_in_file": [
+          109
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 261,
+          "cache_read_input_tokens": 31026,
+          "output_tokens": 109
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 261,
+          "cache_read_input_tokens": 31026,
+          "output_tokens": 109
+        },
+        "equals_truth": true
+      }
+    ]
+  }
+}

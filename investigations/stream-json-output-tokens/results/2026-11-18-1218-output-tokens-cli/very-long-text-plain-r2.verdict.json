@@ -1,0 +1,75 @@
+{
+  "run": "very-long-text-plain-r2",
+  "scenario": "very-long-text",
+  "mode": "plain",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "exit_code": 0,
+  "session_id": "d56eaab7-59d1-4196-95c9-a1994a5a413f",
+  "api_messages": 1,
+  "totals": {
+    "result_usage_output_tokens": 18274,
+    "result_modelUsage_output_tokens": {
+      "claude-haiku-5-5": 18274
+    },
+    "assistant_first_per_message": 8,
+    "assistant_last_per_message": 8,
+    "assistant_max_per_message": 8,
+    "assistant_naive_sum_all_events": 16,
+    "message_start_sum": null,
+    "message_delta_last_sum": null,
+    "transcript_last_per_message": 18274,
+    "transcript_naive_sum_all_entries": 36548
+  },
+  "matches_result_usage": {
+    "result_modelUsage_total": true,
+    "assistant_first_per_message": false,
+    "assistant_last_per_message": false,
+    "assistant_naive_sum_all_events": false,
+    "message_delta_last_sum": null,
+    "transcript_last_per_message": true
+  },
+  "per_message": [
+    {
+      "id": "msg_011ChAJcjasyUZQU3bGU64XY",
+      "model": "claude-haiku-5-5",
+      "assistant_events": 2,
+      "assistant_blocks": [
+        "thinking",
+        "text"
+      ],
+      "assistant_output_tokens": [
+        8,
+        8
+      ],
+      "assistant_stop_reasons": [
+        null,
+        null
+      ],
+      "message_start_output_tokens": null,
+      "message_delta_output_tokens": [],
+      "message_delta_stop_reason": null,
+      "transcript_output_tokens": [
+        18274,
+        18274
+      ]
+    }
+  ],
+  "transcript_ids_not_in_stream": [],
+  "event_counts": {
+    "system:init": 1,
+    "system:thinking_tokens": 14,
+    "assistant": 2,
+    "rate_limit_event": 1,
+    "result:success": 1
+  },
+  "result_subtype": "success",
+  "num_turns": 1,
+  "cost_usd": 0.00937902,
+  "duration_ms": 99790,
+  "final_text_chars": 51227,
+  "stderr": null,
+  "session_log": "C:\\Users\\spesce\\claude-code-investigations\\investigations\\stream-json-output-tokens\\.claude-home\\projects\\sessions\\d56eaab7-59d1-4196-95c9-a1994a5a413f.jsonl"
+}

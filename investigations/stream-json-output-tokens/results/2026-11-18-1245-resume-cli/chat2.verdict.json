@@ -1,0 +1,378 @@
+{
+  "chat": "chat2",
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "cli_version": "2.1.327",
+  "session_ids": [
+    "7fb74409-1797-49d2-909a-1433345d4553",
+    "7fb74409-1797-49d2-909a-1433345d4553",
+    "7fb74409-1797-49d2-909a-1433345d4553"
+  ],
+  "same_session_id_across_resume": true,
+  "per_process": [
+    {
+      "turn": 1,
+      "session_id_in": null,
+      "session_id": "7fb74409-1797-49d2-909a-1433345d4553",
+      "exit": 0,
+      "num_turns": 3,
+      "api_messages": [
+        "msg_011ChALYnztFL1FXcP6R3DZ6",
+        "msg_011ChALYya8V6FgJPcv8Bby2"
+      ],
+      "truth_this_process": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8261,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 959
+      },
+      "truth_running_total": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8261,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 959
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 8261,
+        "cache_read_input_tokens": 44103,
+        "output_tokens": 959
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 4,
+          "outputTokens": 959,
+          "cacheReadInputTokens": 44103,
+          "cacheCreationInputTokens": 8261,
+          "webSearchRequests": 0,
+          "costUSD": 0.00257313,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "thinkingTokens": 148,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 8261,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 959,
+      "modelUsage_output_equals": "this process",
+      "modelUsage_inputTokens": 4,
+      "modelUsage_input_equals": "this process",
+      "modelUsage_costUSD": 0.00257313,
+      "total_cost_usd": 0.00257313
+    },
+    {
+      "turn": 2,
+      "session_id_in": "7fb74409-1797-49d2-909a-1433345d4553",
+      "session_id": "7fb74409-1797-49d2-909a-1433345d4553",
+      "exit": 0,
+      "num_turns": 1,
+      "api_messages": [
+        "msg_011ChALZpAcZDoAiWgHDyJgz"
+      ],
+      "truth_this_process": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 872,
+        "cache_read_input_tokens": 28182,
+        "output_tokens": 1734
+      },
+      "truth_running_total": {
+        "input_tokens": 6,
+        "cache_creation_input_tokens": 9133,
+        "cache_read_input_tokens": 72285,
+        "output_tokens": 2693
+      },
+      "result_usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 872,
+        "cache_read_input_tokens": 28182,
+        "output_tokens": 1734
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 6,
+          "outputTokens": 2693,
+          "thinkingTokens": 148,
+          "cacheReadInputTokens": 72285,
+          "cacheCreationInputTokens": 9133,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 9133,
+          "webSearchRequests": 0,
+          "costUSD": 0.00389655,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 2693,
+      "modelUsage_output_equals": "running total",
+      "modelUsage_inputTokens": 6,
+      "modelUsage_input_equals": "running total",
+      "modelUsage_costUSD": 0.00389655,
+      "total_cost_usd": 0.00389655
+    },
+    {
+      "turn": 3,
+      "session_id_in": "7fb74409-1797-49d2-909a-1433345d4553",
+      "session_id": "7fb74409-1797-49d2-909a-1433345d4553",
+      "exit": 0,
+      "num_turns": 3,
+      "api_messages": [
+        "msg_011ChALaqUWqpMqPyTZM4Wvi",
+        "msg_011ChALb1ajkuZrHTxdzKCfn"
+      ],
+      "truth_this_process": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2122,
+        "cache_read_input_tokens": 59971,
+        "output_tokens": 357
+      },
+      "truth_running_total": {
+        "input_tokens": 10,
+        "cache_creation_input_tokens": 11255,
+        "cache_read_input_tokens": 132256,
+        "output_tokens": 3050
+      },
+      "result_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2122,
+        "cache_read_input_tokens": 59971,
+        "output_tokens": 357
+      },
+      "result_usage_equals": "this process",
+      "modelUsage": {
+        "claude-haiku-5-5": {
+          "inputTokens": 10,
+          "outputTokens": 3050,
+          "thinkingTokens": 248,
+          "cacheReadInputTokens": 132256,
+          "cacheCreationInputTokens": 11255,
+          "cacheCreationEphemeral5mInputTokens": 0,
+          "cacheCreationEphemeral1hInputTokens": 11255,
+          "webSearchRequests": 0,
+          "costUSD": 0.00509956,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 128000,
+          "canonicalModel": "claude-haiku-5-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "modelUsage_outputTokens": 3050,
+      "modelUsage_output_equals": "running total",
+      "modelUsage_inputTokens": 10,
+      "modelUsage_input_equals": "running total",
+      "modelUsage_costUSD": 0.00509956,
+      "total_cost_usd": 0.00509956
+    }
+  ],
+  "truth_total": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 11255,
+    "cache_read_input_tokens": 132256,
+    "output_tokens": 3050
+  },
+  "session_files": {
+    "files": {
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl": {
+        "lines": 73,
+        "types": {
+          "session-owner": 5,
+          "queue-operation": 6,
+          "user": 7,
+          "attachment": 18,
+          "atis-latch": 5,
+          "last-prompt": 6,
+          "api-request-shape": 1,
+          "api-request-blob": 5,
+          "api-request": 5,
+          "tools-used": 2,
+          "assistant": 9,
+          "cost-state": 3,
+          "mode": 1
+        },
+        "message_ids": 5
+      }
+    },
+    "entry_types": {
+      "session-owner": 5,
+      "queue-operation": 6,
+      "user": 7,
+      "attachment": 18,
+      "atis-latch": 5,
+      "last-prompt": 6,
+      "api-request-shape": 1,
+      "api-request-blob": 5,
+      "api-request": 5,
+      "tools-used": 2,
+      "assistant": 9,
+      "cost-state": 3,
+      "mode": 1
+    },
+    "subagent_dirs": [],
+    "lines_mentioning_cost_or_modelUsage": [
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl: attachment: {\"parentUuid\":\"a978c8f7-fc17-453c-aae8-4f324cd73e44\",\"isSidechain\":false,\"attachment\":{\"type\":\"skill_listing\",\"content\":\"- dataviz: Use this skill whenever you are about to create ANY chart, graph, pl",
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl: attachment: {\"parentUuid\":\"d4da04df-c70a-4342-89f1-5da0957ed560\",\"isSidechain\":false,\"attachment\":{\"type\":\"prompt_snapshot\",\"systemPrompt\":[\"\\nYou are an agent working with the user toward their goals, using your",
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl: api-request-shape: {\"type\":\"api-request-shape\",\"sessionId\":\"7fb74409-1797-49d2-909a-1433345d4553\",\"shapeHash\":\"b4c06f903f7c493a38b07d7d5411cdceb4c32a68310b34b49a1058d18a3d4b26\",\"timestamp\":\"2026-11-18T11:45:27.858Z\",\"ve",
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl: api-request-blob: {\"type\":\"api-request-blob\",\"sessionId\":\"7fb74409-1797-49d2-909a-1433345d4553\",\"hash\":\"12a7eb9340a6dba9b4d37c86c297e10a13c646937d5c966f0b14ba644b93adfc\",\"message\":{\"role\":\"system\",\"content\":[{\"type\":\"t",
+      "7fb74409-1797-49d2-909a-1433345d4553.jsonl: attachment: {\"parentUuid\":\"e7ded2d5-399a-43f8-ba9a-f334d8c61b8b\",\"isSidechain\":false,\"attachment\":{\"type\":\"prompt_snapshot\",\"systemPrompt\":[\"\\nYou are an agent working with the user toward their goals, using your"
+    ],
+    "totals_dedup_by_message_id": {
+      "input_tokens": 10,
+      "cache_creation_input_tokens": 11255,
+      "cache_read_input_tokens": 132256,
+      "output_tokens": 3050
+    },
+    "equals_truth_total": true,
+    "naive_output_sum_over_entries": 4366,
+    "messages_in_stream_missing_from_files": [],
+    "messages_in_files_not_in_stream": [],
+    "per_message": [
+      {
+        "id": "msg_011ChALYnztFL1FXcP6R3DZ6",
+        "turn": 1,
+        "files": [
+          "7fb74409-1797-49d2-909a-1433345d4553.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          161,
+          161
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4261,
+          "cache_read_input_tokens": 19921,
+          "output_tokens": 161
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4261,
+          "cache_read_input_tokens": 19921,
+          "output_tokens": 161
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALYya8V6FgJPcv8Bby2",
+        "turn": 1,
+        "files": [
+          "7fb74409-1797-49d2-909a-1433345d4553.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          798,
+          798
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4000,
+          "cache_read_input_tokens": 24182,
+          "output_tokens": 798
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 148
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 4000,
+          "cache_read_input_tokens": 24182,
+          "output_tokens": 798
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALZpAcZDoAiWgHDyJgz",
+        "turn": 2,
+        "files": [
+          "7fb74409-1797-49d2-909a-1433345d4553.jsonl"
+        ],
+        "entries": 1,
+        "output_values_in_file": [
+          1734
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 872,
+          "cache_read_input_tokens": 28182,
+          "output_tokens": 1734
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 872,
+          "cache_read_input_tokens": 28182,
+          "output_tokens": 1734
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALaqUWqpMqPyTZM4Wvi",
+        "turn": 3,
+        "files": [
+          "7fb74409-1797-49d2-909a-1433345d4553.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          163,
+          163
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 1863,
+          "cache_read_input_tokens": 29054,
+          "output_tokens": 163
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 1863,
+          "cache_read_input_tokens": 29054,
+          "output_tokens": 163
+        },
+        "equals_truth": true
+      },
+      {
+        "id": "msg_011ChALb1ajkuZrHTxdzKCfn",
+        "turn": 3,
+        "files": [
+          "7fb74409-1797-49d2-909a-1433345d4553.jsonl"
+        ],
+        "entries": 2,
+        "output_values_in_file": [
+          194,
+          194
+        ],
+        "file_usage": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 259,
+          "cache_read_input_tokens": 30917,
+          "output_tokens": 194
+        },
+        "output_tokens_details": {
+          "thinking_tokens": 100
+        },
+        "truth": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 259,
+          "cache_read_input_tokens": 30917,
+          "output_tokens": 194
+        },
+        "equals_truth": true
+      }
+    ]
+  }
+}

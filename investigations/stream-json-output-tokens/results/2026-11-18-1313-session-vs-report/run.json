@@ -1,0 +1,49 @@
+{
+  "driver": "session-vs-report.ts",
+  "args": [],
+  "investigation": "investigations/stream-json-output-tokens",
+  "started": "2026-11-18T12:13:55.635Z",
+  "versions": {
+    "node": "v22.21.1",
+    "claude_code": {}
+  },
+  "git": {
+    "commit": "6f8e06f467c8fed9010952c9f9764b497c30ac16",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "2b36d3f1bf8c5459",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/stream-json-output-tokens/.claude/agents/nester.md": "3b650d1a1dd14273",
+    "investigations/stream-json-output-tokens/.claude/agents/worker-haiku.md": "1181451e2aa585d0",
+    "investigations/stream-json-output-tokens/.claude/agents/worker.md": "ed5f29d5b40b3685",
+    "investigations/stream-json-output-tokens/cost-check.ts": "ffd3a2fef7605449",
+    "investigations/stream-json-output-tokens/edge-cli.ts": "47168ec62a609931",
+    "investigations/stream-json-output-tokens/output-tokens-cli.ts": "9e6d8d9f15b385d2",
+    "investigations/stream-json-output-tokens/prompts/edge-background.md": "dcd0088bf9c2cdc0",
+    "investigations/stream-json-output-tokens/prompts/edge-continue.md": "917be2d7abe152e1",
+    "investigations/stream-json-output-tokens/prompts/edge-nested.md": "a8042d0b05a762a4",
+    "investigations/stream-json-output-tokens/prompts/long-text.md": "d881bc7ebb7025b3",
+    "investigations/stream-json-output-tokens/prompts/multi-tool.md": "ec0f659407d56b63",
+    "investigations/stream-json-output-tokens/prompts/one-tool.md": "ebbd1534305263c4",
+    "investigations/stream-json-output-tokens/prompts/resume-1.md": "bb7f7ad47347aafd",
+    "investigations/stream-json-output-tokens/prompts/resume-2.md": "360b63db43b8ecd5",
+    "investigations/stream-json-output-tokens/prompts/resume-3.md": "e975ae9c9ce10e72",
+    "investigations/stream-json-output-tokens/prompts/short-text.md": "ea36181a0036c264",
+    "investigations/stream-json-output-tokens/prompts/subagents-1.md": "39efa821a68c9270",
+    "investigations/stream-json-output-tokens/prompts/subagents-2.md": "fa2f686a4a7e489e",
+    "investigations/stream-json-output-tokens/prompts/subagents-same-1.md": "892500770c58c7bc",
+    "investigations/stream-json-output-tokens/prompts/subagents-same-2.md": "5d2faf2a186c6812",
+    "investigations/stream-json-output-tokens/prompts/very-long-text.md": "54f9c8288fb2b633",
+    "investigations/stream-json-output-tokens/resume-cli.ts": "7b4705122f2a873b",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/8cb96fe0-c2f4-48ec-9875-cfbe43c0e91b.jsonl": "a730e0d5d81a0010",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/CAIP-report-8cb96fe0.html": "3ede51f41e43747b",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/CAIP-report-8cb96fe0.json": "e082cb32b173f78c",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/subagents/agent-a3de139157d34b107.jsonl": "c2208eb9d43bae5b",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/subagents/agent-a3de139157d34b107.meta.json": "0d7af63dad93ee8a",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/subagents/agent-ab10914d3a3d01aeb.jsonl": "1b32f1928116740f",
+    "investigations/stream-json-output-tokens/samples/8cb96fe0/subagents/agent-ab10914d3a3d01aeb.meta.json": "94851d9e9a6b16bf",
+    "investigations/stream-json-output-tokens/session-vs-report.ts": "288d98360c298a09",
+    "investigations/stream-json-output-tokens/subagents-cli.ts": "c4818ca9afe57b5f"
+  }
+}

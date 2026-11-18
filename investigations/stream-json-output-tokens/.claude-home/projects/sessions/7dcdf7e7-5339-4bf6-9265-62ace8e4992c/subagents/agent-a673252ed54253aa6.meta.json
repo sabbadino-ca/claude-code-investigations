@@ -1,0 +1,1 @@
+{"agentType":"worker-haiku","isBuiltIn":false,"description":"nested worker","toolUseId":"toolu_01BncK7sJJxSVLkizTXrtwYb","parentAgentId":"a189210852bcd9040","spawnDepth":2,"requestShape":"foreground","requestNonInteractive":true,"model":"claude-haiku-5-5","pickedEffortModel":"claude-haiku-5-5","finished":true}

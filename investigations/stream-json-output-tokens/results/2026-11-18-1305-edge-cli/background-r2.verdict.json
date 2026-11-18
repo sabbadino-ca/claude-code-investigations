@@ -1,0 +1,208 @@
+{
+  "run": "background-r2",
+  "scenario": "background",
+  "rep": 2,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "session_ids": [
+    "461713f0-9094-4c8c-ae54-dd7efcc38d72"
+  ],
+  "processes": [
+    {
+      "step": 1,
+      "args": [],
+      "env": {},
+      "killed": false,
+      "kill_note": null,
+      "exit": 0,
+      "results": [
+        {
+          "subtype": "success",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 4,
+            "cache_creation_input_tokens": 4864,
+            "cache_read_input_tokens": 48918,
+            "output_tokens": 476
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 20,
+              "outputTokens": 2380,
+              "cacheReadInputTokens": 122723,
+              "cacheCreationInputTokens": 10810,
+              "webSearchRequests": 0,
+              "costUSD": 0.004312355,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 649,
+              "cacheCreationEphemeral5mInputTokens": 3585,
+              "cacheCreationEphemeral1hInputTokens": 7225,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.004312355,
+          "num_turns": 3
+        },
+        {
+          "subtype": "success",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 4,
+            "cache_creation_input_tokens": 1237,
+            "cache_read_input_tokens": 29323,
+            "output_tokens": 84
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 20,
+              "outputTokens": 2380,
+              "cacheReadInputTokens": 122723,
+              "cacheCreationInputTokens": 10810,
+              "webSearchRequests": 0,
+              "costUSD": 0.004312355,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 649,
+              "cacheCreationEphemeral5mInputTokens": 3585,
+              "cacheCreationEphemeral1hInputTokens": 7225,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.004312355,
+          "num_turns": 1
+        },
+        {
+          "subtype": "success",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 4,
+            "cache_creation_input_tokens": 1124,
+            "cache_read_input_tokens": 30560,
+            "output_tokens": 67
+          },
+          "modelUsage": {
+            "claude-haiku-5-5": {
+              "inputTokens": 20,
+              "outputTokens": 2380,
+              "cacheReadInputTokens": 122723,
+              "cacheCreationInputTokens": 10810,
+              "webSearchRequests": 0,
+              "costUSD": 0.004312355,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 649,
+              "cacheCreationEphemeral5mInputTokens": 3585,
+              "cacheCreationEphemeral1hInputTokens": 7225,
+              "canonicalModel": "claude-haiku-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "total_cost_usd": 0.004312355,
+          "num_turns": 1
+        }
+      ],
+      "stream_messages": 4,
+      "stream_messages_with_delta": 4,
+      "delta_stop_reasons": [
+        "tool_use",
+        "end_turn",
+        "end_turn",
+        "end_turn"
+      ],
+      "assistant_events": {
+        "main": 7,
+        "sub": 6,
+        "sub_text_blocks": 2,
+        "sub_ids": 4
+      },
+      "subagent_stream_events": 0,
+      "event_counts": {
+        "system:init": 3,
+        "system:status": 4,
+        "stream_event:message_start": 4,
+        "stream_event:content_block_start": 7,
+        "stream_event:content_block_delta": 57,
+        "assistant": 13,
+        "stream_event:content_block_stop": 7,
+        "system:background_tasks_changed": 4,
+        "system:task_started": 2,
+        "user": 4,
+        "stream_event:message_delta": 4,
+        "stream_event:message_stop": 4,
+        "rate_limit_event": 1,
+        "system:task_progress": 2,
+        "system:thinking_tokens": 2,
+        "system:task_updated": 2,
+        "system:task_notification": 2,
+        "result:success": 3
+      },
+      "stderr": null
+    }
+  ],
+  "files": [
+    {
+      "file": "461713f0-9094-4c8c-ae54-dd7efcc38d72.jsonl",
+      "lines": 60,
+      "messages": 4,
+      "cost_states": 1
+    },
+    {
+      "file": "461713f0-9094-4c8c-ae54-dd7efcc38d72/subagents/agent-aa750a6428eb41d19.jsonl",
+      "lines": 22,
+      "messages": 2,
+      "cost_states": 0
+    },
+    {
+      "file": "461713f0-9094-4c8c-ae54-dd7efcc38d72/subagents/agent-abef86f10348edafe.jsonl",
+      "lines": 22,
+      "messages": 2,
+      "cost_states": 0
+    }
+  ],
+  "checks": {
+    "stream_messages_with_truth": 4,
+    "file_equals_truth": 4,
+    "file_vs_truth_mismatches": [],
+    "unfinished_messages": [],
+    "file_messages_not_in_stream": 4,
+    "file_messages_with_null_stop_reason": [],
+    "cost_states": 1,
+    "last_cost_state_equals_files_per_model": true,
+    "files_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 20,
+        "cache_creation_input_tokens": 10810,
+        "cache_read_input_tokens": 122723,
+        "output_tokens": 2380
+      }
+    },
+    "cost_state_by_model": {
+      "claude-haiku-5-5": {
+        "input_tokens": 20,
+        "cache_creation_input_tokens": 10810,
+        "cache_read_input_tokens": 122723,
+        "output_tokens": 2380
+      }
+    },
+    "results_total": 3,
+    "sum_result_usage": {
+      "input_tokens": 12,
+      "cache_creation_input_tokens": 7225,
+      "cache_read_input_tokens": 108801,
+      "output_tokens": 627
+    },
+    "truth_main_sum": {
+      "input_tokens": 12,
+      "cache_creation_input_tokens": 7225,
+      "cache_read_input_tokens": 108801,
+      "output_tokens": 627
+    },
+    "sum_result_usage_equals_truth_main": true
+  }
+}
