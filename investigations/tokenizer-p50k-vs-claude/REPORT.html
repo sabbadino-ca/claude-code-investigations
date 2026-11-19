@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p50k vs Claude tokenizer</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5d58; --line: #e3e0d8; --soft: #f2f0ea;
+    --accent: #b5532e; --code-bg: #f2f0ea; --quote: #8a5a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18181a; --fg: #e8e6e1; --muted: #a3a09a; --line: #34332f; --soft: #222224;
+            --accent: #e08a62; --code-bg: #232326; --quote: #d9a46b; }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 980px; padding: 40px 24px 80px; color: var(--fg); background: var(--bg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.2rem; }
+  h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
+  p, ul, ol { margin: .6rem 0; }
+  li { margin: .25rem 0; }
+  li > ul, li > ol { margin: .2rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 650; }
+  code { font: .88em/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+         background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: .85rem; }
+  blockquote { margin: 1rem 0; padding: .5rem 1rem; border-left: 3px solid var(--quote); background: var(--soft);
+               color: var(--muted); border-radius: 0 6px 6px 0; }
+  blockquote p { margin: .3rem 0; }
+  .table { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  @media (max-width: 640px) { body { padding: 24px 16px 60px; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<h1>How far is p50k_base from Claude's real token count?</h1>
+
+<h2>Question</h2>
+<p>The c4 session analyzers (<code>tests/vscode/resources/session-analyzers/claude-code/report.mjs</code> and <code>vs-code-harnesses/report.mjs</code>) estimate Claude tokens offline with a vendored <code>gpt-tokenizer</code> 4.0.0, encoding <code>p50k_base</code>. The header of <code>report.mjs</code> justifies it with a third-party claim (<a href="https://www.propelcode.ai/blog/token-counting-tiktoken-anthropic-gemini-guide-2025">propelcode.ai</a>):</p>
+<blockquote><p>you can approximate Claude token counts using OpenAI's tiktoken with the p50k_base encoding</p></blockquote>
+<p>Testable form: on the texts a Claude Code session is made of (sentences, prompts, assistant text, tool inputs, tool results, JSON, code), does p50k_base agree with the count Anthropic's API returns, and if not, does it underestimate or overestimate, by how much, and does it depend on the kind of text and on the model? It holds if Σp50k / ΣClaude is close to 1 with a small spread. It is refuted by a systematic bias. No Claude Code session is involved: this needs only the API, so there is no Agent SDK, <code>claude -p</code> or interactive mode.</p>
+
+<h2>Setup</h2>
+<pre><code>corpus/corpus.jsonl (385 frozen texts)
+   ├─ p50k:   vendor/gpt-tokenizer  countTokens(text)
+   └─ Claude: POST /v1/messages/count_tokens  {model, messages:[{role:user, content:[{type:text, text}]}]}
+              minus the message framing, count("x") − 1, measured once per model</code></pre>
+<ul>
+  <li><a href="vendor/gpt-tokenizer/README.md">vendor/gpt-tokenizer/</a>: a copy of the c4 vendored tokenizer under test (<code>diff -r</code> identical, c4 commit 89c9b8c7e, 2026-10-26). <code>esm/encoding/p50k_base.js</code> is the entry point that <code>report.mjs</code> imports.</li>
+  <li><a href="corpus/sentences.json">corpus/sentences.json</a>: 16 English and 16 Italian sentences written for this test, from a single word to ~130 words (chat replies, code review, news, GDPR text, a short story, setup steps).</li>
+  <li><a href="build-corpus.ts">build-corpus.ts</a>: builds <code>corpus/corpus.jsonl</code> once; the file is committed, so every rerun counts the same texts. Sources, all from this repository:
+    <ul>
+      <li>the session logs of the other investigations: user prompts, <code>api-request-blob</code> context texts, assistant text, <code>tool_use</code> inputs (<code>JSON.stringify(input)</code>, as <code>report.mjs</code> counts them), tool_result payloads grouped by tool, Claude Code system-prompt blocks and tool definitions from <code>api-request-shape</code>, raw log lines;</li>
+      <li>their results folders: stream-json timeline lines, <code>run.json</code> / <code>verdict.json</code> / <code>settings.json</code> pretty and minified, summary markdown;</li>
+      <li>repo files (drivers, lib, CLAUDE.md, REPORT.html) and tool results generated from them in Claude Code's formats: Read (<code>&lt;n&gt;\t&lt;line&gt;</code>), Bash (git log/show/diff, ls), Grep (<code>path:line:text</code> and file lists), Glob.</li>
+    </ul>
+    Per category, duplicates are dropped and items ordered by sha256, then up to 6 per length bucket (&lt;200, 200–1k, 1k–5k, 5k–20k, ≥20k chars) are taken: 385 texts, 2,165,019 chars, 20 categories.</li>
+  <li><a href="compare.ts">compare.ts</a>: the driver. It counts every text with p50k and with <code>count_tokens</code> for each model, authenticated with the OAuth token Claude Code is logged in with (<code>claudeAiOauth.accessToken</code> from <code>.claude-home/.credentials.json</code>, synced by <code>beginRun()</code>; <code>Authorization: Bearer</code>, <code>anthropic-beta: oauth-2025-04-20</code>, <code>anthropic-version: 2023-06-01</code>; no API key). It retries on 429/5xx. It writes <code>items.jsonl</code> (per text), <code>compare.verdict.json</code> and <code>compare-summary.md</code>. A chars/4 estimate is reported as a baseline.</li>
+  <li>Models: <code>claude-opus-5-5</code>, <code>claude-sonnet-5-5</code>, <code>claude-haiku-5-5</code>, <code>claude-fable-5-2</code>, plus <code>claude-opus-4-7</code> and <code>claude-sonnet-4-5</code> to see the tokenizer change between generations.</li>
+  <li>Env vars: none. Options: <code>--models a,b</code>, <code>--concurrency N</code> (default 4), <code>--limit N</code>. After the first run <code>claude-fable-5-2</code> was dropped from the default models at the user's request; its counts were identical to the other 5.x models anyway (the <code>run.json</code> hash of <code>compare.ts</code> marks the change).</li>
+  <li><a href="pieces.ts">pieces.ts</a>: cuts a transcript into those pieces; shared by <code>sessions.ts</code> and <code>explain.ts</code> (it was moved out of <code>sessions.ts</code> after the sessions run, with no change in behaviour).</li>
+  <li><a href="explain.ts">explain.ts</a>: why the sessions differ from the corpus. It reuses the counts of the latest <code>compare</code> and <code>sessions</code> runs (the session texts are re-read in memory and matched by sha256) and does three things. It compares the same categories across the two datasets and re-weights by mix. It regresses log(Claude/p50k) on text features, weighted by Claude tokens, and splits the gap by feature. It counts 21 synthetic probes, one kind of text each, with both tokenizers (21 requests).</li>
+  <li><a href="sessions.ts">sessions.ts</a>: the same comparison on real Claude Code sessions given as paths (a <code>&lt;id&gt;.jsonl</code> plus its <code>&lt;id&gt;/subagents/</code>). Each transcript is cut into the pieces <code>report.mjs</code> tokenizes, with the same text: user prompts, assistant text, <code>tool_use</code> inputs, tool_result payloads per tool, <code>prompt_snapshot</code> system sections and tool definitions, attachments (instructions, skill and agent listings, MCP instructions, deferred tools, context). Every occurrence counts, as in <code>report.mjs</code>; Claude counts are cached per distinct text. One model (<code>--model</code>, default <code>claude-sonnet-5-5</code>, the model the sessions ran on). The texts are private and are not written: <code>sessions.items.jsonl</code> holds only a sha256 prefix, transcript, category, label, length and the two counts.</li>
+</ul>
+
+<h2>Run</h2>
+<pre><code>npm install                                                                # repo root
+npx tsx investigations/tokenizer-p50k-vs-claude/build-corpus.ts            # only to rebuild the corpus (changes it!)
+npx tsx investigations/tokenizer-p50k-vs-claude/compare.ts [--models ...]  # ~2,300 count_tokens calls, free, ~10 min
+npx tsx investigations/tokenizer-p50k-vs-claude/sessions.ts &lt;session dir&gt; [&lt;session dir&gt; ...] [--model m]
+npx tsx investigations/tokenizer-p50k-vs-claude/explain.ts  &lt;same session dirs&gt; [--model m] [--no-probes]   # after compare + sessions</code></pre>
+<p>Results: <code>results/&lt;YYYY-MM-DD&gt;-&lt;HHMM&gt;-compare/</code> with <code>compare-summary.md</code>, <code>compare.verdict.json</code>, <code>items.jsonl</code> and <code>run.json</code>. No Claude Code session runs, so there are no session logs and no Claude Code version.</p>
+
+<h2>Runs</h2>
+<div class="table"><table>
+<thead><tr><th>run folder</th><th>driver</th><th>Claude Code</th><th>outcome</th></tr></thead>
+<tbody><tr><td><a href="results/2026-11-19-1219-compare/compare-summary.md">2026-11-19-1219-compare</a></td><td>compare.ts</td><td>none (API <code>count_tokens</code> only; 6 models, 385 texts, 2,316 requests, 0 retries)</td><td>p50k underestimates Claude 5.x / Opus 4.7 by 22% on totals (×1.286); on Sonnet 4.5 it is within 1%</td></tr>
+<tr><td><a href="results/2026-11-19-1237-sessions/sessions-summary.md">2026-11-19-1237-sessions</a></td><td>sessions.ts</td><td>none (API <code>count_tokens</code>, <code>claude-sonnet-5-5</code>; 2 real sessions recorded by Claude Code 2.1.325 and 2.1.328, 2,310 pieces, 1,240 requests, 0 retries)</td><td>p50k underestimates by 28% on the session totals (×1.383)</td></tr>
+<tr><td><a href="results/2026-11-19-1242-explain/explain-summary.md">2026-11-19-1242-explain</a></td><td>explain.ts</td><td>none (reuses the two runs above; 22 <code>count_tokens</code> requests for the probes, <code>claude-sonnet-5-5</code>)</td><td>the gap comes from the content mix: English prose, camelCase names and minified JSON in the sessions; 88% of it explained by text features</td></tr></tbody>
+</table></div>
+
+<h2>Result</h2>
+<h3>Overall: mean tokens per text</h3>
+<p>ratio = p50k / Claude: below 1 means p50k <strong>underestimates</strong>. ×correction = ΣClaude / Σp50k.</p>
+<div class="table"><table>
+<thead><tr><th>model</th><th>mean p50k</th><th>mean Claude</th><th>Σp50k/ΣClaude</th><th>median ratio</th><th>p10–p90 ratio</th><th>mean abs error</th><th>texts p50k under</th><th>×correction</th><th>chars / Claude token</th><th>chars/4 vs Claude</th></tr></thead>
+<tbody>
+<tr><td>claude-opus-5-5, sonnet-5-5, haiku-5-5, fable-5-2</td><td>1,793</td><td>2,305</td><td>0.778</td><td>0.770</td><td>0.644–0.875</td><td>23.9%</td><td>98%</td><td>1.286</td><td>2.44</td><td>0.610</td></tr>
+<tr><td>claude-opus-4-7</td><td>1,793</td><td>2,305</td><td>0.778</td><td>0.769</td><td>0.644–0.873</td><td>24.1%</td><td>98%</td><td>1.286</td><td>2.44</td><td>0.610</td></tr>
+<tr><td>claude-sonnet-4-5</td><td>1,793</td><td>1,771</td><td>1.012</td><td>1.006</td><td>0.931–1.151</td><td>6.6%</td><td>40%</td><td>0.988</td><td>3.18</td><td>0.794</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The four 5.x models share one tokenizer</strong>: 385 of 385 texts got the same count. Opus 4.7 uses practically the same one: 345 texts are identical and the other 40 differ by 1–2 tokens; its framing is 11 tokens instead of 8. Sonnet 4.5 has the older tokenizer: only 1% of counts match.</li>
+  <li><strong>On the current tokenizer, p50k underestimates almost always</strong> (98% of texts) and by about a fifth: a p50k total has to be multiplied by ~1.29 to give the real count. The new tokenizer is finer: 2.44 chars per token against 3.18 for Sonnet 4.5.</li>
+  <li><strong>On Sonnet 4.5 the claim held</strong>: Σ ratio 1.012, median 1.006, and texts fall on both sides (40% under).</li>
+  <li>chars/4 is worse than p50k on every model (0.61 of the real count on 5.x).</li>
+</ul>
+
+<h3>By kind of content (claude-opus-5-5, same for all 5.x)</h3>
+<div class="table"><table>
+<thead><tr><th>kind</th><th>n</th><th>mean p50k</th><th>mean Claude</th><th>Σp50k/ΣClaude</th><th>p10–p90</th><th>×correction</th><th>Sonnet 4.5: Σp50k/ΣClaude</th></tr></thead>
+<tbody>
+<tr><td>prose (sentences, prompts, assistant text, markdown)</td><td>110</td><td>821</td><td>1,249</td><td>0.657</td><td>0.564–0.860</td><td>1.521</td><td>0.940</td></tr>
+<tr><td>JSON (tool inputs, tool schemas, log/stream events, JSON files)</td><td>113</td><td>2,219</td><td>2,791</td><td>0.795</td><td>0.684–0.883</td><td>1.258</td><td>1.036</td></tr>
+<tr><td>tool results (Read, Bash, Grep/Glob, Agent, other)</td><td>97</td><td>2,080</td><td>2,565</td><td>0.811</td><td>0.679–0.882</td><td>1.233</td><td>1.018</td></tr>
+<tr><td>code, HTML, system prompt, context blobs</td><td>65</td><td>2,269</td><td>2,860</td><td>0.793</td><td>0.698–0.853</td><td>1.260</td><td>1.014</td></tr>
+</tbody></table></div>
+
+<h3>By category (claude-opus-5-5)</h3>
+<div class="table"><table>
+<thead><tr><th>category</th><th>n</th><th>mean p50k</th><th>mean Claude</th><th>Σp50k/ΣClaude</th><th>×correction</th><th>Sonnet 4.5 ratio</th></tr></thead>
+<tbody>
+<tr><td>sentence-en</td><td>16</td><td>51</td><td>74</td><td>0.692</td><td>1.446</td><td>0.971</td></tr>
+<tr><td>sentence-it</td><td>16</td><td>89</td><td>104</td><td>0.854</td><td>1.171</td><td>1.185</td></tr>
+<tr><td>user-prompt</td><td>24</td><td>430</td><td>755</td><td>0.570</td><td>1.756</td><td>0.927</td></tr>
+<tr><td>assistant-text</td><td>30</td><td>1,974</td><td>3,005</td><td>0.657</td><td>1.523</td><td>0.952</td></tr>
+<tr><td>markdown</td><td>24</td><td>772</td><td>1,094</td><td>0.706</td><td>1.417</td><td>0.894</td></tr>
+<tr><td>context-blob</td><td>24</td><td>717</td><td>1,046</td><td>0.685</td><td>1.459</td><td>0.990</td></tr>
+<tr><td>system-prompt</td><td>16</td><td>793</td><td>1,041</td><td>0.762</td><td>1.313</td><td>1.007</td></tr>
+<tr><td>tool-schema-json</td><td>20</td><td>1,008</td><td>1,421</td><td>0.710</td><td>1.409</td><td>0.985</td></tr>
+<tr><td>tool-input-json</td><td>12</td><td>57</td><td>78</td><td>0.728</td><td>1.373</td><td>1.036</td></tr>
+<tr><td>jsonl-event</td><td>18</td><td>393</td><td>523</td><td>0.752</td><td>1.330</td><td>0.991</td></tr>
+<tr><td>stream-json-event</td><td>18</td><td>357</td><td>478</td><td>0.748</td><td>1.337</td><td>1.031</td></tr>
+<tr><td>json-minified</td><td>22</td><td>4,972</td><td>6,460</td><td>0.770</td><td>1.299</td><td>1.052</td></tr>
+<tr><td>json-pretty</td><td>23</td><td>4,650</td><td>5,474</td><td>0.850</td><td>1.177</td><td>1.033</td></tr>
+<tr><td>result-read</td><td>30</td><td>3,511</td><td>4,296</td><td>0.817</td><td>1.223</td><td>1.015</td></tr>
+<tr><td>result-bash</td><td>22</td><td>3,392</td><td>4,193</td><td>0.809</td><td>1.236</td><td>1.000</td></tr>
+<tr><td>result-grep-glob</td><td>20</td><td>793</td><td>958</td><td>0.828</td><td>1.207</td><td>1.171</td></tr>
+<tr><td>result-agent</td><td>12</td><td>325</td><td>437</td><td>0.743</td><td>1.346</td><td>0.971</td></tr>
+<tr><td>result-other</td><td>13</td><td>159</td><td>252</td><td>0.631</td><td>1.586</td><td>0.944</td></tr>
+<tr><td>code</td><td>15</td><td>3,023</td><td>3,768</td><td>0.802</td><td>1.246</td><td>1.043</td></tr>
+<tr><td>html</td><td>10</td><td>7,227</td><td>8,761</td><td>0.825</td><td>1.212</td><td>1.003</td></tr>
+</tbody></table></div>
+
+<h3>By length (claude-opus-5-5)</h3>
+<div class="table"><table>
+<thead><tr><th>length</th><th>n</th><th>mean p50k</th><th>mean Claude</th><th>Σp50k/ΣClaude</th><th>p10–p90</th></tr></thead>
+<tbody>
+<tr><td>&lt; 200 chars</td><td>86</td><td>29</td><td>37</td><td>0.770</td><td>0.649–0.905</td></tr>
+<tr><td>200–1k</td><td>107</td><td>172</td><td>220</td><td>0.782</td><td>0.664–0.891</td></tr>
+<tr><td>1k–5k</td><td>87</td><td>735</td><td>955</td><td>0.770</td><td>0.655–0.853</td></tr>
+<tr><td>5k–20k</td><td>75</td><td>2,509</td><td>3,365</td><td>0.746</td><td>0.550–0.844</td></tr>
+<tr><td>≥ 20k</td><td>30</td><td>13,909</td><td>17,505</td><td>0.795</td><td>0.662–0.859</td></tr>
+</tbody></table></div>
+<p>Length does not matter: the bias is the same from a 30-token sentence to an 18k-token file.</p>
+
+<h3>Surprises</h3>
+<ul>
+  <li><strong>English prose is underestimated most, Italian least.</strong> English sentences 0.69, Italian sentences 0.85. On Sonnet 4.5 it was the other way round: English 0.97, Italian 1.19 (p50k overestimated Italian). The new tokenizer splits English much more finely (3.16 chars/token against 4.44 before), while Italian barely changed.</li>
+  <li><strong>The worst texts are synthetic.</strong> The five extremes (ratio ≈ 0.47) are fixture filler from other investigations: a <code>*_MARK_*</code> marker followed by random capitalised English words ("Tunnel candle mosaic kernel compass walnut…"). These 16 filler texts sit at 0.516; without them the 369 real texts give 0.785 (×1.274). On Sonnet 4.5 the filler was 0.898.</li>
+  <li><strong>The best texts are pretty-printed JSON and Grep output</strong> (0.85 and 0.83). Indentation and paths tokenize in a similar way under both tokenizers.</li>
+  <li><strong>One global factor is not enough per text.</strong> Multiplying p50k by 1.286 leaves a mean absolute error of 9.4% per text (median 6.8%, p90 21.4%). On totals of mixed content the error is much smaller, because category factors range from 1.17 (json-pretty, Italian) to 1.76 (user prompts).</li>
+</ul>
+
+<h3>Two real sessions (sessions.ts, claude-sonnet-5-5)</h3>
+<p>Session A: <code>4b8e5589-…</code> (main + 3 subagents, Claude Code 2.1.325, Sonnet 5.5 / Opus 5.5, CAIP pipeline with dotnet tests). Session B: <code>test-feature-flags-test-token</code> project, <code>41690ea1-…</code> (main + 7 subagents, Claude Code 2.1.328, Sonnet 5.5, C4 modelling and Gherkin through MCP tools). The sessions stay where they are; only counts were recorded.</p>
+<div class="table"><table>
+<thead><tr><th>session</th><th>pieces</th><th>Σ p50k</th><th>Σ Claude</th><th>mean p50k</th><th>mean Claude</th><th>Σp50k/ΣClaude</th><th>×correction</th><th>p50k under</th><th>mean abs error</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>995</td><td>419,203</td><td>587,408</td><td>421</td><td>590</td><td>0.714</td><td>1.401</td><td>100%</td><td>30.5%</td></tr>
+<tr><td>B</td><td>1,315</td><td>468,001</td><td>639,475</td><td>356</td><td>486</td><td>0.732</td><td>1.366</td><td>97%</td><td>27.0%</td></tr>
+<tr><td>both</td><td>2,310</td><td>887,204</td><td>1,226,883</td><td>384</td><td>531</td><td>0.723</td><td>1.383</td><td>98%</td><td>28.5%</td></tr>
+</tbody></table></div>
+<div class="table"><table>
+<thead><tr><th>kind</th><th>A: Σp50k/ΣClaude</th><th>A: ×correction</th><th>B: Σp50k/ΣClaude</th><th>B: ×correction</th></tr></thead>
+<tbody>
+<tr><td>conversation text (user + assistant)</td><td>0.733</td><td>1.364</td><td>0.793</td><td>1.261</td></tr>
+<tr><td>preamble (system prompt, tool schemas, attachments)</td><td>0.705</td><td>1.418</td><td>0.724</td><td>1.381</td></tr>
+<tr><td>tool inputs (JSON)</td><td>0.681</td><td>1.468</td><td>0.743</td><td>1.346</td></tr>
+<tr><td>tool results</td><td>0.727</td><td>1.375</td><td>0.726</td><td>1.377</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The real sessions are worse than the corpus</strong>: ×1.38 against ×1.29. Every kind of content is in the 0.68–0.79 band, and in practice every piece is underestimated. The next section explains why.</li>
+  <li>The largest volumes in each session: A has Bash results (×1.39), <code>caipVscodeRunDotnetTests</code> (×1.38), instructions (×1.36) and the system prompt (×1.39). B has Read results (×1.32), <code>caipC4ModelerGetArtifactSlice</code> (×1.58), <code>caipC4ModelerGetNodesInfo</code> (×1.34) and instructions (×1.35).</li>
+  <li>Agent and skill listings are among the worst (×1.43–1.49): they are many short lines of the form "- name: description".</li>
+  <li>The only exception is Glob output in B (4 pieces, 1.000), in line with the Grep/Glob result of the corpus.</li>
+</ul>
+
+<h3>Why the sessions are further off than the corpus (explain.ts)</h3>
+<p><a href="results/2026-11-19-1242-explain/explain-summary.md">explain-summary.md</a>. The 16 synthetic filler texts are left out of the corpus, which brings it to ×1.274; the sessions are at ×1.383. No new counts were needed for the real pieces: the session texts were re-read in memory and matched to the counts already taken.</p>
+<p><strong>1. Mix of content: the sessions hold more of what the new tokenizer splits finely.</strong></p>
+<div class="table"><table>
+<thead><tr><th>category</th><th>corpus ×</th><th>sessions ×</th><th>share of corpus tokens</th><th>share of session tokens</th></tr></thead>
+<tbody>
+<tr><td>MCP tool results (no counterpart in the corpus)</td><td>–</td><td>1.406</td><td>–</td><td>19.7%</td></tr>
+<tr><td>markdown / CLAUDE.md instructions</td><td>1.394</td><td>1.350</td><td>2.8%</td><td>10.1%</td></tr>
+<tr><td>user-prompt</td><td>1.570</td><td>1.327</td><td>0.9%</td><td>8.5%</td></tr>
+<tr><td>tool-input-json</td><td>1.373</td><td>1.404</td><td>0.1%</td><td>8.4%</td></tr>
+<tr><td>result-read</td><td>1.223</td><td>1.325</td><td>14.9%</td><td>8.3%</td></tr>
+<tr><td>system-prompt</td><td>1.313</td><td>1.375</td><td>1.9%</td><td>7.4%</td></tr>
+<tr><td>tool-schema-json</td><td>1.409</td><td>1.412</td><td>3.3%</td><td>7.1%</td></tr>
+<tr><td>result-bash</td><td>1.212</td><td>1.379</td><td>10.2%</td><td>6.5%</td></tr>
+<tr><td>agent listing / deferred tools / skill listing (no counterpart)</td><td>–</td><td>1.489 / 1.433 / 1.435</td><td>–</td><td>6.1% / 5.3% / 3.8%</td></tr>
+<tr><td>assistant-text</td><td>1.523</td><td>1.312</td><td>10.4%</td><td>2.4%</td></tr>
+</tbody></table></div>
+<ul>
+  <li>39% of the session tokens are in kinds the corpus does not have: MCP tool results, agent and skill listings, deferred tools. Together they come to ×1.419, above the average.</li>
+  <li>On the categories both datasets have, the corpus gives ×1.309 and the sessions ×1.360. Weighting the corpus ratio of each category with the sessions' mix gives ×1.358. So on these categories the mix alone accounts for the difference. Taken one by one, categories differ in both directions (user prompts and assistant text are lower in the sessions, Read and Bash results higher), and on average they compensate.</li>
+  <li>The corpus has a lot of Read and Bash output (25% of its tokens, at ×1.21–1.22). The sessions have much more text written for the model: instructions, system prompt, tool schemas, listings.</li>
+</ul>
+<p><strong>2. Text features.</strong> A weighted regression of log(Claude/p50k) on text features (R² 0.53; the features are correlated, so the split is indicative) explains 88% of the gap:</p>
+<ul>
+  <li><strong>Density of English words, 40% of the gap.</strong> 61% of the session tokens are in pieces of English prose, against 25% in the corpus. English prose is where the new tokenizer departs most from p50k (×1.42 in both datasets).</li>
+  <li><strong>Longer words, 18%.</strong> Mean word length is 5.30 against 5.04.</li>
+  <li><strong>Less indentation, 16%.</strong> Indentation pulls the ratio down. 12.6% of the corpus tokens are heavily indented, against 0.7% in the sessions.</li>
+  <li><strong>Twice as many uppercase letters, 14%.</strong> These are the camelCase tool and member names (<code>caipC4ModelerGetArtifactSlice</code>…).</li>
+  <li>Hex/UUID runs: 5%.</li>
+  <li>Accents and Italian words play no part: 98% of the tokens are in pieces with almost no accented letters.</li>
+</ul>
+<p><strong>3. Probes</strong> (synthetic strings of one kind each, <code>claude-sonnet-5-5</code>) show the mechanism:</p>
+<div class="table"><table>
+<thead><tr><th>probe</th><th>p50k</th><th>Claude</th><th>×correction</th><th>chars / p50k token</th><th>chars / Claude token</th></tr></thead>
+<tbody>
+<tr><td>camelCase identifiers (<code>caipNodeEdgeLayout</code>…)</td><td>475</td><td>915</td><td>1.926</td><td>4.26</td><td>2.21</td></tr>
+<tr><td>JSON minified</td><td>555</td><td>914</td><td>1.647</td><td>3.43</td><td>2.08</td></tr>
+<tr><td>emoji</td><td>399</td><td>639</td><td>1.602</td><td>2.25</td><td>1.41</td></tr>
+<tr><td>Windows paths</td><td>838</td><td>1,294</td><td>1.544</td><td>2.66</td><td>1.72</td></tr>
+<tr><td>markdown table</td><td>595</td><td>882</td><td>1.482</td><td>2.94</td><td>1.99</td></tr>
+<tr><td>Gherkin, English</td><td>359</td><td>523</td><td>1.457</td><td>4.66</td><td>3.20</td></tr>
+<tr><td>English prose</td><td>844</td><td>1,192</td><td>1.412</td><td>4.44</td><td>3.14</td></tr>
+<tr><td>box drawing and arrows</td><td>479</td><td>666</td><td>1.390</td><td>2.73</td><td>1.97</td></tr>
+<tr><td>C# code</td><td>738</td><td>1,009</td><td>1.367</td><td>2.99</td><td>2.19</td></tr>
+<tr><td>snake_case identifiers</td><td>424</td><td>571</td><td>1.347</td><td>4.35</td><td>3.23</td></tr>
+<tr><td>markdown bullets "- name: description"</td><td>585</td><td>779</td><td>1.332</td><td>4.61</td><td>3.46</td></tr>
+<tr><td>POSIX paths</td><td>744</td><td>891</td><td>1.198</td><td>2.46</td><td>2.06</td></tr>
+<tr><td>integers and decimals</td><td>356</td><td>419</td><td>1.177</td><td>2.31</td><td>1.97</td></tr>
+<tr><td>Gherkin, Italian</td><td>593</td><td>697</td><td>1.175</td><td>3.13</td><td>2.66</td></tr>
+<tr><td>JSON pretty, 2 spaces</td><td>1,323</td><td>1,545</td><td>1.168</td><td>4.17</td><td>3.57</td></tr>
+<tr><td>Italian prose</td><td>1,447</td><td>1,675</td><td>1.158</td><td>2.74</td><td>2.37</td></tr>
+<tr><td>JSON pretty, 4 spaces</td><td>1,515</td><td>1,725</td><td>1.139</td><td>5.80</td><td>5.09</td></tr>
+<tr><td>hex hashes</td><td>757</td><td>815</td><td>1.077</td><td>1.62</td><td>1.51</td></tr>
+<tr><td>UUIDs</td><td>992</td><td>1,062</td><td>1.071</td><td>1.49</td><td>1.39</td></tr>
+<tr><td>Italian accented words (è, più, perché…)</td><td>599</td><td>320</td><td>0.534</td><td>1.87</td><td>3.50</td></tr>
+<tr><td>JSON pretty, tabs</td><td>2,727</td><td>1,443</td><td>0.529</td><td>1.42</td><td>2.69</td></tr>
+</tbody></table></div>
+<p>The new tokenizer splits camelCase identifiers, minified JSON, paths and English words into many more pieces than p50k does. On hashes, UUIDs, numbers and indented JSON the two are close. On tabs and accented letters, where p50k is very inefficient (it falls back to bytes), it is p50k that <em>overestimates</em>, by almost 2×. The corpus has more of the second group (Read/Bash output with indented code, pretty JSON, hashes from git, Italian sentences). The real sessions have more of the first (English instructions and listings, minified JSON and camelCase names from the CAIP MCP tools).</p>
+
+<h2>Conclusion</h2>
+<p><strong>For current models, p50k_base underestimates Claude's count.</strong> On 385 texts typical of a Claude Code session, p50k gives 1,793 tokens per text on average and Claude Opus/Sonnet/Haiku 5.5, Fable 5.2 and Opus 4.7 give 2,305. That is Σp50k/ΣClaude = 0.778: p50k is about 22% low, and 98% of texts are under. To approximate the real count, multiply the p50k figure by ~1.29. Prose needs more (×1.52, user prompts ×1.76); tool results and JSON need less (×1.23–1.26). The quoted claim was true for the previous tokenizer (Sonnet 4.5: 1.012, ±6.6% per text) and stopped being true with the tokenizer of Opus 4.7 and the 5.x family.</p>
+<p>On two real sessions the gap is larger: 384 tokens per piece with p50k against 531 with Claude, Σp50k/ΣClaude = 0.723, so p50k is 28% low (×1.38 to correct) in both sessions and in every kind of content. The larger gap comes from the mix of content, not from a different behaviour on the same content. The sessions are dominated by English text written for the model (instructions, system prompt, tool schemas, agent and skill listings) and by minified JSON and camelCase names from MCP tools. The new tokenizer splits all of these much more finely than p50k. The corpus has more indented code, pretty JSON, hashes and Italian, where the two tokenizers are closer. The right factor therefore depends on what a session contains: ~×1.2 for logs and indented files, ~×1.4 for prose and tool definitions, up to ×1.9 for camelCase identifiers.</p>
+<p>For the c4 analyzers, every "estimated" bucket in <code>report.mjs</code> (assistant output, tool_use inputs, tool results, instructions) comes out ~20–35% low on these models (~28% on the two real sessions). The residual of <code>OTHER = ctx − Σ estimated</code> grows by the same amount, so part of what it shows as "other / thinking" is really tokenizer error. Options: apply a per-category factor (the table above) and label the figures as calibrated for the 5.x tokenizer, or ask <code>count_tokens</code> when a token is available.</p>
+
+<h2>Not tested</h2>
+<ul>
+  <li>Text inside real request structure: <code>tool_result</code> / <code>tool_use</code> blocks, system prompt and tool definitions add framing that this test removes on purpose. Here only plain text in one user message is counted, with the framing subtracted as <code>count("x") − 1</code>, which assumes "x" is one token (±1 token per text, which only matters for the shortest sentences).</li>
+  <li>Real sessions beyond the two measured with <code>sessions.ts</code>. Their texts are not stored; <code>explain.ts</code> re-reads them in memory from the original paths, so it can only be rerun where those files exist. The frozen corpus comes from this repo, where tool results are partly fixtures and partly generated from repo files.</li>
+  <li>Images in tool results (estimated by <code>report.mjs</code> from pixel area, not tokenized) and thinking (not stored in transcripts).</li>
+  <li>Languages other than English and Italian, non-Latin scripts, emoji, base64, minified JS, images and PDFs.</li>
+  <li>Counts of output tokens: the API counts input, and output may tokenize the same way, but that is not checked here.</li>
+  <li>Other offline encodings (cl100k_base, o200k_base) as alternatives to p50k.</li>
+  <li>Variance over time: <code>count_tokens</code> was called once per text and model, on 2026-11-19.</li>
+</ul>
+</body>
+</html>

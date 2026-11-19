@@ -1,0 +1,6 @@
+{
+  "name": "gpt-tokenizer-vendored",
+  "version": "4.0.0",
+  "type": "module",
+  "private": true
+}

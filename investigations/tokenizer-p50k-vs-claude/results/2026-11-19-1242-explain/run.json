@@ -1,0 +1,52 @@
+{
+  "driver": "explain.ts",
+  "args": [
+    "C:/Users/spesce/Downloads/4b8e5589-47e2-436f-a34b-b9cccbdc49d2",
+    "C:/Users/spesce/.claude/projects/c--Users-spesce-Desktop-test-feature-flags-test-token"
+  ],
+  "investigation": "investigations/tokenizer-p50k-vs-claude",
+  "started": "2026-11-19T11:42:14.688Z",
+  "versions": {
+    "node": "v22.21.1",
+    "claude_code": {}
+  },
+  "git": {
+    "commit": "b81f2decd8e0dbcc02882d4a50e196ef11c75d3c",
+    "dirty": true
+  },
+  "sha256": {
+    "lib/claude-home.mjs": "2b36d3f1bf8c5459",
+    "lib/hook-log.mjs": "4de15a700ba83612",
+    "investigations/tokenizer-p50k-vs-claude/build-corpus.ts": "56dd38a6a3ffd49c",
+    "investigations/tokenizer-p50k-vs-claude/compare.ts": "c8d67cfd46884138",
+    "investigations/tokenizer-p50k-vs-claude/corpus/corpus.jsonl": "ceb3461930d3babf",
+    "investigations/tokenizer-p50k-vs-claude/corpus/sentences.json": "07ebece14b1bbb4d",
+    "investigations/tokenizer-p50k-vs-claude/explain.ts": "7867a210c9325b54",
+    "investigations/tokenizer-p50k-vs-claude/pieces.ts": "ba12cb63f9b755bf",
+    "investigations/tokenizer-p50k-vs-claude/sessions.ts": "f28f80a6d3c022f7",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/bpeRanks/p50k_base.js": "ed4efebb584ae5c5",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/BytePairEncodingCore.js": "9b08c7b5f20a4489",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/constants.js": "396cb179a04f1547",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encoding/p50k_base.js": "a9dde3c2a6e10aba",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/cl100k_base.js": "7d8648543c1a3579",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/constants.js": "58d73ac5b3aca715",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/o200k_base.js": "e6a6b553d145bebc",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/o200k_harmony.js": "c6c277296e24276f",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/p50k_base.js": "8e4dc1a4eb1f4022",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/p50k_edit.js": "8709eb994289fdb6",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/encodingParams/r50k_base.js": "6429d26ba7858bb5",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/functionCalling.js": "92583e9121548ff5",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/GptEncoding.js": "dc9118255c11b5dd",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/mapping.js": "16185d02466117a7",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/modelParams.js": "4ff9637ec30d5c45",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/modelsChatEnabled.gen.js": "9226e6bd34987ead",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/modelsMap.js": "28c5e1306404526a",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/specialTokens.js": "b5344df402f18608",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/utfUtil.js": "40c74bd31bbad311",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/util.js": "42814dab1b94cd7f",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/esm/_virtual/_rolldown/runtime.js": "803505151576a3aa",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/LICENSE": "f7f51318032a2046",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/package.json": "4cf340ca9b5ea4bf",
+    "investigations/tokenizer-p50k-vs-claude/vendor/gpt-tokenizer/README.md": "fc56dbccc41d2650"
+  }
+}
